@@ -1,13 +1,13 @@
 from flask import Flask,jsonify,send_file,request
 from flask_restful import Api,Resource
 from flask_cors import CORS,cross_origin 
-
 app = Flask(__name__)
 api = Api(app)
 CORS(app, resources={r'/*': {'origins': '*'}})
 from openpyxl import *
 import shutil
 
+from component.main import *
 
 class ExcellCiktiIslem:
 
@@ -118,6 +118,12 @@ class SiparisCekiListesiApi(Resource):
     
    
 api.add_resource(SiparisCekiListesiApi, '/excel/check/list', methods=['GET','POST'])
+api.add_resource(MaliyetRaporIslemApi,'/maliyet/listeler/maliyetListesi/<int:yil>/<int:ay>',methods=['GET'])
+api.add_resource(MaliyetRaporIslemYilApi,'/maliyet/listeler/maliyetListesi/<int:yil>',methods=['GET'])
+
+
+
+
 
  
 
