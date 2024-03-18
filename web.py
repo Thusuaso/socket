@@ -10,6 +10,8 @@ import shutil
 from component.main import *
 from component.finance.finance import *
 from component.orders.excel import *
+from component.mk.mk import *
+from component.stock.stock import *
 class ExcellCiktiIslem:
 
     def ceki_listesi_excel(self,data_list):
@@ -124,6 +126,9 @@ api.add_resource(MaliyetRaporIslemYilApi,'/maliyet/listeler/maliyetListesi/<int:
 api.add_resource(FinanceTestListApi,'/finance/reports/test',methods=['GET'])
 api.add_resource(FinanceTestListExcelApi,'/finance/reports/test/excel',methods=['GET','POST'])
 api.add_resource(UretimExcelCiktiApi,'/siparisler/dosyalar/uretimExcelCikti',methods=['POST','GET'])
+api.add_resource(MkRaporlariExcelApi,'/raporlar/listeler/mkraporlari/excel',methods=['GET','POST'])
+api.add_resource(MkRaporlariApi,'/raporlar/listeler/mkraporlari/<int:year>',methods=['GET'])
+api.add_resource(StokRaporExcelApi,'/raporlar/listeler/stokRaporExcelListe',methods=['GET','POST'])
 
 
 
