@@ -15,6 +15,7 @@ from component.stock.stock import *
 class ExcellCiktiIslem:
 
     def ceki_listesi_excel(self,data_list):
+         print(data_list)
          try:
             source_path = 'excel/sablonlar/ceki_listesi.xlsx'
             target_path = 'excel/dosyalar/ceki_listesi.xlsx'
