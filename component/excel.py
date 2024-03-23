@@ -5,12 +5,16 @@ from openpyxl.styles import PatternFill, Border, Side, Alignment, Protection, Fo
 import shutil
 
 class ExcelCiktiIslem:
-
+    def __noneType(self,value):
+        if(value == None):
+            return 0
+        else:
+            return value
+        
     def maliyet_rapor_ciktisi(self,data_list):
-
             try:
-                source_path = 'resource_api/maliyet_raporlar/sablonlar/ayo_maliyet_listesi.xlsx'
-                target_path = 'resource_api/maliyet_raporlar/dosyalar/ayo_maliyet_listesi.xlsx'
+                source_path = 'excel/sablonlar/ayo_maliyet_listesi.xlsx'
+                target_path = 'excel/dosyalar/ayo_maliyet_listesi.xlsx'
 
                 shutil.copy2(source_path, target_path)
 

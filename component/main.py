@@ -87,7 +87,7 @@ class MaliyetRaporExcelApi(Resource):
 
     def get(self):
 
-        excel_path = 'resource_api/maliyet_raporlar/dosyalar/ayo_maliyet_listesi.xlsx'
+        excel_path = 'excel/dosyalar/ayo_maliyet_listesi.xlsx'
 
         return send_file(excel_path,as_attachment=True)
     
