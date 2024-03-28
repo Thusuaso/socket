@@ -20,9 +20,13 @@ def cards_update_emit():
     emit('cards_update_on',broadcast=True)
     
 @socketio.on('offers_updated_emit')
-def offers_updated_emit():
-    emit('offers_updated_on',broadcast=True)
-    
+def offers_updated_emit(payload):
+    emit('offers_updated_on',payload,broadcast=True)
+
+@socketio.on('offers_deleted_emit')
+def offers_deleted_emit(offerId):
+    emit('offers_deleted_on',offerId,broadcast=True)
+
 
 if __name__ == '__main__':
     socketio.run(app,port=5001)
