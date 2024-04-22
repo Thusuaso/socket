@@ -12,6 +12,7 @@ from component.finance.finance import *
 from component.orders.excel import *
 from component.mk.mk import *
 from component.stock.stock import *
+from component.currency import *
 class ExcellCiktiIslem:
 
     def ceki_listesi_excel(self,data_list):
@@ -131,7 +132,7 @@ api.add_resource(MkRaporlariExcelApi,'/raporlar/listeler/mkraporlari/excel',meth
 api.add_resource(MkRaporlariApi,'/raporlar/listeler/mkraporlari/<int:year>',methods=['GET'])
 api.add_resource(StokRaporExcelApi,'/raporlar/listeler/stokRaporExcelListe',methods=['GET','POST'])
 api.add_resource(MaliyetRaporExcelApi, '/maliyet/dosyalar/maliyetRaporExcelListe', methods=['GET','POST'])
-
+api.add_resource(CurrencyApi,'/finance/doviz/liste/<string:yil>/<string:ay>/<string:gun>',methods=['GET'])
 
 
 
