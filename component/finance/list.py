@@ -21,8 +21,27 @@ class FinanceTest:
                                                         where 
                                                             s.MusteriID = m.ID
                                                     )
-                                                    and m.Mt_No=2 and m.ID not in (6,34,43,314,153)
+                                                    and m.Mt_No=2 and m.ID not in (6,34,43,314,153) and m.Marketing in ('Mekmar','Imperial Homes')
                                           """)
+        self.customersFilter = self.sql.getList("""
+                                                select 
+                                                    m.ID,
+                                                    m.FirmaAdi,
+                                                    m.Marketing
+                                                from MusterilerTB m 
+                                                where m.ID in 
+                                                    (
+												        select 
+                                                            s.MusteriID 
+                                                        from SiparislerTB s 
+                                                        where 
+                                                            s.MusteriID = m.ID
+                                                    )
+                                                    and m.Mt_No=2 and m.ID not in (6,34,43,314,153) and m.Marketing in ('İç Piyasa','Mekmer')
+                                          """)
+        
+        
+        
         self.orders = self.sql.getList("""
                                             select 
                                                 sum(s.NavlunSatis) as Navlun,
@@ -243,6 +262,34 @@ class FinanceTest:
                 'total': (self.__getOrder(item.ID) + self.__getProduct(item.ID)) - self.__noneControl(self.__getPaid(item.ID))
             })
         return liste
+    
+    
+    def getListFilter(self):
+        liste = list()
+        for item in self.customersFilter:
+            # total = (self.__getOrder(item.ID) + self.__getProduct(item.ID)) - self.__noneControl(self.__getPaid(item.ID))
+            # if total == 0 or total < 8:
+            #     continue
+            # else:
+                
+            liste.append({
+                'marketing':item.Marketing,
+                'customer_id':item.ID,
+                'customer_name':item.FirmaAdi,
+                'order':self.__getOrder(item.ID),
+                'product':self.__getProduct(item.ID),
+                'total_order_amount': self.__noneControl(self.__getOrder(item.ID)) + self.__noneControl(self.__getProduct(item.ID)),
+                'paid':self.__getPaid(item.ID),
+                'forwarding': self.__noneControl(self.__getOrderForwarding(item.ID)) + self.__noneControl(self.__getProductForwarding(item.ID)),
+                'production':self.__noneControl(self.__getProductProduction(item.ID)) + self.__noneControl(self.__getOrderProduction(item.ID)),
+                'advanced_payment':self.__getAdvancePayment(item.ID),
+                'total': (self.__getOrder(item.ID) + self.__getProduct(item.ID)) - self.__noneControl(self.__getPaid(item.ID))
+            })
+        return liste
+    
+    
+    
+    
     
     def getMayaList(self):
         try:

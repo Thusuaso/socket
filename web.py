@@ -134,6 +134,9 @@ api.add_resource(StokRaporExcelApi,'/raporlar/listeler/stokRaporExcelListe',meth
 api.add_resource(MaliyetRaporExcelApi, '/maliyet/dosyalar/maliyetRaporExcelListe', methods=['GET','POST'])
 api.add_resource(CurrencyApi,'/finance/doviz/liste/<string:yil>/<string:ay>/<string:gun>',methods=['GET'])
 
+api.add_resource(FinanceTestListFilterApi,'/finance/reports/test/filter',methods=['GET'])
+
+
 
 
  
