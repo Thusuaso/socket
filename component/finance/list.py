@@ -21,10 +21,10 @@ class FinanceTest:
                                                         where 
                                                             s.MusteriID = m.ID
                                                     )
-                                                    and m.Mt_No=2 and m.ID not in (6,34,43,314,153) and m.Marketing in ('Mekmar','Imperial Homes')
+                                                    and m.Mt_No=2 and m.ID not in (6,34,43,314,153) and m.Marketing in ('Mekmar')
                                           """)
         self.customersFilter = self.sql.getList("""
-                                                select 
+select 
                                                     m.ID,
                                                     m.FirmaAdi,
                                                     m.Marketing
@@ -37,7 +37,7 @@ class FinanceTest:
                                                         where 
                                                             s.MusteriID = m.ID
                                                     )
-                                                    and m.Mt_No=2 and m.ID not in (6,34,43,314,153) and m.Marketing in ('İç Piyasa','Mekmer')
+                                                    and m.Mt_No=2 and m.ID not in (6,34,43,314,153) and m.Marketing in ('İç Piyasa','Mekmer','Imperial Homes')
                                           """)
         
         
