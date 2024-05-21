@@ -16,7 +16,6 @@ from component.currency import *
 class ExcellCiktiIslem:
 
     def ceki_listesi_excel(self,data_list):
-         print(data_list)
          try:
             source_path = 'excel/sablonlar/ceki_listesi.xlsx'
             target_path = 'excel/dosyalar/ceki_listesi.xlsx'
@@ -42,8 +41,7 @@ class ExcellCiktiIslem:
 
                 miktar = 0
                 kutu = int(item['KutuAdet'])
-                if(item['BirimAdi'] == 'M2'):
-                    
+                if(item['BirimAdi'] == 'Sqm'):
                     if(item['En']=='ANT' and item['Boy']=='PAT'):
                         miktar = float(round((0.74338688 * kutu),2))
                         
@@ -53,7 +51,8 @@ class ExcellCiktiIslem:
                         miktar = float(item['Miktar'])
                     else:
                         miktar = float(item['Miktar'])
-                elif (item['BirimAdi'] == 'Adet'):
+                elif (item['BirimAdi'] == 'Pcs'):
+                    
                     if(float(item['Miktar']) != None or float(item['Miktar']) != 0):
                         
                         miktar = float(item['Miktar'])
@@ -73,7 +72,7 @@ class ExcellCiktiIslem:
                 
                 else:
                     kenar=1
-                if (item['BirimAdi'] == 'M2'):
+                if (item['BirimAdi'] == 'Sqm'):
                     if (item['KategoriAdi'] == 'Travertine Tiles'):
                         kg = int(round((kenar * miktar * 10.0 * 2.40),0))
                     elif (item['KategoriAdi'] == 'Marble Tiles'):
@@ -84,10 +83,16 @@ class ExcellCiktiIslem:
                         kg = int(round((1.5 * miktar * 10 * 2.40),0))
                     else:
                         kg=0
+                else:
+                    kg = 0
                     
-                    
-                sayfa.cell(satir,column=12,value=item['Ton'])
-                sayfa.cell(satir,column=13,value=float(item['Ton']) + 30)
+                
+                if(item['Ton'] == None or item['Ton'] == 'None' or item['Ton'] == 'undefined'):
+                    sayfa.cell(satir,column=12,value=0)
+                    sayfa.cell(satir,column=13,value = 0)
+                else:
+                    sayfa.cell(satir,column=12,value=item['Ton'])
+                    sayfa.cell(satir,column=13,value=float(item['Ton']) + 30)
                 
                 
                 
@@ -127,6 +132,7 @@ api.add_resource(MaliyetRaporIslemApi,'/maliyet/listeler/maliyetListesi/<int:yil
 api.add_resource(MaliyetRaporIslemYilApi,'/maliyet/listeler/maliyetListesi/<int:yil>',methods=['GET'])
 api.add_resource(FinanceTestListApi,'/finance/reports/test',methods=['GET'])
 api.add_resource(FinanceTestListExcelApi,'/finance/reports/test/excel',methods=['GET','POST'])
+
 api.add_resource(UretimExcelCiktiApi,'/siparisler/dosyalar/uretimExcelCikti',methods=['POST','GET'])
 api.add_resource(MkRaporlariExcelApi,'/raporlar/listeler/mkraporlari/excel',methods=['GET','POST'])
 api.add_resource(MkRaporlariApi,'/raporlar/listeler/mkraporlari/<int:year>',methods=['GET'])
@@ -135,9 +141,9 @@ api.add_resource(MaliyetRaporExcelApi, '/maliyet/dosyalar/maliyetRaporExcelListe
 api.add_resource(CurrencyApi,'/finance/doviz/liste/<string:yil>/<string:ay>/<string:gun>',methods=['GET'])
 
 api.add_resource(FinanceTestListFilterApi,'/finance/reports/test/filter',methods=['GET'])
-
-
-
+api.add_resource(FinanceTestDetailFilterApi,'/finance/po/list/mekmer/<int:customer>',methods=['GET'])
+api.add_resource(FinanceTestPaidFilterApi,'/finance/po/paid/mekmer/save',methods=['POST'])
+api.add_resource(FinanceTestPoPaidListFilterApi,'/finance/po/paid/list/mekmer/<string:po>',methods=['GET'])
 
  
 

@@ -2,7 +2,7 @@ from flask_restful import Resource
 from flask import jsonify,request,send_file
 from component.finance.list import *
 from component.finance.maturity import *
-
+from component.finance.detail import *
 class FinanceTestListApi(Resource):
     def get(self):
         finance = FinanceTest()
@@ -36,7 +36,38 @@ class FinanceTestListFilterApi(Resource):
         }
         return jsonify(data)
     
+    
+class FinanceTestDetailFilterApi(Resource):
+    def get(self,customer):
 
+        islem = MusteriAyrinti(customer)
+
+        ayrinti_list = islem.getKonteynerAyrintiList()
+        odeme_liste = islem.getOdemeListesi()
+        po_list = islem.getByCustomersPo()
+        data = {
+
+            "ayrinti_list" : ayrinti_list,
+            "odeme_liste" : odeme_liste,
+            "po_list":po_list
+        }
+
+
+        return jsonify(data)
+
+
+class FinanceTestPaidFilterApi(Resource):
+    def post(self):
+        data = request.get_json()
+        finance = FinanceTest()
+        status = finance.setPaidSave(data)
+        return {'status':status}
+
+class FinanceTestPoPaidListFilterApi(Resource):
+    def get(self,po):
+        finance = FinanceTest()
+        liste = finance.getPoPaidList(po)
+        return {'liste':liste}
     
 class FinanceTestListExcelApi(Resource):
     def post(self):
@@ -51,5 +82,5 @@ class FinanceTestListExcelApi(Resource):
 
         return send_file(excel_path,as_attachment=True)
         
-        
+
     
