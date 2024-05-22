@@ -21,7 +21,7 @@ class FinanceTest:
                                                         where 
                                                             s.MusteriID = m.ID
                                                     )
-                                                    and m.Mt_No=2 and m.ID not in (6,34,43,314,153) and m.Marketing in ('Mekmar')
+                                                    and m.Mt_No=2 and m.ID not in (6,34,43,314,153) and m.Marketing in ('Mekmar','Imperial Homes')
                                           """)
         self.customersFilter = self.sql.getList("""
 select 
@@ -37,7 +37,7 @@ select
                                                         where 
                                                             s.MusteriID = m.ID
                                                     )
-                                                    and m.Mt_No=2 and m.ID not in (6,34,43,314,153) and m.Marketing in ('İç Piyasa','Mekmer','Imperial Homes','Mekmar')
+                                                    and m.Mt_No=2 and m.ID not in (6,34,43,314,153) and m.Marketing in ('İç Piyasa','Mekmer','Mekmar')
                                           """)
         
         
@@ -368,7 +368,6 @@ select
 
                 continue
             else:
-
                 liste.append({
                     'marketing':item.Marketing,
                     'customer_id':item.ID,
