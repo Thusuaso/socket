@@ -90,6 +90,7 @@ class MusteriAyrintiSchema(Schema):
     odenen_tutar = fields.Float()
     tahmini_eta = fields.String()
     kalan2 = fields.Float()
+    iscilik = fields.Float()
 class MusteriAyrintiModel:
     id = None
     musteriadi = ""
@@ -105,6 +106,7 @@ class MusteriAyrintiModel:
     odenen_tutar = 0
     tahmini_eta = ""
     kalan2 = 0
+    iscilik = 0
     
 class ByCustomersPoSchema(Schema):
     id = fields.Int()

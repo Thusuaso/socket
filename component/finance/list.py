@@ -252,6 +252,7 @@ select
                                                         select 
                                                             sum(su.AlisFiyati * su.Miktar) as SatisToplam,
                                                             s.MusteriID
+
                                                         from SiparislerTB s 
                                                             inner join SiparisUrunTB su on su.SiparisNo = s.SiparisNo
                                                         where
@@ -329,7 +330,18 @@ select
 
                                                 """)
         
-        
+        self.extraCostFiltered = self.sql.getList("""
+                                                    select s.MusteriID,
+                                                        sum(seg.Tutar) as Iscilik
+
+                                                    from    
+
+                                                    SiparislerTB s
+                                                    inner join SiparisEkstraGiderlerTB seg on seg.SiparisNo = s.SiparisNo
+                                                    where seg.TedarikciID in (1,123) and YEAR(seg.Tarih) >= YEAR(GETDATE())
+                                                    group by s.MusteriID
+
+                                                  """)
         
         
     def getList(self):
@@ -361,7 +373,7 @@ select
         for item in self.customersFilter:
 
                 
-            total = (self.__noneControl(self.__getProductForwardingFilter(item.ID)) + self.__noneControl(self.__getProductProductionFilter(item.ID))) - self.__noneControl(self.__getPaidFilter(item.ID))
+            total = (self.__noneControl(self.__getProductForwardingFilter(item.ID)) + self.__noneControl(self.__getProductProductionFilter(item.ID)) + self.__noneControl(self.__getProductWorkerman(item.ID))) - self.__noneControl(self.__getPaidFilter(item.ID))
 
                 
             if total == 0 or total < 8:
@@ -376,13 +388,10 @@ select
                     'product':self.__getProductFilter(item.ID),
                     'total_order_amount':  self.__noneControl(self.__getProductFilter(item.ID)),
                     'paid':self.__getPaidFilter(item.ID),
-                    
-                    
-                    
                     'forwarding':  self.__noneControl(self.__getProductForwardingFilter(item.ID)),
                     'production':self.__noneControl(self.__getProductProductionFilter(item.ID)),
                     'advanced_payment':self.__getAdvancePaymentFilter(item.ID),
-                    'total':  (self.__noneControl(self.__getProductForwardingFilter(item.ID)) + self.__noneControl(self.__getProductProductionFilter(item.ID))) - self.__noneControl(self.__getPaidFilter(item.ID))
+                    'total':  (self.__noneControl(self.__getProductForwardingFilter(item.ID)) + self.__noneControl(self.__getProductProductionFilter(item.ID)) + self.__noneControl(self.__getProductWorkerman(item.ID))) - self.__noneControl(self.__getPaidFilter(item.ID))
                 })
         
         return liste
@@ -392,6 +401,13 @@ select
         for item in self.productsFilter:
             if(item.MusteriID == customer_id):
                 return self.__noneControl(item.SatisToplam)
+    
+    def __getProductWorkerman(self,customer_id):
+        for item in self.extraCostFiltered:
+            if(item.MusteriID == customer_id):
+                return self.__noneControl(item.Iscilik)
+    
+    
     
     def getPoPaidList(self,po):
         try:
@@ -575,7 +591,7 @@ select
     def __getProductProductionFilter(self,customer_id):
         for item in self.productsProductionFilter:
             if(item.MusteriID == customer_id):
-                return self.__noneControl(item.SatisToplam)    
+                return self.__noneControl(item.SatisToplam)
     
     def __getPaidForwarding(self,customer_id):
         for item in self.paidsForwarding:

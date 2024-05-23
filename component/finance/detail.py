@@ -59,7 +59,10 @@ class MusteriAyrinti:
             ) as Odeme,
             (
               select Sum(u.AlisFiyati * u.Miktar) from SiparisUrunTB u where u.SiparisNo=s.SiparisNo and u.TedarikciID in (1,123)
-            ) as UrunBedeli        
+            ) as UrunBedeli,
+            			(
+				select SUM (seg.Tutar) from SiparisEkstraGiderlerTB seg where seg.SiparisNo=s.SiparisNo and seg.TedarikciID in (1,123) and YEAR(seg.Tarih) >= YEAR(GETDATE())
+			) as Iscilik    
             from
             SiparislerTB s,MusterilerTB m
             where
@@ -111,12 +114,13 @@ class MusteriAyrinti:
                 odeme = item.Odeme
             if item.sigorta_tutar_satis != None:
                 sigorta = item.sigorta_tutar_satis
-            model.toplam = urun_bedel 
+            model.toplam = urun_bedel + self.__noneControl(item.Iscilik)
             model.siparis_total = model.toplam
             
             model.kalan = model.toplam - odeme
             model.kalan2 = model.toplam - odeme
             model.odenen_tutar = odeme
+            model.iscilik = self.__noneControl(item.Iscilik)
             liste.append(model)
 
         return liste  
@@ -148,7 +152,10 @@ class MusteriAyrinti:
             ) as Odeme,
             (
             select Sum(u.AlisFiyati * u.Miktar) from SiparisUrunTB u where u.SiparisNo=s.SiparisNo and u.TedarikciID in (1,123)
-            ) as UrunBedeli
+            ) as UrunBedeli,
+                   			(
+				select SUM (seg.Tutar) from SiparisEkstraGiderlerTB seg where seg.SiparisNo=s.SiparisNo and seg.TedarikciID in (1,123) and YEAR(seg.Tarih) >= YEAR(GETDATE())
+			) as Iscilik 
             from
             SiparislerTB s,MusterilerTB m
             where
@@ -204,10 +211,11 @@ class MusteriAyrinti:
                 odeme = item.Odeme
             model.pesinat = pesinat
             model.siparis_total =urun_bedel
-            model.toplam = urun_bedel
+            model.toplam = urun_bedel + self.__noneControl(item.Iscilik)
             model.kalan2 = model.siparis_total
-            model.kalan =  model.siparis_total - odeme
+            model.kalan =  (model.siparis_total + self.__noneControl(item.Iscilik)) - odeme
             model.odenen_tutar = odeme
+            model.iscilik = self.__noneControl(item.Iscilik)
             liste.append(model)
 
         return liste      
@@ -324,3 +332,9 @@ class MusteriAyrinti:
         except Exception as e:
             print("getByCustomersPo hata",str(e))
             return False
+        
+    def __noneControl(self,value):
+        if(value == None or value == "" or value == 'undefined' or value == 'null'):
+            return 0
+        else:
+            return value
