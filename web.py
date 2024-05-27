@@ -145,7 +145,7 @@ api.add_resource(FinanceTestDetailFilterApi,'/finance/po/list/mekmer/<int:custom
 api.add_resource(FinanceTestPaidFilterApi,'/finance/po/paid/mekmer/save',methods=['POST'])
 api.add_resource(FinanceTestPoPaidListFilterApi,'/finance/po/paid/list/mekmer/<string:po>',methods=['GET'])
 
- 
+api.add_resource(FinanceTestListFilterMekmerAllApi,'/finance/reports/mekmer/all',methods=['GET'])
 
 if __name__ == '__main__':
     app.run(port=5000,debug=True)

@@ -36,7 +36,25 @@ class FinanceTestListFilterApi(Resource):
         }
         return jsonify(data)
     
-    
+
+class FinanceTestListFilterMekmerAllApi(Resource):
+    def get(self):
+        finance = FinanceTestAll()
+        islem = VadeAnaliste()
+
+        vade = islem.getVadeList()
+        financeList = finance.getListFilter()
+        mayaList = finance.getMayaList()
+        data = {
+            'financeList':financeList,
+            'mayaList':mayaList,
+            'vadeList':vade
+            
+        }
+        return jsonify(data)
+
+
+
 class FinanceTestDetailFilterApi(Resource):
     def get(self,customer):
 
