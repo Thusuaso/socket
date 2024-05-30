@@ -28,7 +28,6 @@ class ExcellCiktiIslem:
             satir = 11
            
             for item in data_list:
-
                 sayfa.cell(satir,column=2,value=item['KasaNo'])
                 sayfa.cell(satir,column=3,value=item['KategoriAdi'])
                 sayfa.cell(satir,column=4,value=item['YuzeyIslem'])
@@ -61,31 +60,7 @@ class ExcellCiktiIslem:
                 elif (item['BirimAdi'] == 'Mt'):
                     miktar=float(item['Miktar'])
                 sayfa.cell(satir,column=11,value=miktar)
-                kg = 0
-                
-                if(item['Kenar']):
-                    if (item['Kenar']=='VAR') or (item['Kenar'] == 'Various') or (item['Kenar'] == 'Other' or (item['Kenar'] == '1 LT')):
-                        kenar = 1
-                    else: 
-                        kenar = item['Kenar'].replace(',','.')
-                        kenar = float(kenar)
-                
-                else:
-                    kenar=1
-                if (item['BirimAdi'] == 'Sqm'):
-                    if (item['KategoriAdi'] == 'Travertine Tiles'):
-                        kg = int(round((kenar * miktar * 10.0 * 2.40),0))
-                    elif (item['KategoriAdi'] == 'Marble Tiles'):
-                        kg = int(round((kenar * miktar * 10.0 * 2.80),0))
-                    elif (item['KategoriAdi'] == 'Other'):
-                        kg = int(round((kenar * miktar * 10 * 1),0))
-                    elif ((item['KategoriAdi'] == 'Travertine Mosaic') and (item['YuzeyIslem'] == 'Split face')):
-                        kg = int(round((1.5 * miktar * 10 * 2.40),0))
-                    else:
-                        kg=0
-                else:
-                    kg = 0
-                    
+
                 
                 if(item['Ton'] == None or item['Ton'] == 'None' or item['Ton'] == 'undefined'):
                     sayfa.cell(satir,column=12,value=0)
