@@ -99,6 +99,20 @@ class FinanceTestListExcelApi(Resource):
         excel_path = 'excel/dosyalar/finans_test_list.xlsx'
 
         return send_file(excel_path,as_attachment=True)
+    
+class FinanceTestListExcelApiFilter(Resource):
+    def post(self):
+        
+        data = request.get_json()
+        finance = FinanceTest()
+        status = finance.getExcelListMekmerFilter(data)
+        return {'status':status}
+    
+    def get(self):
+        
+        excel_path = 'excel/dosyalar/finans_test_list.xlsx'
+
+        return send_file(excel_path,as_attachment=True)
         
 
     

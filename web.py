@@ -107,6 +107,7 @@ api.add_resource(MaliyetRaporIslemApi,'/maliyet/listeler/maliyetListesi/<int:yil
 api.add_resource(MaliyetRaporIslemYilApi,'/maliyet/listeler/maliyetListesi/<int:yil>',methods=['GET'])
 api.add_resource(FinanceTestListApi,'/finance/reports/test',methods=['GET'])
 api.add_resource(FinanceTestListExcelApi,'/finance/reports/test/excel',methods=['GET','POST'])
+api.add_resource(FinanceTestListExcelApiFilter,'/finance/reports/test/excel/mekmer',methods=['GET','POST'])
 
 api.add_resource(UretimExcelCiktiApi,'/siparisler/dosyalar/uretimExcelCikti',methods=['POST','GET'])
 api.add_resource(MkRaporlariExcelApi,'/raporlar/listeler/mkraporlari/excel',methods=['GET','POST'])

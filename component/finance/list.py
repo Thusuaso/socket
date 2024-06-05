@@ -392,7 +392,7 @@ select
                     'production':self.__noneControl(self.__getProductProductionFilter(item.ID)),
                     'advanced_payment':self.__getAdvancePaymentFilter(item.ID),
                     'total':  (self.__noneControl(self.__getProductForwardingFilter(item.ID)) + self.__noneControl(self.__getProductProductionFilter(item.ID)) + self.__noneControl(self.__getProductWorkerman(item.ID))) - self.__noneControl(self.__getPaidFilter(item.ID)),
-                    'totalExceptProduction':self.__noneControl(self.__getProductForwardingFilter(item.ID)) - self.__noneControl(self.__getPaidFilter(item.ID))
+                    'totalExceptProduction':self.__floatControlDecimal(self.__noneControl(self.__getProductForwardingFilter(item.ID)) - self.__noneControl(self.__getPaidFilter(item.ID)))
                 })
         
         return liste
@@ -409,6 +409,11 @@ select
             if(item.MusteriID == customer_id):
                 return self.__noneControl(item.Iscilik)
     
+    def __floatControlDecimal(self,value):
+        if(value >= -8 and value <= 8):
+            return 0
+        else:
+            return value
     
     
     def getPoPaidList(self,po):
@@ -488,6 +493,45 @@ select
         except Exception as e:
             print('ExcelCiktiIslem depoCikti Hata : ',str(e))
             return False
+    
+    
+    def getExcelListMekmerFilter(self,data_list):
+        try:
+            print(data_list)
+            source_path = 'excel/sablonlar/finans_test_list.xlsx'
+            target_path = 'excel/dosyalar/finans_test_list.xlsx'
+
+            shutil.copy2(source_path, target_path)
+
+
+            kitap = load_workbook(target_path)
+            sayfa = kitap.get_sheet_by_name('Sayfa1')
+            satir = 2
+            new_list = sorted(data_list, key=lambda x: x['totalExceptProduction'], reverse=True)
+            for item in new_list:
+
+                sayfa.cell(satir,column=1,value=item['customer_name'])               
+                sayfa.cell(satir,column=2,value=self.__noneControl(item['total_order_amount']))
+                sayfa.cell(satir,column=3,value=self.__noneControl(item['production']))
+                sayfa.cell(satir,column=4,value=self.__noneControl(item['forwarding']))
+                sayfa.cell(satir,column=5,value=self.__noneControl(item['paid']))
+                sayfa.cell(satir,column=6,value=self.__noneControl(item['advanced_payment']))
+                sayfa.cell(satir,column=7,value=self.__noneControl(item['total']))
+                sayfa.cell(satir,column=8,value=(self.__noneControl(item['totalExceptProduction'])))
+                
+                
+
+                satir += 1
+
+            kitap.save(target_path)
+            kitap.close()
+
+            return True
+
+        except Exception as e:
+            print('ExcelCiktiIslem depoCikti mekmer Hata : ',str(e))
+            return False
+    
     
     
     def getExcelListMekmer(self,data_list):

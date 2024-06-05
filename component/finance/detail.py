@@ -117,7 +117,7 @@ class MusteriAyrinti:
             model.toplam = urun_bedel + self.__noneControl(item.Iscilik)
             model.siparis_total = model.toplam
             
-            model.kalan = model.toplam - odeme
+            model.kalan = self.__floatControlDecimal(model.toplam - odeme)
             model.kalan2 = model.toplam - odeme
             model.odenen_tutar = odeme
             model.iscilik = self.__noneControl(item.Iscilik)
@@ -220,6 +220,11 @@ class MusteriAyrinti:
 
         return liste      
 
+    def __floatControlDecimal(self,value):
+        if(value >= -8 and value <= 8):
+            return 0
+        else:
+            return value
     def getOdemeListesi(self):
 
         tarihIslem = TarihIslemler()
