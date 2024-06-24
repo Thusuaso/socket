@@ -99,3 +99,28 @@ class AyoAlisFiyatiDegistirApi(Resource):
         result = islem.setAlisFiyatiKontrolDegistir(data)
         return jsonify(result)
 
+
+class GuReportsSellerAndOperationOrdersExcelApi(Resource):
+    def post(self):
+        data = request.get_json()
+        islem = ExcelCiktiIslem()
+        results = islem.getGuRaporlariSatisciOperasyonOrders(data)
+        return {'status':results}
+    def get(self):
+
+        excel_path = 'excel/dosyalar/gu_reports_summary.xlsx'
+
+        return send_file(excel_path,as_attachment=True)
+    
+class GuReportsSellerAndOperationForwardingExcelApi(Resource):
+    def post(self):
+        data = request.get_json()
+        islem = ExcelCiktiIslem()
+        results = islem.getGuRaporlariSatisciOperasyonShipped(data)
+        return {'status':results}
+    def get(self):
+
+        excel_path = 'excel/dosyalar/gu_reports_summary.xlsx'
+
+        return send_file(excel_path,as_attachment=True)
+        

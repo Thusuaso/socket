@@ -71,8 +71,6 @@ class ExcelCiktiIslem:
                             sayfa.cell(satir-1,column=15,value='MT')
                             
                             
-                         sayfa.cell(satir-1,column=16,value=item1['SatisFiyati'])
-                         sayfa.cell(satir-1,column=17,value=item1['SatisToplam'])
                          satir += 1
                          a += 1
                       

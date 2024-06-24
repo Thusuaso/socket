@@ -123,5 +123,9 @@ api.add_resource(FinanceTestPoPaidListFilterApi,'/finance/po/paid/list/mekmer/<s
 
 api.add_resource(FinanceTestListFilterMekmerAllApi,'/finance/reports/mekmer/all',methods=['GET'])
 
+
+api.add_resource(GuReportsSellerAndOperationOrdersExcelApi,'/gu/reports/seller/operation/orders',methods=['GET','POST'])
+api.add_resource(GuReportsSellerAndOperationForwardingExcelApi,'/gu/reports/seller/operation/forwarding',methods=['GET','POST'])
+
 if __name__ == '__main__':
     app.run(port=5000,debug=True)

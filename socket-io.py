@@ -27,6 +27,14 @@ def offers_updated_emit(payload):
 def offers_deleted_emit(offerId):
     emit('offers_deleted_on',offerId,broadcast=True)
 
+@socketio.on('supplier_list_emit')
+def supplier_list_emit():
+    emit('supplier_list_on',broadcast=True)
+
+@socketio.on('customer_list_emit')
+def customer_list_emit():
+    emit('customer_list_on',broadcast=True)
+
 
 if __name__ == '__main__':
     socketio.run(app,port=5001)

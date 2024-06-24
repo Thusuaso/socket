@@ -504,3 +504,285 @@ class ExcelCiktiIslem:
         except Exception as e:
             print('ExcelCiktiIslem depoCikti Hata : ',str(e))
             return False   
+    def __months(self,val):
+        months = {
+            1:'January',
+            2:'February',
+            3:'March',
+            4:'April',
+            5:'May',
+            6:'June',
+            7:'July',
+            8:'August',
+            9:'September',
+            10:'October',
+            11:'November',
+            12:'December'
+        }
+        return months[val]
+        
+    def getGuRaporlariSatisciOperasyonOrders(self,data):
+        try:
+                source_path = 'excel/sablonlar/gu_reports_summary.xlsx'
+                target_path = 'excel/dosyalar/gu_reports_summary.xlsx'
+                date = datetime.datetime.now()
+
+                shutil.copy2(source_path, target_path)
+                kitap = load_workbook(target_path)
+                sayfa = kitap.get_sheet_by_name('Sayfa1')
+
+                satir = 3
+                thisYearTotalFob = 0
+                thisYearTotalDdp = 0
+                sayfa.cell(row=1,column=1,value=str(date.year) + ' Seller Orders')
+                for item in data['thisYearSeller']:
+                    sayfa.cell(satir,column=1,value=self.__months(item['Month']))
+                    sayfa.cell(satir,column=2,value=item['FOB'])
+                    sayfa.cell(satir,column=3,value=item['DDP'])
+                    thisYearTotalFob += item['FOB']
+                    thisYearTotalDdp += item['DDP']
+                    satir += 1
+                    
+                sayfa.cell(row=14,column=2,value=thisYearTotalFob)
+                sayfa.cell(row=14,column=3,value=thisYearTotalDdp)
+                
+                
+                previousYearTotalFob = 0
+                previousYearTotalDdp = 0
+                satir2 = 3
+                sayfa.cell(row=1,column=5,value=str(date.year - 1) + ' Seller Orders')
+                for item in data['previousYearSeller']:
+                    sayfa.cell(satir2,column=5,value=self.__months(item['Month']))
+                    sayfa.cell(satir2,column=6,value=item['FOB'])
+                    sayfa.cell(satir2,column=7,value=item['DDP'])
+                    previousYearTotalFob += item['FOB']
+                    previousYearTotalDdp += item['DDP']
+                    satir2 += 1
+                    
+                sayfa.cell(row=14,column=6,value=previousYearTotalFob)
+                sayfa.cell(row=14,column=7,value=previousYearTotalDdp)
+                
+                
+                twoYearTotalFob = 0
+                twoYearTotalDdp = 0
+                satir3 = 3
+                sayfa.cell(row=1,column=9,value=str(date.year - 2) + ' Seller Orders')
+                for item in data['twoYearAgoYearSeller']:
+                    sayfa.cell(satir3,column=9,value=self.__months(item['Month']))
+                    sayfa.cell(satir3,column=10,value=item['FOB'])
+                    sayfa.cell(satir3,column=11,value=item['DDP'])
+                    twoYearTotalFob += item['FOB']
+                    twoYearTotalDdp += item['DDP']
+                    satir3 += 1
+                    
+                sayfa.cell(row=14,column=10,value=twoYearTotalFob)
+                sayfa.cell(row=14,column=11,value=twoYearTotalDdp)
+                
+                
+                
+                
+                satir4 = 18
+                thisYearOpTotalFob = 0
+                thisYearOpTotalDdp = 0
+                sayfa.cell(row=16,column=1,value=str(date.year) + ' Operation Orders')
+                for item in data['thisYearOperation']:
+                    sayfa.cell(satir4,column=1,value=self.__months(item['Month']))
+                    sayfa.cell(satir4,column=2,value=item['FOB'])
+                    sayfa.cell(satir4,column=3,value=item['DDP'])
+                    thisYearOpTotalFob += item['FOB']
+                    thisYearOpTotalDdp += item['DDP']
+                    satir4 += 1
+                    
+                sayfa.cell(row=29,column=2,value=thisYearOpTotalFob)
+                sayfa.cell(row=29,column=3,value=thisYearOpTotalDdp)
+                
+                
+                
+                
+                
+                satir5 = 18
+                previousYearOpTotalFob = 0
+                previousYearOpTotalDdp = 0
+                sayfa.cell(row=16,column=5,value=str(date.year - 1) + ' Operation Orders')
+                for item in data['previousYearOperation']:
+                    sayfa.cell(satir5,column=5,value=self.__months(item['Month']))
+                    sayfa.cell(satir5,column=6,value=item['FOB'])
+                    sayfa.cell(satir5,column=7,value=item['DDP'])
+                    previousYearOpTotalFob += item['FOB']
+                    previousYearOpTotalDdp += item['DDP']
+                    satir5 += 1
+                    
+                sayfa.cell(row=29,column=6,value=previousYearOpTotalFob)
+                sayfa.cell(row=29,column=7,value=previousYearOpTotalDdp)
+                
+                
+                
+                satir6 = 18
+                twoYearOpTotalFob = 0
+                twoYearOpTotalDdp = 0
+                sayfa.cell(row=16,column=9,value=str(date.year - 2) + ' Operation Orders')
+                for item in data['twoYearAgoOperation']:
+                    sayfa.cell(satir6,column=9,value=self.__months(item['Month']))
+                    sayfa.cell(satir6,column=10,value=item['FOB'])
+                    sayfa.cell(satir6,column=11,value=item['DDP'])
+                    twoYearOpTotalFob += item['FOB']
+                    twoYearOpTotalDdp += item['DDP']
+                    satir6 += 1
+                    
+                sayfa.cell(row=29,column=10,value=twoYearOpTotalFob)
+                sayfa.cell(row=29,column=11,value=twoYearOpTotalDdp)
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+            
+                    
+
+
+
+                kitap.save(target_path)
+                kitap.close()
+
+                return True
+        except Exception as e:
+            print('getGuRaporlariSatisciOperasyonOrders hata',str(e))
+            return False
+        
+    def getGuRaporlariSatisciOperasyonShipped(self,data):
+        try:
+                source_path = 'excel/sablonlar/gu_reports_summary.xlsx'
+                target_path = 'excel/dosyalar/gu_reports_summary.xlsx'
+                date = datetime.datetime.now()
+
+                shutil.copy2(source_path, target_path)
+                kitap = load_workbook(target_path)
+                sayfa = kitap.get_sheet_by_name('Sayfa1')
+
+                satir = 3
+                thisYearTotalFob = 0
+                thisYearTotalDdp = 0
+                sayfa.cell(row=1,column=1,value=str(date.year) + ' Seller Shipped')
+                for item in data['thisYearSeller']:
+                    sayfa.cell(satir,column=1,value=self.__months(item['Month']))
+                    sayfa.cell(satir,column=2,value=item['FOB'])
+                    sayfa.cell(satir,column=3,value=item['DDP'])
+                    thisYearTotalFob += item['FOB']
+                    thisYearTotalDdp += item['DDP']
+                    satir += 1
+                    
+                sayfa.cell(row=14,column=2,value=thisYearTotalFob)
+                sayfa.cell(row=14,column=3,value=thisYearTotalDdp)
+                
+                
+                previousYearTotalFob = 0
+                previousYearTotalDdp = 0
+                satir2 = 3
+                sayfa.cell(row=1,column=5,value=str(date.year - 1) + ' Seller Shipped')
+                for item in data['previousYearSeller']:
+                    sayfa.cell(satir2,column=5,value=self.__months(item['Month']))
+                    sayfa.cell(satir2,column=6,value=item['FOB'])
+                    sayfa.cell(satir2,column=7,value=item['DDP'])
+                    previousYearTotalFob += item['FOB']
+                    previousYearTotalDdp += item['DDP']
+                    satir2 += 1
+                    
+                sayfa.cell(row=14,column=6,value=previousYearTotalFob)
+                sayfa.cell(row=14,column=7,value=previousYearTotalDdp)
+                
+                
+                twoYearTotalFob = 0
+                twoYearTotalDdp = 0
+                satir3 = 3
+                sayfa.cell(row=1,column=9,value=str(date.year - 2) + ' Seller Shipped')
+                for item in data['twoYearAgoYearSeller']:
+                    sayfa.cell(satir3,column=9,value=self.__months(item['Month']))
+                    sayfa.cell(satir3,column=10,value=item['FOB'])
+                    sayfa.cell(satir3,column=11,value=item['DDP'])
+                    twoYearTotalFob += item['FOB']
+                    twoYearTotalDdp += item['DDP']
+                    satir3 += 1
+                    
+                sayfa.cell(row=14,column=10,value=twoYearTotalFob)
+                sayfa.cell(row=14,column=11,value=twoYearTotalDdp)
+                
+                
+                
+                
+                satir4 = 18
+                thisYearOpTotalFob = 0
+                thisYearOpTotalDdp = 0
+                sayfa.cell(row=16,column=1,value=str(date.year) + ' Operation Shipped')
+                for item in data['thisYearOperation']:
+                    sayfa.cell(satir4,column=1,value=self.__months(item['Month']))
+                    sayfa.cell(satir4,column=2,value=item['FOB'])
+                    sayfa.cell(satir4,column=3,value=item['DDP'])
+                    thisYearOpTotalFob += item['FOB']
+                    thisYearOpTotalDdp += item['DDP']
+                    satir4 += 1
+                    
+                sayfa.cell(row=29,column=2,value=thisYearOpTotalFob)
+                sayfa.cell(row=29,column=3,value=thisYearOpTotalDdp)
+                
+                
+                
+                
+                
+                satir5 = 18
+                previousYearOpTotalFob = 0
+                previousYearOpTotalDdp = 0
+                sayfa.cell(row=16,column=5,value=str(date.year - 1) + ' Operation Shipped')
+                for item in data['previousYearOperation']:
+                    sayfa.cell(satir5,column=5,value=self.__months(item['Month']))
+                    sayfa.cell(satir5,column=6,value=item['FOB'])
+                    sayfa.cell(satir5,column=7,value=item['DDP'])
+                    previousYearOpTotalFob += item['FOB']
+                    previousYearOpTotalDdp += item['DDP']
+                    satir5 += 1
+                    
+                sayfa.cell(row=29,column=6,value=previousYearOpTotalFob)
+                sayfa.cell(row=29,column=7,value=previousYearOpTotalDdp)
+                
+                
+                
+                satir6 = 18
+                twoYearOpTotalFob = 0
+                twoYearOpTotalDdp = 0
+                sayfa.cell(row=16,column=9,value=str(date.year - 2) + ' Operation Shipped')
+                for item in data['twoYearAgoOperation']:
+                    sayfa.cell(satir6,column=9,value=self.__months(item['Month']))
+                    sayfa.cell(satir6,column=10,value=item['FOB'])
+                    sayfa.cell(satir6,column=11,value=item['DDP'])
+                    twoYearOpTotalFob += item['FOB']
+                    twoYearOpTotalDdp += item['DDP']
+                    satir6 += 1
+                    
+                sayfa.cell(row=29,column=10,value=twoYearOpTotalFob)
+                sayfa.cell(row=29,column=11,value=twoYearOpTotalDdp)
+                
+
+                kitap.save(target_path)
+                kitap.close()
+
+                return True
+        except Exception as e:
+            print('getGuRaporlariSatisciOperasyonOrders hata',str(e))
+            return False
