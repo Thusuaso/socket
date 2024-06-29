@@ -37,7 +37,7 @@ select
                                                         where 
                                                             s.MusteriID = m.ID
                                                     )
-                                                    and m.Mt_No=2 and m.ID not in (6,34,43,314,153) and m.Marketing in ('İç Piyasa','Mekmer','Mekmar')
+                                                    and m.Mt_No=2 and m.ID not in (6,34,43,314,153) and m.Marketing in ('İç Piyasa','Mekmer')
                                           """)
         
         
@@ -674,6 +674,20 @@ select
         except Exception as e :
             print('setPaidSave hata',str(e))
             return False
+
+    def setPoSaveMekmar(self,data):
+        try:
+            self.sql.update_insert("""
+                                  insert into Odemeler_MekmerTB(Tarih,MusteriID,SiparisNo,FinansOdemeTurID,Aciklama,Tutar,Masraf,KullaniciID,FaturaKesimTurID,Kur)
+                                  VALUES(?,?,?,?,?,?,?,?,?,?)
+                                  """,(data['date'],data['customer'],data['po'],1,'',data['paid'],data['cost'],0,1,data['currency']))
+            
+            return True
+        except Exception as e :
+            print('setPaidSave hata',str(e))
+            return False
+
+
 
 class FinanceTestAll:
     def __init__(self):

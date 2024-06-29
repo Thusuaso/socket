@@ -53,7 +53,14 @@ class FinanceTestListFilterMekmerAllApi(Resource):
         }
         return jsonify(data)
 
-
+class FinanceTestListFilterPoApi(Resource):
+    def post(self):
+        data = request.get_json()
+        finance = FinanceTest()
+        status = finance.setPoSaveMekmar(data)
+        return {'status':status}
+        
+        
 
 class FinanceTestDetailFilterApi(Resource):
     def get(self,customer):
@@ -72,6 +79,25 @@ class FinanceTestDetailFilterApi(Resource):
 
 
         return jsonify(data)
+
+class FinanceTestDetailFilterMonthApi(Resource):
+    def get(self,month):
+
+        islem = MusteriAyrintiMonth()
+
+        ayrinti_list = islem.getKonteynerAyrintiListMonth(month)
+
+        data = {
+
+            "ayrinti_list" : ayrinti_list,
+
+        }
+
+
+        return jsonify(data)
+
+
+
 
 
 class FinanceTestPaidFilterApi(Resource):

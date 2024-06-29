@@ -118,10 +118,18 @@ api.add_resource(CurrencyApi,'/finance/doviz/liste/<string:yil>/<string:ay>/<str
 
 api.add_resource(FinanceTestListFilterApi,'/finance/reports/test/filter',methods=['GET'])
 api.add_resource(FinanceTestDetailFilterApi,'/finance/po/list/mekmer/<int:customer>',methods=['GET'])
+
+api.add_resource(FinanceTestDetailFilterMonthApi,'/finance/po/list/mekmer/month/<int:month>',methods=['GET'])
+
+
+
 api.add_resource(FinanceTestPaidFilterApi,'/finance/po/paid/mekmer/save',methods=['POST'])
 api.add_resource(FinanceTestPoPaidListFilterApi,'/finance/po/paid/list/mekmer/<string:po>',methods=['GET'])
 
 api.add_resource(FinanceTestListFilterMekmerAllApi,'/finance/reports/mekmer/all',methods=['GET'])
+
+api.add_resource(FinanceTestListFilterPoApi,'/finance/mekmar/po/paid/save',methods=['POST'])
+
 
 
 api.add_resource(GuReportsSellerAndOperationOrdersExcelApi,'/gu/reports/seller/operation/orders',methods=['GET','POST'])

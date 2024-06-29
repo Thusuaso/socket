@@ -220,6 +220,14 @@ class MusteriAyrinti:
 
         return liste      
 
+
+
+
+
+
+
+
+
     def __floatControlDecimal(self,value):
         if(value >= -8 and value <= 8):
             return 0
@@ -343,3 +351,88 @@ class MusteriAyrinti:
             return 0
         else:
             return value
+        
+class MusteriAyrintiMonth:
+    def __init__(self):
+        self.data = SqlConnect().data
+        
+    def __noneControl(self,value):
+        if(value == None or value == "" or value == 'undefined' or value == 'null'):
+            return 0
+        else:
+            return value
+    def __floatControlDecimal(self,value):
+        if(value >= -8 and value <= 8):
+            return 0
+        else:
+            return value
+        
+    def getKonteynerAyrintiListMonth(self,month):
+        
+        schema = MusteriAyrintiSchema(many=True)
+
+        return schema.dump(self.__yuklenenlerMonth(month))
+
+    def __yuklenenlerMonth(self,month):
+        
+        tarihIslem = TarihIslemler()
+        result = self.data.getStoreList(
+
+            """
+                               select 
+
+    (select sum(su.AlisFiyati * su.Miktar) from SiparisUrunTB su where su.SiparisNo = s.SiparisNo and su.TedarikciID in (1,123)) as UrunBedeli,
+    m.FirmaAdi,
+    s.SiparisNo,
+    (select sum(om.Tutar) from Odemeler_MekmerTB om where om.SiparisNo = s.SiparisNo) as Odeme,
+    (
+    select SUM (seg.Tutar) from SiparisEkstraGiderlerTB seg where seg.SiparisNo=s.SiparisNo and seg.TedarikciID in (1,123)) as Iscilik,
+	s.SiparisTarihi,
+	s.YuklemeTarihi,
+	m.ID as MusteriID
+
+
+from SiparislerTB s
+inner join MusterilerTB m on m.ID = s.MusteriID
+inner join SiparisUrunTB sipu on sipu.SiparisNo = s.SiparisNo
+
+where m.Marketing='Mekmar' and YEAR(s.YuklemeTarihi) = YEAR(GETDATE()) and MONTH(s.YuklemeTarihi) =? and sipu.TedarikciID in (1,123)
+group by s.SiparisNo,m.FirmaAdi,s.SiparisTarihi,s.YuklemeTarihi,m.ID
+            """,(month)
+        )
+
+        liste = list()
+
+        for item in result:
+            
+            model = MusteriAyrintiModel()
+            model.musteriadi = item.FirmaAdi
+            model.musteri_id = item.MusteriID
+            model.siparisno = item.SiparisNo 
+            if item.YuklemeTarihi != None:
+                model.yuklemetarihi = tarihIslem.getDate(item.YuklemeTarihi).strftime("%Y-%m-%d")               
+
+
+            
+            urun_bedel = 0
+            odeme = 0
+
+            if item.UrunBedeli != None:
+                urun_bedel = item.UrunBedeli
+            if item.Odeme != None:
+                odeme = item.Odeme
+
+            model.toplam = urun_bedel + self.__noneControl(item.Iscilik)
+            model.siparis_total = model.toplam
+            
+            model.kalan = self.__floatControlDecimal(model.toplam - self.__noneControl(odeme))
+            model.kalan2 = model.toplam - odeme
+            model.odenen_tutar = odeme
+            model.iscilik = self.__noneControl(item.Iscilik)
+            liste.append(model)
+
+        return liste  
+
+
+    
+    
