@@ -398,6 +398,7 @@ inner join SiparisUrunTB sipu on sipu.SiparisNo = s.SiparisNo
 
 where m.Marketing='Mekmar' and YEAR(s.YuklemeTarihi) = YEAR(GETDATE()) and MONTH(s.YuklemeTarihi) =? and sipu.TedarikciID in (1,123)
 group by s.SiparisNo,m.FirmaAdi,s.SiparisTarihi,s.YuklemeTarihi,m.ID
+order by s.YuklemeTarihi desc
             """,(month)
         )
 
