@@ -1,6 +1,7 @@
 from flask import Flask,jsonify,send_file,request
 from flask_restful import Api,Resource
 from flask_cors import CORS,cross_origin 
+import datetime
 app = Flask(__name__)
 api = Api(app)
 CORS(app, resources={r'/*': {'origins': '*'}})
@@ -447,7 +448,7 @@ class ExcellCiktiIslem:
                 sayfa.cell(satir,column=column + 3).border = thin_border
                 case.border = thin_border
                 case.alignment = Alignment(horizontal="center", vertical="center")
-                case.font = Font(size=20,bold=True)
+                case.font = Font(size=36,bold=True)
 
                 status = sayfa.cell(satir + 1,column=column,value='STATUS: ')
                 status.border = thin_border
@@ -461,7 +462,7 @@ class ExcellCiktiIslem:
                 sayfa.cell(satir+1,column=column + 3).border = thin_border
                 stock.border = thin_border
                 stock.alignment = Alignment(horizontal="center", vertical="center")
-                stock.font = Font(size=20,bold=True)
+                stock.font = Font(size=36,bold=True)
 
                 destination = sayfa.cell(satir,column = column + 4,value = 'DESTINATION')
                 destination.border = thin_border
@@ -511,7 +512,108 @@ class ExcellCiktiIslem:
         except Exception as e:
             print('seleksiyon etiket çıktı hata',str(e))
             return False
-   
+    
+    def finance_excel_custom(self,data_list):
+        try:
+            source_path = 'excel/sablonlar/finance_detail_custom.xlsx'
+            target_path = 'excel/dosyalar/finance_detail_custom.xlsx'
+
+            shutil.copy2(source_path, target_path)
+
+            kitap = load_workbook(target_path)
+            sayfa = kitap['Sayfa1']
+            sayfa2= kitap['Sayfa2']
+            satir = 1
+            satir2 = 1
+            thin_border = Border(left=Side(style='thin'), 
+                     right=Side(style='thin'), 
+                     top=Side(style='thin'), 
+                     bottom=Side(style='thin'))
+            po = sayfa.cell(satir,column=1,value='Po')
+            po.border = thin_border
+            po.font = Font(bold=True)
+            order_date = sayfa.cell(satir,column=2,value='Order Date')
+            order_date.border = thin_border
+            order_date.font = Font(bold=True)
+
+            shipped_date = sayfa.cell(satir,column=3,value='Shipped Date')
+            shipped_date.border = thin_border
+            shipped_date.font = Font(bold=True)
+
+            status = sayfa.cell(satir,column=4,value='Status')
+            status.border = thin_border
+            status.font = Font(bold=True)
+
+            order_total = sayfa.cell(satir,column=5,value='Order Total')
+            order_total.border = thin_border
+            order_total.font = Font(bold=True)
+
+            payment_received = sayfa.cell(satir,column=6,value='Payment Received')
+            payment_received.border = thin_border
+            payment_received.font = Font(bold=True)
+
+
+            balance = sayfa.cell(satir,column=7,value='Balanced')
+            balance.border = thin_border
+            balance.font = Font(bold=True)
+
+            pre_payment = sayfa.cell(satir,column=8,value='Prepayment')
+            pre_payment.border = thin_border
+            pre_payment.font = Font(bold=True)
+            satir += 1
+            for po in data_list['po']:
+                sayfa.cell(satir,column=1,value=po['SiparisNo']).border = thin_border
+                sayfa.cell(satir,column=2,value=self._dateConvert(po['SiparisTarihi'])).border = thin_border
+                sayfa.cell(satir,column=3,value=self._dateConvert(po['YuklemeTarihi'])).border = thin_border
+                sayfa.cell(satir,column=4,value=po['Durum']).border = thin_border
+                sayfa.cell(satir,column=5,value=self._formatControl(po['OrderTotal'])).border = thin_border
+                sayfa.cell(satir,column=6,value=self._formatControl(po['Paid'])).border = thin_border
+                sayfa.cell(satir,column=7,value=self._formatControl(po['Balanced'])).border = thin_border
+                sayfa.cell(satir,column=8,value=self._formatControl(po['Pesinat'])).border = thin_border
+                satir += 1
+            
+            paid_date = sayfa2.cell(satir2,column=1,value="Date")
+            paid_date.border = thin_border
+            paid_date.font = Font(bold = True)
+            paid = sayfa2.cell(satir2,column=2,value="Paid")
+            paid.border = thin_border
+            paid.font = Font(bold = True)
+            satir2 += 1
+            for paid in data_list['paid']:
+                sayfa2.cell(satir2,column=1,value=self._dateConvert(paid['Tarih'])).border = thin_border
+                sayfa2.cell(satir2,column=2,value=self._formatControl(paid['Paid'])).border = thin_border
+                satir2 += 1
+
+
+            kitap.save(target_path)
+            kitap.close()
+            return True
+
+
+
+        except Exception as e:
+            print('finance_excel_custom',str(e))
+            return False
+    
+    def _dateConvert(self,date):
+        if(date):
+            _year,_month,_date = str(date).split('-')
+            newDate = datetime.datetime(int(_year),int(_month),int(date[0:2]))
+            year = newDate.strftime('%Y')
+            month = newDate.strftime('%m')
+            day = newDate.strftime('%d')
+            print(year,month,day)
+            return str(day) + '-' + str(month) + '-' + str(year)
+        else:
+            return ''
+
+    def _formatControl(self,val):
+        if(val > -8 and val < 8):
+            return 0
+        else:
+            return val
+        
+
 class SiparisCekiListesiApi(Resource):
 
     def post(self):
@@ -543,6 +645,15 @@ class SeleksiyonUrunEtiketApi(Resource):
 
         return send_file(excel_path,as_attachment=True)
 
+class FinanceTestExcelCustomApi(Resource):
+    def post(self):
+        data = request.get_json()
+        excel = ExcellCiktiIslem()
+        status = excel.finance_excel_custom(data)
+        return jsonify({'status':status})
+    def get(self):
+        excel_path = 'excel/dosyalar/finance_detail_custom.xlsx'
+        return send_file(excel_path,as_attachment=True)
 
    
 api.add_resource(SiparisCekiListesiApi, '/excel/check/list', methods=['GET','POST'])
@@ -573,6 +684,7 @@ api.add_resource(FinanceTestListFilterMekmerAllApi,'/finance/reports/mekmer/all'
 
 api.add_resource(FinanceTestListFilterPoApi,'/finance/mekmar/po/paid/save',methods=['POST'])
 
+api.add_resource(FinanceTestExcelCustomApi,'/finance/mekmar/excel/custom',methods=['GET','POST'])
 
 
 api.add_resource(GuReportsSellerAndOperationOrdersExcelApi,'/gu/reports/seller/operation/orders',methods=['GET','POST'])
