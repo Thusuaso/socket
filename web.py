@@ -612,7 +612,89 @@ class ExcellCiktiIslem:
             return 0
         else:
             return val
-        
+
+    def reports_strips_excel(self,strips):
+        try:
+            source_path = 'excel/sablonlar/reports_mekmer_strips.xlsx'
+            target_path = 'excel/dosyalar/reports_mekmer_strips.xlsx'
+
+            shutil.copy2(source_path, target_path)
+
+            kitap = load_workbook(target_path)
+            sayfa = kitap['Sayfa1']
+            satir = 1
+            thin_border = Border(left=Side(style='thin'), 
+                     right=Side(style='thin'), 
+                     top=Side(style='thin'), 
+                     bottom=Side(style='thin'))
+            po = sayfa.cell(satir,column=1,value='Tarih')
+            po.border = thin_border
+            po.font = Font(bold=True)
+            order_date = sayfa.cell(satir,column=2,value='Tedarikçi Adı')
+            order_date.border = thin_border
+            order_date.font = Font(bold=True)
+
+            shipped_date = sayfa.cell(satir,column=3,value='Ocak Adı')
+            shipped_date.border = thin_border
+            shipped_date.font = Font(bold=True)
+
+            status = sayfa.cell(satir,column=4,value='Strip Adı')
+            status.border = thin_border
+            status.font = Font(bold=True)
+
+            order_total = sayfa.cell(satir,column=5,value='Strip (M2)')
+            order_total.border = thin_border
+            order_total.font = Font(bold=True)
+
+            payment_received = sayfa.cell(satir,column=6,value='Strip ($)')
+            payment_received.border = thin_border
+            payment_received.font = Font(bold=True)
+
+
+            balance = sayfa.cell(satir,column=7,value='Strip Toplam ($)')
+            balance.border = thin_border
+            balance.font = Font(bold=True)
+
+            pre_payment = sayfa.cell(satir,column=8,value='En')
+            pre_payment.border = thin_border
+            pre_payment.font = Font(bold=True)
+
+            pre_payment = sayfa.cell(satir,column=9,value='Boy')
+            pre_payment.border = thin_border
+            pre_payment.font = Font(bold=True)
+
+            pre_payment = sayfa.cell(satir,column=10,value='Adet')
+            pre_payment.border = thin_border
+            pre_payment.font = Font(bold=True)
+            satir += 1
+            for strip in strips:
+                sayfa.cell(satir,column=1,value=self._dateConvert(strip['Date'])).border = thin_border
+                sayfa.cell(satir,column=2,value=strip['SupplierName']).border = thin_border
+                sayfa.cell(satir,column=3,value=strip['QuarryName']).border = thin_border
+                sayfa.cell(satir,column=4,value=strip['StripName']).border = thin_border
+                sayfa.cell(satir,column=5,value=strip['StripM2']).border = thin_border
+                sayfa.cell(satir,column=6,value=strip['StripPrice']).border = thin_border
+                sayfa.cell(satir,column=7,value=strip['StripCost']).border = thin_border
+                sayfa.cell(satir,column=8,value=strip['StripWidth']).border = thin_border
+                sayfa.cell(satir,column=9,value=strip['StripHeight']).border = thin_border
+                sayfa.cell(satir,column=10,value=strip['StripPiece']).border = thin_border
+
+
+
+            
+            
+
+
+            kitap.save(target_path)
+            kitap.close()
+            return True
+
+
+
+        except Exception as e:
+            print('finance_excel_custom',str(e))
+            return False
+    
 
 class SiparisCekiListesiApi(Resource):
 
@@ -655,7 +737,15 @@ class FinanceTestExcelCustomApi(Resource):
         excel_path = 'excel/dosyalar/finance_detail_custom.xlsx'
         return send_file(excel_path,as_attachment=True)
 
-   
+class ReportsStripsExcelApi(Resource):
+    def post(self):
+        data = request.get_json()
+        excel = ExcellCiktiIslem()
+        status = excel.reports_strips_excel(data)
+        return jsonify({'status':status})
+    def get(self):
+        excel_path = 'excel/dosyalar/reports_mekmer_strips.xlsx'
+        return send_file(excel_path,as_attachment=True)
 api.add_resource(SiparisCekiListesiApi, '/excel/check/list', methods=['GET','POST'])
 api.add_resource(MaliyetRaporIslemApi,'/maliyet/listeler/maliyetListesi/<int:yil>/<int:ay>',methods=['GET'])
 api.add_resource(MaliyetRaporIslemYilApi,'/maliyet/listeler/maliyetListesi/<int:yil>',methods=['GET'])
@@ -690,7 +780,7 @@ api.add_resource(FinanceTestExcelCustomApi,'/finance/mekmar/excel/custom',method
 api.add_resource(GuReportsSellerAndOperationOrdersExcelApi,'/gu/reports/seller/operation/orders',methods=['GET','POST'])
 api.add_resource(GuReportsSellerAndOperationForwardingExcelApi,'/gu/reports/seller/operation/forwarding',methods=['GET','POST'])
 api.add_resource(SeleksiyonUrunEtiketApi,'/seleksiyon/etiket/excel',methods=['GET','POST'])
-
+api.add_resource(ReportsStripsExcelApi,'/reports/mekmer/strips/excel',methods=['GET','POST'])
 
 if __name__ == '__main__':
     app.run(port=5000,debug=True)

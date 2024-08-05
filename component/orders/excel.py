@@ -2,7 +2,7 @@ from flask import jsonify,request
 from flask import jsonify,request,send_file
 from api.sql import *
 from openpyxl import *
-from openpyxl.styles import PatternFill
+from openpyxl.styles import PatternFill,Border,Side
 from openpyxl.cell import Cell
 from openpyxl.styles import Alignment  
 
@@ -51,7 +51,8 @@ class ExcelCiktiIslem:
                  
                  for item1 in data_list:
                    
-                    if data_list[i]['SiparisNo'] == data_list[item]['SiparisNo']: 
+                    if data_list[i]['SiparisNo'] == data_list[item]['SiparisNo']:
+                         
                          sayfa.cell(satir-1,column=1,value=item1['OperasyonAdi'])
                         
                          sayfa.cell(satir-1,column=3,value=item1['SiparisTarihi'])
@@ -70,7 +71,8 @@ class ExcelCiktiIslem:
                          elif(item1['UrunBirimID'] == 3):
                             sayfa.cell(satir-1,column=15,value='MT')
                             
-                            
+                         remainder = sayfa.cell(satir-1,column=16,value=float(item1['Miktar'] - float(item1['Uretim'])))
+                         remainder.border = Border(left=Side(style='thin'),right=Side(style='thin'),bottom=Side(style='thin'),top=Side(style='thin'))
                          satir += 1
                          a += 1
                       
