@@ -343,6 +343,20 @@ select
 
                                                   """)
         
+        self.costFilterForwarding = self.sql.getList("""
+    select 
+	SUM(s.NavlunSatis) + SUM(s.DetayTutar_1) + SUM(s.DetayTutar_2) + SUM(s.DetayTutar_3) as Cost,
+s.MusteriID
+from SiparislerTB s 
+inner join SiparisUrunTB su on su.SiparisNo = s.SiparisNo
+where
+s.MusteriID in (
+                    select m.ID from MusterilerTB m where m.ID = s.MusteriID and m.Mt_No=2
+            )
+and s.SiparisDurumID=3 and su.TedarikciID in (1,123) and YEAR(s.YuklemeTarihi) >= 2024
+group by
+s.MusteriID
+""")
         
     def getList(self):
         liste = list()
@@ -386,13 +400,13 @@ select
                     'customer_name':item.FirmaAdi,
                     'order':self.__getOrder(item.ID),
                     'product':self.__getProductFilter(item.ID),
-                    'total_order_amount':  self.__noneControl(self.__getProductFilter(item.ID)),
+                    'total_order_amount':  self.__noneControl(self.__getProductFilter(item.ID)) + self.__noneControl(self.__getProductForwardingCostFilter(item.ID)),
                     'paid':self.__getPaidFilter(item.ID),
-                    'forwarding':  self.__noneControl(self.__getProductForwardingFilter(item.ID)),
+                    'forwarding':  self.__noneControl(self.__getProductForwardingFilter(item.ID)) + self.__noneControl(self.__getProductForwardingCostFilter(item.ID)),
                     'production':self.__noneControl(self.__getProductProductionFilter(item.ID)),
                     'advanced_payment':self.__getAdvancePaymentFilter(item.ID),
-                    'total':  (self.__noneControl(self.__getProductForwardingFilter(item.ID)) + self.__noneControl(self.__getProductProductionFilter(item.ID)) + self.__noneControl(self.__getProductWorkerman(item.ID))) - self.__noneControl(self.__getPaidFilter(item.ID)),
-                    'totalExceptProduction':self.__floatControlDecimal(self.__noneControl(self.__getProductForwardingFilter(item.ID)) - self.__noneControl(self.__getPaidFilter(item.ID)))
+                    'total':  (self.__noneControl(self.__getProductForwardingFilter(item.ID)) + self.__noneControl(self.__getProductProductionFilter(item.ID)) + self.__noneControl(self.__getProductWorkerman(item.ID))) - self.__noneControl(self.__getPaidFilter(item.ID)) + self.__noneControl(self.__getProductForwardingCostFilter(item.ID)),
+                    'totalExceptProduction':self.__floatControlDecimal(self.__noneControl(self.__getProductForwardingFilter(item.ID)) - self.__noneControl(self.__getPaidFilter(item.ID))) + self.__noneControl(self.__getProductForwardingCostFilter(item.ID))
                 })
         
         return liste
@@ -625,7 +639,11 @@ select
         for item in self.productsForwardingFilter:
             if(item.MusteriID == customer_id):
                 return self.__noneControl(item.SatisToplam)
-            
+    
+    def __getProductForwardingCostFilter(self,customer_id):
+        for item in self.costFilterForwarding:
+            if(item.MusteriID == customer_id):
+                return self.__noneControl(item.Cost)
             
             
             
