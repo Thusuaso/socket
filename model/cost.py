@@ -94,6 +94,9 @@ class OzelMaliyetListeSchema(Schema):
     yukleme_day = fields.String()
     isciliktedarikcimekmer = fields.Boolean()
     isciliktedarikcimekmoz = fields.Boolean()
+    mekmer_alim_alis_kontrol = fields.Int()
+    mekmoz_alim_alis_kontrol = fields.Int()
+    dis_alim_alis_kontrol = fields.Int()
 class OzelMaliyetListeModel:
 
     id = None
@@ -175,6 +178,9 @@ class OzelMaliyetListeModel:
     yukleme_day = 0
     isciliktedarikcimekmer = False
     isciliktedarikcimekmoz = False
+    mekmer_alim_alis_kontrol = 0
+    mekmoz_alim_alis_kontrol = 0
+    dis_alim_alis_kontrol = 0
 
 
 

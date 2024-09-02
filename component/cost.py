@@ -115,10 +115,12 @@ class MaliyetRaporIslem:
             for item in self.siparisler:
                 
                 urun_model = self.urunler.getUrunModel(item.siparis_no)
-            
                 item.toplam_bedel += urun_model.toplam_bedel
                 item.mekmar_alim = urun_model.mekmar_alim
                 item.mekmoz_alim = urun_model.mekmoz_alim
+                item.mekmer_alim_alis_kontrol = urun_model.mekmer_alim_alis_kontrol
+                item.mekmoz_alim_alis_kontrol = urun_model.mekmoz_alim_alis_kontrol
+                item.dis_alim_alis_kontrol = urun_model.dis_alim_alis_kontrol
                 item.dis_alim = urun_model.dis_alim
                 item.banka_masrafi = self.odemeler.getOdemeBankaMasrafi(item.siparis_no)
                 item.odeme_tarihi = self.odemeler.getOdemeTarih(item.siparis_no) 
@@ -437,6 +439,9 @@ class MaliyetRaporIslem_Yil: # hepsi butonna basıldıgında bu alan çalışır
                 item.mekmar_alim = urun_model.mekmar_alim
                 item.mekmoz_alim = urun_model.mekmoz_alim
                 item.dis_alim = urun_model.dis_alim
+                item.mekmer_alim_alis_kontrol = urun_model.mekmer_alim_alis_kontrol
+                item.mekmoz_alim_alis_kontrol = urun_model.mekmoz_alim_alis_kontrol
+                item.dis_alim_alis_kontrol = urun_model.dis_alim_alis_kontrol
                 item.banka_masrafi = self.odemeler.getOdemeBankaMasrafi(item.siparis_no)
                 item.odeme_tarihi = self.odemeler.getOdemeTarih(item.siparis_no)
                 item.odenen_try_tutar , item.odenen_usd_tutar =  self.odemeler.getOdemeBankaTRY(item.siparis_no)

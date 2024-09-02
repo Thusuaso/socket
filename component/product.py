@@ -56,19 +56,44 @@ class Urunler:
                     if item.TedarikciID == 1:
                         model.mekmar_alim = item.AlisToplam
                         model.mekmar_alim_evrak = self.__getMekmarFatura(item.SiparisNo)
+
+
                     if item.TedarikciID == 123:
                         model.mekmoz_alim = item.AlisToplam
                         model.mekmoz_alim_evrak = self.__getMekmozFatura(item.SiparisNo)
+
                 else:
                     model.dis_alim = item.AlisToplam
+
 
                     
                     
                 model.dis_alim_evrak = self.__getDisFirmaFaturalar(item.SiparisNo,item.TedarikciID)
 
 
+
+
+            if(item.AlisToplam == None or item.AlisToplam == 0 or item.AlisToplam == ' ' or item.AlisToplam == 'null' or item.AlisToplam == '' or str(item.AlisToplam) == '0E-11' or item.AlisToplam == 0E-11): 
+                if item.TedarikciID == 1 or item.TedarikciID == 123:
+                    if item.TedarikciID == 1:
+                        model.mekmer_alim_alis_kontrol += 1
+
+                    if item.TedarikciID == 123:
+                        model.mekmoz_alim_alis_kontrol += 1
+
+                else:
+                    model.dis_alim_alis_kontrol += 1
+
             if item.SatisToplam != None:
                 model.toplam_bedel = item.SatisToplam
+
+
+
+
+
+
+
+
 
             self.urunler_listesi.append(model)
           
@@ -83,6 +108,12 @@ class Urunler:
                 model.mekmar_alim += item.mekmar_alim
                 model.mekmoz_alim += item.mekmoz_alim
                 model.dis_alim += item.dis_alim
+                model.mekmer_alim_alis_kontrol += item.mekmer_alim_alis_kontrol
+                model.mekmoz_alim_alis_kontrol += item.mekmoz_alim_alis_kontrol
+                model.dis_alim_alis_kontrol += item.dis_alim_alis_kontrol
+
+
+
                 #model.mekmar_alim_evrak = item.mekmar_alim_evrak
                 #model.mekmoz_alim_evrak = item.mekmoz_alim_evrak
                 #model.dis_alim_evrak = item.dis_alim_evrak
@@ -202,7 +233,21 @@ class Urunler_Yil:
                 else:
                     model.dis_alim = item.AlisToplam
                     model.dis_alim_evrak =  self.__getDisFirmaFaturalar(item.SiparisNo,item.TedarikciID)
-                    
+            
+
+            if (item.AlisToplam == None or item.AlisToplam == 0 or item.AlisToplam == ' ' or item.AlisToplam == 'null' or item.AlisToplam == '' or str(item.AlisToplam) == '0E-11' or item.AlisToplam == 0E-11): 
+                if item.TedarikciID == 1 or item.TedarikciID == 123:
+                    if item.TedarikciID == 1:
+                        model.mekmer_alim_alis_kontrol += 1
+
+                    if item.TedarikciID == 123:
+                        model.mekmoz_alim_alis_kontrol += 1
+
+                else:
+                    model.dis_alim_alis_kontrol += 1
+
+
+
 
             if item.SatisToplam != None:
                 model.toplam_bedel = item.SatisToplam
@@ -224,6 +269,9 @@ class Urunler_Yil:
                 model.mekmoz_alim_evrak = item.mekmoz_alim_evrak
                 model.dis_alim_evrak = item.dis_alim_evrak
                 model.dis_alim_fatura_sayisi += item.dis_alim_fatura_sayisi
+                model.mekmer_alim_alis_kontrol += item.mekmer_alim_alis_kontrol
+                model.mekmoz_alim_alis_kontrol += item.mekmoz_alim_alis_kontrol
+                model.dis_alim_alis_kontrol += item.dis_alim_alis_kontrol
 
                 
 
