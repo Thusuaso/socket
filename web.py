@@ -849,6 +849,11 @@ api.add_resource(MkRaporlariApi,'/raporlar/listeler/mkraporlari/<int:year>',meth
 api.add_resource(StokRaporExcelApi,'/raporlar/listeler/stokRaporExcelListe',methods=['GET','POST'])
 api.add_resource(MaliyetRaporExcelApi, '/maliyet/dosyalar/maliyetRaporExcelListe', methods=['GET','POST'])
 api.add_resource(CurrencyApi,'/finance/doviz/liste/<string:yil>/<string:ay>/<string:gun>',methods=['GET'])
+api.add_resource(CurrencyUsdToEuroApi,'/finance/doviz/liste/usd/to/euro/<string:yil>/<string:ay>/<string:gun>',methods=['GET'])
+api.add_resource(CurrencyEuroToTlApi,'/finance/doviz/liste/euro/to/tl/<string:yil>/<string:ay>/<string:gun>',methods=['GET'])
+
+
+
 
 api.add_resource(FinanceTestListFilterApi,'/finance/reports/test/filter',methods=['GET'])
 api.add_resource(FinanceTestDetailFilterApi,'/finance/po/list/mekmer/<int:customer>',methods=['GET'])
