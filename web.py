@@ -836,6 +836,8 @@ class ReportsMolozExcelApi(Resource):
         return send_file(excel_path,as_attachment=True)
 
 
+
+
 api.add_resource(SiparisCekiListesiApi, '/excel/check/list', methods=['GET','POST'])
 api.add_resource(MaliyetRaporIslemApi,'/maliyet/listeler/maliyetListesi/<int:yil>/<int:ay>',methods=['GET'])
 api.add_resource(MaliyetRaporIslemYilApi,'/maliyet/listeler/maliyetListesi/<int:yil>',methods=['GET'])
@@ -877,5 +879,25 @@ api.add_resource(GuReportsSellerAndOperationForwardingExcelApi,'/gu/reports/sell
 api.add_resource(SeleksiyonUrunEtiketApi,'/seleksiyon/etiket/excel',methods=['GET','POST'])
 api.add_resource(ReportsStripsExcelApi,'/reports/mekmer/strips/excel',methods=['GET','POST'])
 api.add_resource(ReportsMolozExcelApi,'/reports/mekmer/moloz/excel',methods=['GET','POST'])
+
+
+api.add_resource(CreditCardCostYearApi,'/reports/mekmar/ayo/credit/card/<int:year>',methods=['GET'])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 if __name__ == '__main__':
     app.run(port=5000,debug=True)

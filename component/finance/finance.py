@@ -141,4 +141,10 @@ class FinanceTestListExcelApiFilter(Resource):
         return send_file(excel_path,as_attachment=True)
         
 
+
+class CreditCardCostYearApi(Resource):
+    def get(self,year):
+        finance = FinanceTest()
+        results = finance.getCreditCardYearList(year)
+        return jsonify({'list':results})
     

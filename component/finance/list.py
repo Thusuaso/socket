@@ -705,7 +705,40 @@ s.MusteriID
             print('setPaidSave hata',str(e))
             return False
 
+    def getCreditCardYearList(self,year):
+        try:
+            results = self.sql.getStoreList("""
+                    select * from AyoCreditCardCostTB where YEAR=?
+            """,(year))
+            liste = list()
+            if(len(results) == 0):
+                liste2 = [
+                                        {'id':1,'month':'January','value':0},
+                    {'id':2,'month':'February','value':0},
+                    {'id':3,'month':'March','value':0},
+                    {'id':4,'month':'April','value':0},
+                    {'id':5,'month':'May','value':0},
+                    {'id':6,'month':'June','value':0},
+                    {'id':7,'month':'July','value':0},
+                    {'id':8,'month':'August','value':0},
+                    {'id':9,'month':'September','value':0},
+                    {'id':10,'month':'October','value':0},
+                    {'id':11,'month':'November','value':0},
+                    {'id':12,'month':'December','value':0},
+                ]
 
+                return liste2
+            
+            else:
+
+                for item in results:
+                    pass
+                return liste
+
+
+        except Exception as e:
+            print('getCreditCardYearList hata',e)
+            return False
 
 class FinanceTestAll:
     def __init__(self):
