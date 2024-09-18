@@ -148,3 +148,4 @@ class CreditCardCostYearApi(Resource):
         results = finance.getCreditCardYearList(year)
         return jsonify({'list':results})
     
+

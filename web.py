@@ -886,6 +886,10 @@ api.add_resource(CreditCardCostYearApi,'/reports/mekmar/ayo/credit/card/<int:yea
 
 
 
+api.add_resource(AyoCostExcelApi,'/reports/mekmar/ayo/cost/excel',methods=['GET','POST'])
+
+
+
 
 
 

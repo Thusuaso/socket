@@ -786,3 +786,106 @@ class ExcelCiktiIslem:
         except Exception as e:
             print('getGuRaporlariSatisciOperasyonOrders hata',str(e))
             return False
+        
+    def getAyoCostExcel(self,data):
+        try:
+            source_path = 'excel/sablonlar/ayo_cost_excel.xlsx'
+            target_path = 'excel/dosyalar/ayo_cost_excel.xlsx'
+
+            shutil.copy2(source_path, target_path)
+
+            
+            kitap = load_workbook(target_path)
+            creditcard = kitap.get_sheet_by_name('creditcard')
+            travel = kitap.get_sheet_by_name('travel')
+            wage = kitap.get_sheet_by_name('wage')
+            sample = kitap.get_sheet_by_name('sample')
+            other = kitap.get_sheet_by_name('other')
+
+
+            credit_satir = 2
+            credit_tl = 0
+            credit_usd = 0
+            for item in data['credit']:
+                creditcard.cell(credit_satir,column=1,value=item['month'])
+                creditcard.cell(credit_satir,column=2,value=item['value'])
+                creditcard.cell(credit_satir,column=3,value=item['usd'])
+                creditcard.cell(credit_satir,column=4,value=item['currency'])
+                credit_tl += item['value']
+                credit_usd += item['usd']
+
+
+                credit_satir += 1
+            creditcard.cell(credit_satir,column=2,value = credit_tl)
+            creditcard.cell(credit_satir,column=3,value = credit_usd)
+
+
+            
+            travel_satir = 2
+            travel_tl = 0
+            travel_usd = 0
+            for item in data['travel']:
+                travel.cell(travel_satir,column=1,value=item['month'])
+                travel.cell(travel_satir,column=2,value=item['value'])
+                travel.cell(travel_satir,column=3,value=item['usd'])
+                travel.cell(travel_satir,column=4,value=item['currency'])
+                travel_tl += item['value']
+                travel_usd += item['usd']
+                travel_satir += 1
+            travel.cell(travel_satir,column=2,value = travel_tl)
+            travel.cell(travel_satir,column=3,value = travel_usd)
+
+
+            wage_satir = 2
+            wage_tl = 0
+            wage_usd = 0
+            for item in data['wage']:
+                wage.cell(wage_satir,column=1,value=item['month'])
+                wage.cell(wage_satir,column=2,value=item['value'])
+                wage.cell(wage_satir,column=3,value=item['usd'])
+                wage.cell(wage_satir,column=4,value=item['currency'])
+                wage_tl += item['value']
+                wage_usd += item['usd']
+                wage_satir += 1
+            wage.cell(wage_satir,column=2,value = wage_tl)
+            wage.cell(wage_satir,column=3,value = wage_usd)
+
+
+            sample_satir = 2
+            sample_tl = 0
+            sample_usd = 0
+            for item in data['sample']:
+                sample.cell(sample_satir,column=1,value=item['month'])
+                sample.cell(sample_satir,column=2,value=item['value'])
+                sample.cell(sample_satir,column=3,value=item['usd'])
+                sample.cell(sample_satir,column=4,value=item['currency'])
+                sample_tl += item['value']
+                sample_usd += item['usd']
+                sample_satir += 1
+            sample.cell(sample_satir,column=2,value = sample_tl)
+            sample.cell(sample_satir,column=3,value = sample_usd)
+
+            other_satir = 2
+            other_tl = 0
+            other_usd = 0
+            for item in data['other']:
+                other.cell(other_satir,column=1,value=item['month'])
+                other.cell(other_satir,column=2,value=item['value'])
+                other.cell(other_satir,column=3,value=item['usd'])
+                other.cell(other_satir,column=4,value=item['currency'])
+                other_tl += item['value']
+                other_usd += item['usd']
+                other_satir += 1
+            other.cell(other_satir,column=2,value = other_tl)
+            other.cell(other_satir,column=3,value = other_usd)
+            
+            
+
+            kitap.save(target_path)
+            kitap.close()
+
+            return True
+
+        except Exception as e:
+            print('ExcelCiktiIslem depoCikti Hata : ',str(e))
+            return False

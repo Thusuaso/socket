@@ -16,6 +16,21 @@ class MkRaporlariExcelApi(Resource):
         return send_file(excel_path,as_attachment=True)
     
 
+class AyoCostExcelApi(Resource):
+
+    def post(self):
+        data = request.get_json()
+        mk = ExcelCiktiIslem()
+        status = mk.getAyoCostExcel(data)
+        return {'status':status}
+    
+    def get(self):
+
+        excel_path = 'excel/dosyalar/ayo_cost_excel.xlsx'
+
+        return send_file(excel_path,as_attachment=True)
+    
+
 
 class MkRaporlariApi(Resource):
     def get(self,year):
