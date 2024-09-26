@@ -771,7 +771,41 @@ class ExcellCiktiIslem:
         except Exception as e:
             print('finance_excel_custom',str(e))
             return False
-    
+
+    def customer_mekmer_excel(self,data):
+        try:
+            thin_border = Border(left=Side(style='thin'), 
+                     right=Side(style='thin'), 
+                     top=Side(style='thin'), 
+                     bottom=Side(style='thin'))
+            source_path = 'excel/sablonlar/customer_mekmer.xlsx'
+            target_path = 'excel/dosyalar/customer_mekmer.xlsx'
+            shutil.copy2(source_path, target_path)
+
+            kitap = load_workbook(target_path)
+            sayfa = kitap['Sayfa1']
+            satir = 2
+            for item in data:
+                sayfa.cell(satir,column=1,value=item['ID']).border = thin_border
+                sayfa.cell(satir,column=2,value=item['FirmaAdi']).border = thin_border
+                sayfa.cell(satir,column=3,value=item['Unvan']).border = thin_border
+                sayfa.cell(satir,column=4,value=item['Adres']).border = thin_border
+                sayfa.cell(satir,column=5,value=item['UlkeAdi']).border = thin_border
+                sayfa.cell(satir,column=6,value=item['Marketing']).border = thin_border
+                sayfa.cell(satir,column=7,value=item['MailAdresi']).border = thin_border
+                sayfa.cell(satir,column=8,value=item['SatisciAdi']).border = thin_border
+                sayfa.cell(satir,column=9,value=item['Temsilci']).border = thin_border   
+                satir += 1
+
+            kitap.save(target_path)
+            kitap.close()
+            return True
+
+
+
+        except Exception as e:
+            print('customer_mekmer_excel hata',e)
+            return False
 
 class SiparisCekiListesiApi(Resource):
 
@@ -835,7 +869,15 @@ class ReportsMolozExcelApi(Resource):
         excel_path = 'excel/dosyalar/reports_mekmer_moloz.xlsx'
         return send_file(excel_path,as_attachment=True)
 
-
+class CustomerMekmerExcelApi(Resource):
+    def post(self):
+        data = request.get_json()
+        excel = ExcellCiktiIslem()
+        status = excel.customer_mekmer_excel(data)
+        return jsonify({'status':status})
+    def get(self):
+        excel_path = 'excel/dosyalar/customer_mekmer.xlsx'
+        return send_file(excel_path,as_attachment=True)
 
 
 api.add_resource(SiparisCekiListesiApi, '/excel/check/list', methods=['GET','POST'])
@@ -889,7 +931,7 @@ api.add_resource(CreditCardCostYearApi,'/reports/mekmar/ayo/credit/card/<int:yea
 api.add_resource(AyoCostExcelApi,'/reports/mekmar/ayo/cost/excel',methods=['GET','POST'])
 
 
-
+api.add_resource(CustomerMekmerExcelApi,'/customer/mekmar/excel',methods=['GET','POST'])
 
 
 
