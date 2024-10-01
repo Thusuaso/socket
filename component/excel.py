@@ -236,7 +236,7 @@ class ExcelCiktiIslem:
             sayfa2.cell(satir7,column=29,value=imperialHomesTotal['ddp'])
 
             sayfa3 = kitap.get_sheet_by_name('Sayfa3')
-            sayfa3.cell(1,column=1,value=  '1-1-2023' + ' ' + datetime.datetime.now().strftime('%x') + ' ARASI YÜKLEMELER')
+            sayfa3.cell(1,column=1,value=  '1-1-2024' + ' ' + datetime.datetime.now().strftime('%x') + ' ARASI YÜKLEMELER')
             satir8 = 3
             byMarketingYuklemeTotal = {
                 'fob':0,
