@@ -1173,8 +1173,10 @@ class MkRaporlari:
                             continue
                         if i.MusteriId ==27:
                             continue
-                        if i.MusteriId ==196:
-                            continue
+
+
+                        print("İç Piyasa",i.MusteriId)
+
                         model.BuYilUretim += self.getisNoneType(i.BuYilUretim)
                         model.BuYilSevkiyat += self.getisNoneType(i.BuYilSevkiyat)
                         model.GecenYil += self.getisNoneType(i.GecenYilCiro)
@@ -1240,7 +1242,31 @@ class MkRaporlari:
             
     
     def isIcSiparis(self,id):
-        icSiparisMusterileri=[7,
+        icSiparisMusterileri=[
+            273	,
+            7700,
+            7664,
+            7685,
+            7690,
+            7683,
+            7677,
+            7702,
+            7666,
+            7667,
+            7655,
+            7659,
+            7665,
+            7651,
+            196,
+            7663,
+            220,
+            98,
+            7564,
+            7657,
+            320,
+            56,
+                1366,
+                7,
                 20,
                 27,
                 29,
@@ -1337,7 +1363,8 @@ class MkRaporlari:
                 7598,
                 7592,
                 7591,
-                7589
+                7589,
+                8
                 ]
         for i in icSiparisMusterileri:
             if id == i:
