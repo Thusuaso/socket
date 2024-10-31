@@ -807,6 +807,49 @@ class ExcellCiktiIslem:
             print('customer_mekmer_excel hata',e)
             return False
 
+    def selection_excel_output(self,data):
+        try:
+            thin_border = Border(left=Side(style='thin'), 
+                     right=Side(style='thin'), 
+                     top=Side(style='thin'), 
+                     bottom=Side(style='thin'))
+            source_path = 'excel/sablonlar/selection.xlsx'
+            target_path = 'excel/dosyalar/selection.xlsx'
+            shutil.copy2(source_path, target_path)
+
+            kitap = load_workbook(target_path)
+            sayfa = kitap['Sayfa1']
+            satir = 2
+            for item in data:
+                sayfa.cell(satir,column=1,value=item['KasaNo']).border = thin_border
+                sayfa.cell(satir,column=2,value=item['OcakAdi']).border = thin_border
+                sayfa.cell(satir,column=3,value=item['FirmaAdi']).border = thin_border
+                sayfa.cell(satir,column=4,value=item['KategoriAdi']).border = thin_border
+                sayfa.cell(satir,column=5,value=item['UrunAdi']).border = thin_border
+                sayfa.cell(satir,column=6,value=item['YuzeyIslemAdi']).border = thin_border
+                sayfa.cell(satir,column=7,value=item['En']).border = thin_border
+                sayfa.cell(satir,column=8,value=item['Boy']).border = thin_border
+                sayfa.cell(satir,column=9,value=item['Kenar']).border = thin_border 
+                sayfa.cell(satir,column=10,value=item['KutuAdet']).border = thin_border   
+                sayfa.cell(satir,column=11,value=item['KutuIciAdet']).border = thin_border   
+                sayfa.cell(satir,column=12,value=item['Adet']).border = thin_border   
+                sayfa.cell(satir,column=13,value=item['Miktar']).border = thin_border   
+                sayfa.cell(satir,column=14,value=item['UrunBirimAdi']).border = thin_border   
+                sayfa.cell(satir,column=15,value=item['SiparisAciklama']).border = thin_border   
+                sayfa.cell(satir,column=16,value=item['Aciklama']).border = thin_border   
+
+                satir += 1
+
+            kitap.save(target_path)
+            kitap.close()
+            return True
+
+
+
+        except Exception as e:
+            print('customer_mekmer_excel hata',e)
+            return False
+
 class SiparisCekiListesiApi(Resource):
 
     def post(self):
@@ -879,6 +922,17 @@ class CustomerMekmerExcelApi(Resource):
         excel_path = 'excel/dosyalar/customer_mekmer.xlsx'
         return send_file(excel_path,as_attachment=True)
 
+class SelectionExcelApi(Resource):
+    def post(self):
+        data = request.get_json()
+        excel = ExcellCiktiIslem()
+        status = excel.selection_excel_output(data)
+        return jsonify({'status':status})
+    def get(self):
+        excel_path = 'excel/dosyalar/selection.xlsx'
+        return send_file(excel_path,as_attachment=True)
+
+
 
 api.add_resource(SiparisCekiListesiApi, '/excel/check/list', methods=['GET','POST'])
 api.add_resource(MaliyetRaporIslemApi,'/maliyet/listeler/maliyetListesi/<int:yil>/<int:ay>',methods=['GET'])
@@ -934,7 +988,7 @@ api.add_resource(AyoCostExcelApi,'/reports/mekmar/ayo/cost/excel',methods=['GET'
 api.add_resource(CustomerMekmerExcelApi,'/customer/mekmar/excel',methods=['GET','POST'])
 
 
-
+api.add_resource(SelectionExcelApi,'/siparisler/dosyalar/seleksiyon/excel/output',methods=['GET','POST'])
 
 
 
