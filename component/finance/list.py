@@ -478,12 +478,22 @@ s.MusteriID
             target_path = 'excel/dosyalar/finans_test_list.xlsx'
 
             shutil.copy2(source_path, target_path)
-
+            thin_border = Border(left=Side(style='thin'), 
+                     right=Side(style='thin'), 
+                     top=Side(style='thin'), 
+                     bottom=Side(style='thin'))
 
             kitap = load_workbook(target_path)
             sayfa = kitap.get_sheet_by_name('Sayfa1')
             satir = 2
             new_list = sorted(data_list, key=lambda x: x['balanced'], reverse=True)
+            order_amount_total = 0
+            production_total = 0
+            forwarding = 0
+            paid = 0
+            advanced_payment_total = 0
+            not_balanced_total = 0
+            balanced = 0
             for item in new_list:
 
                 sayfa.cell(satir,column=1,value=item['customer_name'])               
@@ -494,10 +504,25 @@ s.MusteriID
                 sayfa.cell(satir,column=6,value=self.__noneControl(item['advanced_payment']))
                 sayfa.cell(satir,column=7,value=self.__noneControl(item['total']))
                 sayfa.cell(satir,column=8,value=(self.__noneControl(item['balanced'])))
+                order_amount_total +=  self.__noneControl(item['total_order_amount'])
+                production_total+=self.__noneControl(item['production'])
+                forwarding +=self.__noneControl(item['forwarding'])
+                paid +=self.__noneControl(item['paid'])
+                advanced_payment_total +=self.__noneControl(item['advanced_payment'])
+                not_balanced_total +=self.__noneControl(item['total'])
+                balanced +=self.__noneControl(item['balanced'])
                 
                 
 
                 satir += 1
+            sayfa.cell(satir,column=1,value='Total').border = thin_border
+            sayfa.cell(satir,column=2,value=self.__noneControl(order_amount_total)).border = thin_border
+            sayfa.cell(satir,column=3,value=self.__noneControl(production_total)).border = thin_border
+            sayfa.cell(satir,column=4,value=self.__noneControl(forwarding)).border = thin_border
+            sayfa.cell(satir,column=5,value=self.__noneControl(paid)).border = thin_border
+            sayfa.cell(satir,column=6,value=self.__noneControl(advanced_payment_total)).border = thin_border
+            sayfa.cell(satir,column=7,value=self.__noneControl(not_balanced_total)).border = thin_border
+            sayfa.cell(satir,column=8,value=self.__noneControl(balanced)).border = thin_border
 
             kitap.save(target_path)
             kitap.close()

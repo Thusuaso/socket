@@ -7,7 +7,7 @@ api = Api(app)
 CORS(app, resources={r'/*': {'origins': '*'}})
 from openpyxl import *
 from openpyxl.styles.borders import Border, Side
-from openpyxl.styles import Font,Alignment
+from openpyxl.styles import Font,Alignment,PatternFill
 from openpyxl.cell.text import InlineFont
 from openpyxl.cell.rich_text import TextBlock, CellRichText
 import shutil
@@ -380,35 +380,6 @@ class ExcellCiktiIslem:
             sayfa.cell(satir + 3,column=14).border = thin_border
             sayfa.cell(satir + 3,column=15).border = thin_border
 
-
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             kitap.save(target_path)
             kitap.close()
 
@@ -596,23 +567,29 @@ class ExcellCiktiIslem:
             return False
     
     def _dateConvert(self,date):
-        if(date):
-            _year,_month,_date = str(date).split('-')
-            newDate = datetime.datetime(int(_year),int(_month),int(date[0:2]))
-            year = newDate.strftime('%Y')
-            month = newDate.strftime('%m')
-            day = newDate.strftime('%d')
-            print(year,month,day)
-            return str(day) + '-' + str(month) + '-' + str(year)
-        else:
+        if(date == None or date == '' or date == ' '):
             return ''
+        else:
+            if(date):
+                _year,_month,_date = str(date).split('-')
+                newDate = datetime.datetime(int(_year),int(_month),int(date[0:2]))
+                year = newDate.strftime('%Y')
+                month = newDate.strftime('%m')
+                day = newDate.strftime('%d')
+                return str(day) + '-' + str(month) + '-' + str(year)
+            else:
+                return ''
 
     def _formatControl(self,val):
         if(val > -8 and val < 8):
             return 0
         else:
             return val
-
+    def __noneControl(self,value):
+        if value == None:
+            return 0
+        else:
+            return float(value)
     def reports_strips_excel(self,strips):
         try:
             source_path = 'excel/sablonlar/reports_mekmer_strips.xlsx'
@@ -850,6 +827,347 @@ class ExcellCiktiIslem:
             print('customer_mekmer_excel hata',e)
             return False
 
+    def production_excel_list(self,data):
+        try:
+            thin_border = Border(left=Side(style='thin'), 
+                     right=Side(style='thin'), 
+                     top=Side(style='thin'), 
+                     bottom=Side(style='thin'))
+            
+            font_bold = Font(name='Calibri',
+                size=13,
+                bold=True,
+                italic=False,
+                vertAlign=None,
+                underline='none',
+                strike=False,
+                color='FF000000')
+            source_path = 'excel/sablonlar/production_excel.xlsx'
+            target_path = 'excel/dosyalar/production_excel.xlsx'
+            shutil.copy2(source_path, target_path)
+
+            kitap = load_workbook(target_path)
+            sayfa = kitap['Sayfa1']
+            satir = 2
+            amount_total = 0
+            piece_total = 0
+            for item in data:
+                sayfa.cell(satir,column=1,value=self._dateConvert(item['Tarih'])).border = thin_border
+                sayfa.cell(satir,column=2,value=item['FirmaAdi']).border = thin_border
+                sayfa.cell(satir,column=3,value=item['KategoriAdi']).border = thin_border
+                sayfa.cell(satir,column=4,value=item['KasaNo']).border = thin_border
+                sayfa.cell(satir,column=5,value=item['UrunAdi']).border = thin_border
+                sayfa.cell(satir,column=6,value=item['OcakAdi']).border = thin_border
+                sayfa.cell(satir,column=7,value=item['YuzeyIslemAdi']).border = thin_border
+                sayfa.cell(satir,column=8,value=item['En']).border = thin_border
+                sayfa.cell(satir,column=9,value=item['Boy']).border = thin_border
+                sayfa.cell(satir,column=10,value=item['Kenar']).border = thin_border
+                sayfa.cell(satir,column=11,value=item['Miktar']).border = thin_border
+                sayfa.cell(satir,column=12,value=item['Adet']).border = thin_border
+                sayfa.cell(satir,column=13,value=item['BirimAdi']).border = thin_border
+                sayfa.cell(satir,column=14,value=item['SiparisAciklama']).border = thin_border
+                sayfa.cell(satir,column=15,value=item['Aciklama']).border = thin_border
+
+
+                amount_total += self.__noneControl(item['Miktar'])
+                piece_total += self.__noneControl(item['Adet'])
+
+
+
+
+                satir += 1
+            total_cell = sayfa.cell(satir,column=1,value='Total')
+            total_cell.alignment  = Alignment(horizontal="center", vertical="center")
+            total_cell.border = thin_border
+            total_cell.font = font_bold
+            total_cell.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+
+
+            sayfa.cell(satir,column=2,value='').border = thin_border
+            sayfa.cell(satir,column=3,value='').border = thin_border
+            sayfa.cell(satir,column=4,value='').border = thin_border
+            sayfa.cell(satir,column=5,value='').border = thin_border
+            sayfa.cell(satir,column=6,value='').border = thin_border
+            sayfa.cell(satir,column=7,value='').border = thin_border
+            sayfa.cell(satir,column=8,value='').border = thin_border
+            sayfa.cell(satir,column=9,value='').border = thin_border
+            sayfa.cell(satir,column=10,value='').border = thin_border
+
+
+            amount_cell = sayfa.cell(satir,column=11,value=amount_total)
+            piece_cell = sayfa.cell(satir,column=12,value=piece_total)
+            amount_cell.font = font_bold
+            amount_cell.border = thin_border
+            amount_cell.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+            piece_cell.border = thin_border
+            piece_cell.font = font_bold
+            piece_cell.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+
+
+
+            other_on_uc_cell = sayfa.cell(satir,column=13,value='') 
+            other_on_uc_cell.border = thin_border
+            other_on_uc_cell.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+            other_on_dort_cell = sayfa.cell(satir,column=14,value='')
+            other_on_dort_cell.border = thin_border
+            other_on_dort_cell.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+
+            other_on_bes_cell = sayfa.cell(satir,column=15,value='')
+            other_on_bes_cell.border = thin_border
+            other_on_bes_cell.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+
+            merge_2 = 'A' + str(satir) + ':' + 'J' + str(satir)
+            sayfa.merge_cells(merge_2)
+
+
+
+
+
+            kitap.save(target_path)
+            kitap.close()
+            return True
+        except Exception as e:
+            print('production_excel hata',e)
+            return False
+
+    def mine_excel_list(self,data):
+        try:
+            thin_border = Border(left=Side(style='thin'), 
+                     right=Side(style='thin'), 
+                     top=Side(style='thin'), 
+                     bottom=Side(style='thin'))
+            
+            font_bold = Font(name='Calibri',
+                size=13,
+                bold=True,
+                italic=False,
+                vertAlign=None,
+                underline='none',
+                strike=False,
+                color='FF000000')
+            source_path = 'excel/sablonlar/mine_excel.xlsx'
+            target_path = 'excel/dosyalar/mine_excel.xlsx'
+            shutil.copy2(source_path, target_path)
+
+            kitap = load_workbook(target_path)
+            sayfa = kitap['Sayfa1']
+            satir = 2
+            m2_total = 0
+            piece_total = 0
+            mt_total = 0
+            crate_total = 0
+            for item in data:
+                sayfa.cell(satir,column=1,value=item['OcakAdi']).border = thin_border
+                sayfa.cell(satir,column=2,value=item['M2']).border = thin_border
+                sayfa.cell(satir,column=3,value=item['MT']).border = thin_border
+                sayfa.cell(satir,column=4,value=item['Adet']).border = thin_border
+                sayfa.cell(satir,column=5,value=item['KasaAdedi']).border = thin_border
+                m2_total += self.__noneControl(item['M2'])
+                piece_total += self.__noneControl(item['Adet'])
+                mt_total += self.__noneControl(item['MT'])
+                crate_total += self.__noneControl(item['KasaAdedi'])
+
+
+
+
+
+
+                satir += 1
+            total_cell = sayfa.cell(satir,column=1,value='Total')
+            total_cell.alignment  = Alignment(horizontal="center", vertical="center")
+            total_cell.border = thin_border
+            total_cell.font = font_bold
+            total_cell.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+
+            amount_cell = sayfa.cell(satir,column=2,value=m2_total)
+            piece_cell = sayfa.cell(satir,column=3,value=piece_total)
+            m2_cell = sayfa.cell(satir,column=4,value=mt_total)
+            crate_cell = sayfa.cell(satir,column=5,value=crate_total)
+
+            amount_cell.font = font_bold
+            amount_cell.border = thin_border
+            amount_cell.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+
+            piece_cell.border = thin_border
+            piece_cell.font = font_bold
+            piece_cell.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+
+            m2_cell.border = thin_border
+            m2_cell.font = font_bold
+            m2_cell.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+
+            crate_cell.border = thin_border
+            crate_cell.font = font_bold
+            crate_cell.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+
+            kitap.save(target_path)
+            kitap.close()
+            return True
+        except Exception as e:
+            print('production_excel hata',e)
+            return False
+
+    def loading_excel_list(self,data):
+        try:
+            print(data)
+            thin_border = Border(left=Side(style='thin'), 
+                     right=Side(style='thin'), 
+                     top=Side(style='thin'), 
+                     bottom=Side(style='thin'))
+            
+            font_bold = Font(name='Calibri',
+                size=13,
+                bold=True,
+                italic=False,
+                vertAlign=None,
+                underline='none',
+                strike=False,
+                color='FF000000')
+            source_path = 'excel/sablonlar/loading_excel_list.xlsx'
+            target_path = 'excel/dosyalar/loading_excel_list.xlsx'
+            shutil.copy2(source_path, target_path)
+
+            kitap = load_workbook(target_path)
+            sayfa = kitap['Sayfa1']
+            satir = 2
+            fob_total = 0
+            ddp_total = 0
+
+            for item in data:
+               
+                sayfa.cell(satir,column=1,value=self._dateConvert(item['YuklemeTarihi'])).border = thin_border
+                sayfa.cell(satir,column=2,value=item['MusteriAdi']).border = thin_border
+                sayfa.cell(satir,column=3,value=item['SiparisNo']).border = thin_border
+                sayfa.cell(satir,column=4,value=item['Fob']).border = thin_border
+                sayfa.cell(satir,column=5,value=item['Dtp']).border = thin_border
+                fob_total += self.__noneControl(item['Fob'])
+                ddp_total += self.__noneControl(item['Dtp'])
+                satir += 1
+
+            total_cell = sayfa.cell(satir,column=1,value='Total')
+            total_cell.alignment  = Alignment(horizontal="center", vertical="center")
+            total_cell.border = thin_border
+            total_cell.font = font_bold
+            total_cell.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+            merge_2 = 'A' + str(satir) + ':' + 'C' + str(satir)
+            sayfa.merge_cells(merge_2)
+
+            col_1 = sayfa.cell(satir,column=4,value=fob_total)
+            col_2 = sayfa.cell(satir,column=5,value=ddp_total)
+
+            col_1.border = thin_border
+            col_1.font = font_bold
+            col_1.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+
+            col_2.border = thin_border
+            col_2.font = font_bold
+            col_2.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+
+            kitap.save(target_path)
+            kitap.close()
+            return True
+        except Exception as e:
+            print('production_excel hata',e)
+            return False
+
+    def forwarding_excel_list(self,data):
+        try:
+            thin_border = Border(left=Side(style='thin'), 
+                     right=Side(style='thin'), 
+                     top=Side(style='thin'), 
+                     bottom=Side(style='thin'))
+            
+            font_bold = Font(name='Calibri',
+                size=13,
+                bold=True,
+                italic=False,
+                vertAlign=None,
+                underline='none',
+                strike=False,
+                color='FF000000')
+            source_path = 'excel/sablonlar/forwarding_excel.xlsx'
+            target_path = 'excel/dosyalar/forwarding_excel.xlsx'
+            shutil.copy2(source_path, target_path)
+
+            kitap = load_workbook(target_path)
+            sayfa = kitap['Sayfa1']
+            satir = 2
+            amount = 0
+            peaceincrate = 0
+            boxincrate = 0
+            total_price =0
+
+
+            for item in data:
+               
+                sayfa.cell(satir,column=1,value=self._dateConvert(item['Tarih'])).border = thin_border
+                sayfa.cell(satir,column=2,value=item['FirmaAdi']).border = thin_border
+                sayfa.cell(satir,column=3,value=item['TedarikciAdi']).border = thin_border
+                sayfa.cell(satir,column=4,value=item['UrunKartId']).border = thin_border
+                sayfa.cell(satir,column=5,value=item['KasaNo']).border = thin_border
+                sayfa.cell(satir,column=6,value=item['OcakAdi']).border = thin_border
+                sayfa.cell(satir,column=7,value=item['KategoriAdi']).border = thin_border
+                sayfa.cell(satir,column=8,value=item['UrunAdi']).border = thin_border
+                sayfa.cell(satir,column=9,value=item['YuzeyIslemAdi']).border = thin_border
+                sayfa.cell(satir,column=10,value=item['En']).border = thin_border
+                sayfa.cell(satir,column=11,value=item['Boy']).border = thin_border
+                sayfa.cell(satir,column=12,value=item['Kenar']).border = thin_border
+                sayfa.cell(satir,column=13,value=item['KutuAdet']).border = thin_border
+                sayfa.cell(satir,column=14,value=item['Adet']).border = thin_border
+                sayfa.cell(satir,column=15,value=item['Miktar']).border = thin_border
+                sayfa.cell(satir,column=16,value=item['BirimAdi']).border = thin_border
+                sayfa.cell(satir,column=17,value=item['SiparisAciklama']).border = thin_border
+                sayfa.cell(satir,column=18,value=item['Aciklama']).border = thin_border
+                sayfa.cell(satir,column=19,value=item['BirimFiyat']).border = thin_border
+                sayfa.cell(satir,column=20,value=item['Toplam']).border = thin_border
+
+                amount += self.__noneControl(item['Miktar'])
+                peaceincrate += self.__noneControl(item['Adet'])
+                boxincrate += self.__noneControl(item['KutuAdet'])
+                total_price += self.__noneControl(item['Toplam'])
+                satir += 1
+
+            total_cell = sayfa.cell(satir,column=1,value='Total')
+            total_cell.alignment  = Alignment(horizontal="center", vertical="center")
+            total_cell.border = thin_border
+            total_cell.font = font_bold
+            total_cell.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+            merge_2 = 'A' + str(satir) + ':' + 'L' + str(satir)
+            sayfa.merge_cells(merge_2)
+
+            col_1 = sayfa.cell(satir,column=13,value=boxincrate)
+            col_2 = sayfa.cell(satir,column=14,value=peaceincrate)
+            col_3 = sayfa.cell(satir,column=15,value=amount)
+            col_4 = sayfa.cell(satir,column=20,value=total_price)
+
+
+            col_1.border = thin_border
+            col_1.font = font_bold
+            col_1.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+
+            col_2.border = thin_border
+            col_2.font = font_bold
+            col_2.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+
+            col_3.border = thin_border
+            col_3.font = font_bold
+            col_3.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+
+            col_4.border = thin_border
+            col_4.font = font_bold
+            col_4.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+
+            kitap.save(target_path)
+            kitap.close()
+            return True
+        except Exception as e:
+            print('production_excel hata',e)
+            return False
+
+
+
+
+
 class SiparisCekiListesiApi(Resource):
 
     def post(self):
@@ -932,6 +1250,45 @@ class SelectionExcelApi(Resource):
         excel_path = 'excel/dosyalar/selection.xlsx'
         return send_file(excel_path,as_attachment=True)
 
+class ReportsProductionApi(Resource):
+    def post(self):
+        data = request.get_json()
+        excel = ExcellCiktiIslem()
+        status = excel.production_excel_list(data)
+        return jsonify({'status':status})
+    def get(self):
+        excel_path = 'excel/dosyalar/production_excel.xlsx'
+        return send_file(excel_path,as_attachment=True)
+
+class ReportsProductMineApi(Resource):
+    def post(self):
+        data = request.get_json()
+        excel = ExcellCiktiIslem()
+        status = excel.mine_excel_list(data)
+        return jsonify({'status':status})
+    def get(self):
+        excel_path = 'excel/dosyalar/mine_excel.xlsx'
+        return send_file(excel_path,as_attachment=True)
+
+class ReportsProductLoadingApi(Resource):
+    def post(self):
+        data = request.get_json()
+        excel = ExcellCiktiIslem()
+        status = excel.loading_excel_list(data)
+        return jsonify({'status':status})
+    def get(self):
+        excel_path = 'excel/dosyalar/loading_excel_list.xlsx'
+        return send_file(excel_path,as_attachment=True)
+
+class ReportsProductForwardingApi(Resource):
+    def post(self):
+        data = request.get_json()
+        excel = ExcellCiktiIslem()
+        status = excel.forwarding_excel_list(data)
+        return jsonify({'status':status})
+    def get(self):
+        excel_path = 'excel/dosyalar/forwarding_excel.xlsx'
+        return send_file(excel_path,as_attachment=True)
 
 
 api.add_resource(SiparisCekiListesiApi, '/excel/check/list', methods=['GET','POST'])
@@ -991,6 +1348,12 @@ api.add_resource(CustomerMekmerExcelApi,'/customer/mekmar/excel',methods=['GET',
 api.add_resource(SelectionExcelApi,'/siparisler/dosyalar/seleksiyon/excel/output',methods=['GET','POST'])
 
 
+#Excels
+
+api.add_resource(ReportsProductionApi,'/reports/excel/production',methods=['GET','POST'])
+api.add_resource(ReportsProductMineApi,'/reports/excel/mine',methods=['GET','POST'])
+api.add_resource(ReportsProductLoadingApi,'/reports/excel/loading',methods=['GET','POST'])
+api.add_resource(ReportsProductForwardingApi,'/reports/excel/forwarding',methods=['GET','POST'])
 
 
 
