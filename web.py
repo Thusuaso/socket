@@ -1165,6 +1165,315 @@ class ExcellCiktiIslem:
             return False
 
 
+    def orders_by_country(self,data):
+        try:
+            thin_border = Border(left=Side(style='thin'), 
+                     right=Side(style='thin'), 
+                     top=Side(style='thin'), 
+                     bottom=Side(style='thin'))
+            
+            font_bold = Font(name='Calibri',
+                size=13,
+                bold=True,
+                italic=False,
+                vertAlign=None,
+                underline='none',
+                strike=False,
+                color='FF000000')
+            source_path = 'excel/sablonlar/orders_by_country.xlsx'
+            target_path = 'excel/dosyalar/orders_by_country.xlsx'
+            shutil.copy2(source_path, target_path)
+
+            kitap = load_workbook(target_path)
+            sayfa = kitap['Sayfa1']
+            satir = 3
+            header_2024 = sayfa.cell(1,column=1,value='2024')
+            header_2023=sayfa.cell(1,column=5,value='2023')
+            header_2022 = sayfa.cell(1,column=9,value='2022')
+            header_2021=sayfa.cell(1,column=13,value='2021')
+            header_2020=sayfa.cell(1,column=17,value='2020')
+            header_2019 =sayfa.cell(1,column=21,value='2019')
+
+
+            sayfa.cell(2,column=1,value='Country').border = thin_border
+            sayfa.cell(2,column=2,value='FOB').border = thin_border
+            sayfa.cell(2,column=3,value='DDP').border = thin_border
+
+            sayfa.cell(2,column=5,value='Country').border = thin_border
+            sayfa.cell(2,column=6,value='FOB').border = thin_border
+            sayfa.cell(2,column=7,value='DDP').border = thin_border
+
+            sayfa.cell(2,column=9,value='Country').border = thin_border
+            sayfa.cell(2,column=10,value='FOB').border = thin_border
+            sayfa.cell(2,column=11,value='DDP').border = thin_border
+
+
+            sayfa.cell(2,column=13,value='Country').border = thin_border
+            sayfa.cell(2,column=14,value='FOB').border = thin_border
+            sayfa.cell(2,column=15,value='DDP').border = thin_border
+
+            sayfa.cell(2,column=17,value='Country').border = thin_border
+            sayfa.cell(2,column=18,value='FOB').border = thin_border
+            sayfa.cell(2,column=19,value='DDP').border = thin_border
+
+            
+            sayfa.cell(2,column=21,value='Country').border = thin_border
+            sayfa.cell(2,column=22,value='FOB').border = thin_border
+            sayfa.cell(2,column=23,value='DDP').border = thin_border
+
+
+
+
+            header_2024.border = thin_border
+            header_2023.border = thin_border
+            header_2022.border = thin_border
+            header_2021.border = thin_border
+            header_2020.border = thin_border
+            header_2019.border = thin_border
+
+            header_2024.font = font_bold
+            header_2023.font = font_bold
+            header_2022.font = font_bold
+            header_2021.font = font_bold
+            header_2020.font = font_bold
+            header_2019.font = font_bold
+
+            header_2024.alignment  = Alignment(horizontal="center", vertical="center")
+            header_2023.alignment  = Alignment(horizontal="center", vertical="center")
+            header_2022.alignment  = Alignment(horizontal="center", vertical="center")
+            header_2021.alignment  = Alignment(horizontal="center", vertical="center")
+            header_2020.alignment  = Alignment(horizontal="center", vertical="center")
+            header_2019.alignment  = Alignment(horizontal="center", vertical="center")
+
+            header_2024.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+            header_2023.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+            header_2022.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+            header_2021.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+            header_2020.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+            header_2019.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+
+            merge_2024 = 'A' + str(1) + ':' + 'C' + str(1)
+            merge_2023 = 'E' + str(1) + ':' + 'G' + str(1)
+            merge_2022 = 'I' + str(1) + ':' + 'K' + str(1)
+            merge_2021 = 'M' + str(1) + ':' + 'O' + str(1)
+            merge_2020 = 'Q' + str(1) + ':' + 'S' + str(1)
+            merge_2019 = 'U' + str(1) + ':' + 'W' + str(1)
+
+
+            
+
+
+            fob_total_1 = 0
+            ddp_total_1 = 0
+
+            for item in data['this_year']:
+               
+                sayfa.cell(satir,column=1,value=item['UlkeAdi']).border = thin_border
+                sayfa.cell(satir,column=2,value=item['Fob']).border = thin_border
+                sayfa.cell(satir,column=3,value=item['ddp']).border = thin_border
+
+                fob_total_1 += self.__noneControl(item['Fob'])
+                ddp_total_1 += self.__noneControl(item['ddp'])
+                satir += 1
+
+            total_cell_1 = sayfa.cell(satir,column=1,value='Total')
+            total_cell_1.alignment  = Alignment(horizontal="center", vertical="center")
+            total_cell_1.border = thin_border
+            total_cell_1.font = font_bold
+            total_cell_1.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+
+
+            col_1 = sayfa.cell(satir,column=2,value=fob_total_1)
+            col_2 = sayfa.cell(satir,column=3,value=ddp_total_1)
+
+            col_1.border = thin_border
+            col_1.font = font_bold
+            col_1.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+            col_2.border = thin_border
+            col_2.font = font_bold
+            col_2.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+
+
+
+
+            fob_total_2 = 0
+            ddp_total_2 = 0
+            satir_2 = 3
+            for item in data['one_year_ago']:
+               
+                sayfa.cell(satir_2,column=5,value=item['UlkeAdi']).border = thin_border
+                sayfa.cell(satir_2,column=6,value=item['Fob']).border = thin_border
+                sayfa.cell(satir_2,column=7,value=item['ddp']).border = thin_border
+
+                fob_total_2 += self.__noneControl(item['Fob'])
+                ddp_total_2 += self.__noneControl(item['ddp'])
+                satir_2 += 1
+
+            total_cell_2 = sayfa.cell(satir_2,column=5,value='Total')
+            total_cell_2.alignment  = Alignment(horizontal="center", vertical="center")
+            total_cell_2.border = thin_border
+            total_cell_2.font = font_bold
+            total_cell_2.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+
+
+            col_3 = sayfa.cell(satir_2,column=6,value=fob_total_2)
+            col_4 = sayfa.cell(satir_2,column=7,value=ddp_total_2)
+            
+            col_3.border = thin_border
+            col_3.font = font_bold
+            col_3.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+            col_4.border = thin_border
+            col_4.font = font_bold
+            col_4.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+            
+
+
+
+            fob_total_3 = 0
+            ddp_total_3 = 0
+            satir_3 = 3
+            for item in data['two_year_ago']:
+               
+                sayfa.cell(satir_3,column=9,value=item['UlkeAdi']).border = thin_border
+                sayfa.cell(satir_3,column=10,value=item['Fob']).border = thin_border
+                sayfa.cell(satir_3,column=11,value=item['ddp']).border = thin_border
+
+                fob_total_3 += self.__noneControl(item['Fob'])
+                ddp_total_3 += self.__noneControl(item['ddp'])
+                satir_3 += 1
+
+            total_cell_3 = sayfa.cell(satir_3,column=9,value='Total')
+            total_cell_3.alignment  = Alignment(horizontal="center", vertical="center")
+            total_cell_3.border = thin_border
+            total_cell_3.font = font_bold
+            total_cell_3.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+
+
+            col_5 = sayfa.cell(satir_3,column=10,value=fob_total_3)
+            col_6 = sayfa.cell(satir_3,column=11,value=ddp_total_3)
+            
+            col_5.border = thin_border
+            col_5.font = font_bold
+            col_5.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+            col_6.border = thin_border
+            col_6.font = font_bold
+            col_6.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+
+
+
+
+            fob_total_4 = 0
+            ddp_total_4 = 0
+            satir_4 = 3
+            for item in data['three_year_ago']:
+               
+                sayfa.cell(satir_4,column=13,value=item['UlkeAdi']).border = thin_border
+                sayfa.cell(satir_4,column=14,value=item['Fob']).border = thin_border
+                sayfa.cell(satir_4,column=15,value=item['ddp']).border = thin_border
+
+                fob_total_4 += self.__noneControl(item['Fob'])
+                ddp_total_4 += self.__noneControl(item['ddp'])
+                satir_4 += 1
+
+            total_cell_4 = sayfa.cell(satir_4,column=13,value='Total')
+            total_cell_4.alignment  = Alignment(horizontal="center", vertical="center")
+            total_cell_4.border = thin_border
+            total_cell_4.font = font_bold
+            total_cell_4.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+
+
+            col_7 = sayfa.cell(satir_4,column=14,value=fob_total_4)
+            col_8 = sayfa.cell(satir_4,column=15,value=ddp_total_4)
+            
+            col_7.border = thin_border
+            col_7.font = font_bold
+            col_7.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+            col_8.border = thin_border
+            col_8.font = font_bold
+            col_8.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+
+
+
+
+            fob_total_5 = 0
+            ddp_total_5 = 0
+            satir_5 = 3
+            for item in data['four_year_ago']:
+               
+                sayfa.cell(satir_5,column=17,value=item['UlkeAdi']).border = thin_border
+                sayfa.cell(satir_5,column=18,value=item['Fob']).border = thin_border
+                sayfa.cell(satir_5,column=19,value=item['ddp']).border = thin_border
+
+                fob_total_5 += self.__noneControl(item['Fob'])
+                ddp_total_5 += self.__noneControl(item['ddp'])
+                satir_5 += 1
+
+            total_cell_5 = sayfa.cell(satir_5,column=17,value='Total')
+            total_cell_5.alignment  = Alignment(horizontal="center", vertical="center")
+            total_cell_5.border = thin_border
+            total_cell_5.font = font_bold
+            total_cell_5.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+
+
+            col_7 = sayfa.cell(satir_5,column=18,value=fob_total_5)
+            col_8 = sayfa.cell(satir_5,column=19,value=ddp_total_5)
+            
+            col_7.border = thin_border
+            col_7.font = font_bold
+            col_7.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+            col_8.border = thin_border
+            col_8.font = font_bold
+            col_8.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+
+
+            fob_total_6 = 0
+            ddp_total_6 = 0
+            satir_6 = 3
+            for item in data['five_year_ago']:
+               
+                sayfa.cell(satir_6,column=21,value=item['UlkeAdi']).border = thin_border
+                sayfa.cell(satir_6,column=22,value=item['Fob']).border = thin_border
+                sayfa.cell(satir_6,column=23,value=item['ddp']).border = thin_border
+
+                fob_total_6 += self.__noneControl(item['Fob'])
+                ddp_total_6 += self.__noneControl(item['ddp'])
+                satir_6 += 1
+
+            total_cell_6 = sayfa.cell(satir_6,column=21,value='Total')
+            total_cell_6.alignment  = Alignment(horizontal="center", vertical="center")
+            total_cell_6.border = thin_border
+            total_cell_6.font = font_bold
+            total_cell_6.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+
+
+            col_9 = sayfa.cell(satir_6,column=22,value=fob_total_6)
+            col_10 = sayfa.cell(satir_6,column=23,value=ddp_total_6)
+            
+            col_9.border = thin_border
+            col_9.font = font_bold
+            col_9.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+            col_10.border = thin_border
+            col_10.font = font_bold
+            col_10.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+
+
+
+
+
+            sayfa.merge_cells(merge_2024)
+            sayfa.merge_cells(merge_2023)
+            sayfa.merge_cells(merge_2022)
+            sayfa.merge_cells(merge_2021)
+            sayfa.merge_cells(merge_2020)
+            sayfa.merge_cells(merge_2019)
+
+            kitap.save(target_path)
+            kitap.close()
+            return True
+        except Exception as e:
+            print('production_excel hata',e)
+            return False
+
 
 
 
@@ -1290,6 +1599,17 @@ class ReportsProductForwardingApi(Resource):
         excel_path = 'excel/dosyalar/forwarding_excel.xlsx'
         return send_file(excel_path,as_attachment=True)
 
+class ReportsOrdersByCountryApi(Resource):
+    def post(self):
+        data = request.get_json()
+        excel = ExcellCiktiIslem()
+        status = excel.orders_by_country(data)
+        return jsonify({'status':status})
+    def get(self):
+        excel_path = 'excel/dosyalar/orders_by_country.xlsx'
+        return send_file(excel_path,as_attachment=True)
+
+
 
 api.add_resource(SiparisCekiListesiApi, '/excel/check/list', methods=['GET','POST'])
 api.add_resource(MaliyetRaporIslemApi,'/maliyet/listeler/maliyetListesi/<int:yil>/<int:ay>',methods=['GET'])
@@ -1354,7 +1674,7 @@ api.add_resource(ReportsProductionApi,'/reports/excel/production',methods=['GET'
 api.add_resource(ReportsProductMineApi,'/reports/excel/mine',methods=['GET','POST'])
 api.add_resource(ReportsProductLoadingApi,'/reports/excel/loading',methods=['GET','POST'])
 api.add_resource(ReportsProductForwardingApi,'/reports/excel/forwarding',methods=['GET','POST'])
-
+api.add_resource(ReportsOrdersByCountryApi,'/maliyet/dosyalar/countries',methods=['GET','POST'])
 
 
 
