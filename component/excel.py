@@ -456,22 +456,25 @@ class ExcelCiktiIslem:
             sayfa = kitap.get_sheet_by_name('Sayfa1')
             kalin = Font(bold=True,size=16)
             satir = 1
-            sayfa.cell(satir,column=1,value='Kategori Adi').fill=PatternFill(fill_type="solid", start_color='FF' + color_string, end_color='FF' + color_string)
-            sayfa.cell(satir,column=1,value='Kategori Adi').font = kalin
-            sayfa.cell(satir,column=2,value='En').fill=PatternFill(fill_type="solid", start_color='FF' + color_string, end_color='FF' + color_string)
-            sayfa.cell(satir,column=2,value='En').font = kalin
-            sayfa.cell(satir,column=3,value='Boy').fill=PatternFill(fill_type="solid", start_color='FF' + color_string, end_color='FF' + color_string)
-            sayfa.cell(satir,column=3,value='Boy').font = kalin
-            sayfa.cell(satir,column=4,value='Kenar').fill=PatternFill(fill_type="solid", start_color='FF' + color_string, end_color='FF' + color_string)
-            sayfa.cell(satir,column=4,value='Kenar').font = kalin
-            sayfa.cell(satir,column=5,value= "Yuzey İşlem" ).fill=PatternFill(fill_type="solid", start_color='FF' + color_string, end_color='FF' + color_string)
-            sayfa.cell(satir,column=5,value= "Yuzey İşlem" ).font = kalin
-            sayfa.cell(satir,column=6,value= "Ürün Adı" ).fill=PatternFill(fill_type="solid", start_color='FF' + color_string, end_color='FF' + color_string)
-            sayfa.cell(satir,column=6,value= "Ürün Adı" ).font = kalin
-            sayfa.cell(satir,column=7,value= "Kasa Sayisi" ).fill=PatternFill(fill_type="solid", start_color='FF' + color_string, end_color='FF' + color_string)
-            sayfa.cell(satir,column=7,value= "Kasa Sayisi" ).font = kalin
-            sayfa.cell(satir,column=8,value= "M2" ).fill=PatternFill(fill_type="solid", start_color='FF' + color_string, end_color='FF' + color_string)
-            sayfa.cell(satir,column=8,value= "M2" ).font = kalin
+            sayfa.cell(satir,column=1,value='Category').fill=PatternFill(fill_type="solid", start_color='FF' + color_string, end_color='FF' + color_string)
+            sayfa.cell(satir,column=1,value='Category').font = kalin
+            sayfa.cell(satir,column=2,value= "Selection" ).fill=PatternFill(fill_type="solid", start_color='FF' + color_string, end_color='FF' + color_string)
+            sayfa.cell(satir,column=2,value= "Selection" ).font = kalin
+            sayfa.cell(satir,column=3,value= "Surface" ).fill=PatternFill(fill_type="solid", start_color='FF' + color_string, end_color='FF' + color_string)
+            sayfa.cell(satir,column=3,value= "Surface" ).font = kalin
+
+
+            sayfa.cell(satir,column=4,value='W').fill=PatternFill(fill_type="solid", start_color='FF' + color_string, end_color='FF' + color_string)
+            sayfa.cell(satir,column=4,value='W').font = kalin
+            sayfa.cell(satir,column=5,value='L').fill=PatternFill(fill_type="solid", start_color='FF' + color_string, end_color='FF' + color_string)
+            sayfa.cell(satir,column=5,value='L').font = kalin
+            sayfa.cell(satir,column=6,value='Thickness').fill=PatternFill(fill_type="solid", start_color='FF' + color_string, end_color='FF' + color_string)
+            sayfa.cell(satir,column=6,value='Thickness').font = kalin
+            sayfa.cell(satir,column=7,value= "M2" ).fill=PatternFill(fill_type="solid", start_color='FF' + color_string, end_color='FF' + color_string)
+            sayfa.cell(satir,column=7,value= "M2" ).font = kalin
+            sayfa.cell(satir,column=8,value= "Crate Amount" ).fill=PatternFill(fill_type="solid", start_color='FF' + color_string, end_color='FF' + color_string)
+            sayfa.cell(satir,column=8,value= "Crate Amount" ).font = kalin
+
 
             
             
@@ -479,20 +482,22 @@ class ExcelCiktiIslem:
             for item1 in data_list:
                 cell1 = sayfa.cell(satir,column=1,value=item1['KategoriAdi'])
                 cell1.border = border
-                cell2 = sayfa.cell(satir,column=2,value=item1['En'])
-                cell2.border = border
-                cell3 = sayfa.cell(satir,column=3,value=item1['Boy'])
-                cell3.border = border
-                cell4 = sayfa.cell(satir,column=4,value=item1['Kenar'])
-                cell4.border = border
-                cell5 = sayfa.cell(satir,column=5,value=item1['YuzeyIslemAdi'])
-                cell5.border = border
-                cell6 = sayfa.cell(satir,column=6,value=item1['UrunAdi'])
+                cell6 = sayfa.cell(satir,column=2,value=item1['UrunAdi'])
                 cell6.border = border
-                cell7 = sayfa.cell(satir,column=7,value=item1['KasaSayisi'])
-                cell7.border = border
-                cell8 = sayfa.cell(satir,column=8,value=item1['Toplam'])
+                cell5 = sayfa.cell(satir,column=3,value=item1['YuzeyIslemAdi'])
+                cell5.border = border
+                cell2 = sayfa.cell(satir,column=4,value=item1['En'])
+                cell2.border = border
+                cell3 = sayfa.cell(satir,column=5,value=item1['Boy'])
+                cell3.border = border
+                cell4 = sayfa.cell(satir,column=6,value=item1['Kenar'])
+                cell4.border = border
+
+                cell8 = sayfa.cell(satir,column=7,value=item1['Toplam'])
                 cell8.border = border
+                cell7 = sayfa.cell(satir,column=8,value=item1['KasaSayisi'])
+                cell7.border = border
+
                 satir += 1
             
 

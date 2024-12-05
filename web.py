@@ -1474,7 +1474,430 @@ class ExcellCiktiIslem:
             print('production_excel hata',e)
             return False
 
+    def gu_forwarding(self,data):
+        try:
+            thin_border = Border(left=Side(style='thin'), 
+                     right=Side(style='thin'), 
+                     top=Side(style='thin'), 
+                     bottom=Side(style='thin'))
+            
+            font_bold = Font(name='Calibri',
+                size=13,
+                bold=True,
+                italic=False,
+                vertAlign=None,
+                underline='none',
+                strike=False,
+                color='FF000000')
+            source_path = 'excel/sablonlar/gu_excel.xlsx'
+            target_path = 'excel/dosyalar/gu_excel.xlsx'
+            shutil.copy2(source_path, target_path)
 
+            kitap = load_workbook(target_path)
+            sayfa = kitap['Sayfa1']
+            
+            header_2024 = sayfa.cell(1,column=1,value='2024')
+            header_2023=sayfa.cell(1,column=5,value='2023')
+            header_2022 = sayfa.cell(1,column=9,value='2022')
+            header_2021=sayfa.cell(1,column=13,value='2021')
+            header_2020=sayfa.cell(1,column=17,value='2020')
+            header_2019 =sayfa.cell(1,column=21,value='2019')
+            header_2018 =sayfa.cell(1,column=25,value='2018')
+            header_2017 =sayfa.cell(1,column=29,value='2017')
+            header_2016 =sayfa.cell(1,column=33,value='2016')
+            header_2015 =sayfa.cell(1,column=37,value='2015')
+            header_2014 =sayfa.cell(1,column=41,value='2014')
+
+
+
+
+            cell_2024_1 = sayfa.cell(2,column=1,value='Month')
+            cell_2024_2 =sayfa.cell(2,column=2,value='FOB')
+            cell_2024_3 =sayfa.cell(2,column=3,value='DDP')
+
+            cell_2023_1 =sayfa.cell(2,column=5,value='Month')
+            cell_2023_2 =sayfa.cell(2,column=6,value='FOB')
+            cell_2023_3 =sayfa.cell(2,column=7,value='DDP')
+
+            cell_2022_1 =sayfa.cell(2,column=9,value='Month')
+            cell_2022_2 =sayfa.cell(2,column=10,value='FOB')
+            cell_2022_3 =sayfa.cell(2,column=11,value='DDP')
+
+
+            cell_2021_1 =sayfa.cell(2,column=13,value='Month')
+            cell_2021_2 =sayfa.cell(2,column=14,value='FOB')
+            cell_2021_3 =sayfa.cell(2,column=15,value='DDP')
+
+            cell_2020_1 =sayfa.cell(2,column=17,value='Month')
+            cell_2020_2 =sayfa.cell(2,column=18,value='FOB')
+            cell_2020_3 =sayfa.cell(2,column=19,value='DDP')
+
+            
+            cell_2019_1 =sayfa.cell(2,column=21,value='Month')
+            cell_2019_2 =sayfa.cell(2,column=22,value='FOB')
+            cell_2019_3 =sayfa.cell(2,column=23,value='DDP')
+
+            cell_2018_1 =sayfa.cell(2,column=25,value='Month')
+            cell_2018_2 =sayfa.cell(2,column=26,value='FOB')
+            cell_2018_3 =sayfa.cell(2,column=27,value='DDP')
+
+            cell_2017_1 =sayfa.cell(2,column=29,value='Month')
+            cell_2017_2 =sayfa.cell(2,column=30,value='FOB')
+            cell_2017_3 =sayfa.cell(2,column=31,value='DDP')
+
+            cell_2016_1 =sayfa.cell(2,column=33,value='Month')
+            cell_2016_2 =sayfa.cell(2,column=34,value='FOB')
+            cell_2016_3 =sayfa.cell(2,column=35,value='DDP')
+
+            cell_2015_1 =sayfa.cell(2,column=37,value='Month')
+            cell_2015_2 =sayfa.cell(2,column=38,value='FOB')
+            cell_2015_3 =sayfa.cell(2,column=39,value='DDP')
+
+            
+            cell_2014_1 =sayfa.cell(2,column=41,value='Month')
+            cell_2014_2 =sayfa.cell(2,column=42,value='FOB')
+            cell_2014_3 =sayfa.cell(2,column=43,value='DDP')
+
+            cell_2024_1.border = thin_border
+            cell_2024_1.font = font_bold
+            cell_2024_1.alignment  = Alignment(horizontal="center", vertical="center")
+
+            cell_2024_2.border = thin_border
+            cell_2024_2.font = font_bold
+            cell_2024_2.alignment  = Alignment(horizontal="center", vertical="center")
+
+            cell_2024_3.border = thin_border
+            cell_2024_3.font = font_bold
+            cell_2024_3.alignment  = Alignment(horizontal="center", vertical="center")
+
+
+            cell_2023_1.border = thin_border
+            cell_2023_1.font = font_bold
+            cell_2023_1.alignment  = Alignment(horizontal="center", vertical="center")
+
+            cell_2023_2.border = thin_border
+            cell_2023_2.font = font_bold
+            cell_2023_2.alignment  = Alignment(horizontal="center", vertical="center")
+
+            cell_2023_3.border = thin_border
+            cell_2023_3.font = font_bold
+            cell_2023_3.alignment  = Alignment(horizontal="center", vertical="center")
+
+            cell_2022_1.border = thin_border
+            cell_2022_1.font = font_bold
+            cell_2022_1.alignment  = Alignment(horizontal="center", vertical="center")
+
+            cell_2022_2.border = thin_border
+            cell_2022_2.font = font_bold
+            cell_2022_2.alignment  = Alignment(horizontal="center", vertical="center")
+
+            cell_2022_3.border = thin_border
+            cell_2022_3.font = font_bold
+            cell_2022_3.alignment  = Alignment(horizontal="center", vertical="center")
+
+
+            cell_2021_1.border = thin_border
+            cell_2021_1.font = font_bold
+            cell_2021_1.alignment  = Alignment(horizontal="center", vertical="center")
+            cell_2021_2.border = thin_border
+            cell_2021_2.font = font_bold
+            cell_2021_2.alignment  = Alignment(horizontal="center", vertical="center")
+            cell_2021_3.border = thin_border
+            cell_2021_3.font = font_bold
+            cell_2021_3.alignment  = Alignment(horizontal="center", vertical="center")
+
+            cell_2020_1.border = thin_border
+            cell_2020_1.font = font_bold
+            cell_2020_1.alignment  = Alignment(horizontal="center", vertical="center")
+            cell_2020_2.border = thin_border
+            cell_2020_2.font = font_bold
+            cell_2020_2.alignment  = Alignment(horizontal="center", vertical="center")
+            cell_2020_3.border = thin_border
+            cell_2020_3.font = font_bold
+            cell_2020_3.alignment  = Alignment(horizontal="center", vertical="center")
+
+
+            cell_2019_1.border = thin_border
+            cell_2019_1.font = font_bold
+            cell_2019_1.alignment  = Alignment(horizontal="center", vertical="center")
+            cell_2019_2.border = thin_border
+            cell_2019_2.font = font_bold
+            cell_2019_2.alignment  = Alignment(horizontal="center", vertical="center")
+            cell_2019_3.border = thin_border
+            cell_2019_3.font = font_bold
+            cell_2019_3.alignment  = Alignment(horizontal="center", vertical="center")
+
+            
+            cell_2018_1.border = thin_border
+            cell_2018_1.font = font_bold
+            cell_2018_1.alignment  = Alignment(horizontal="center", vertical="center")
+            cell_2018_2.border = thin_border
+            cell_2018_2.font = font_bold
+            cell_2018_2.alignment  = Alignment(horizontal="center", vertical="center")
+            cell_2018_3.border = thin_border
+            cell_2018_3.font = font_bold
+            cell_2018_3.alignment  = Alignment(horizontal="center", vertical="center")
+
+                        
+            cell_2017_1.border = thin_border
+            cell_2017_1.font = font_bold
+            cell_2017_1.alignment  = Alignment(horizontal="center", vertical="center")
+            cell_2017_2.border = thin_border
+            cell_2017_2.font = font_bold
+            cell_2017_2.alignment  = Alignment(horizontal="center", vertical="center")
+            cell_2017_3.border = thin_border
+            cell_2017_3.font = font_bold
+            cell_2017_3.alignment  = Alignment(horizontal="center", vertical="center")
+
+            cell_2016_1.border = thin_border
+            cell_2016_1.font = font_bold
+            cell_2016_1.alignment  = Alignment(horizontal="center", vertical="center")
+            cell_2016_2.border = thin_border
+            cell_2016_2.font = font_bold
+            cell_2016_2.alignment  = Alignment(horizontal="center", vertical="center")
+            cell_2016_3.border = thin_border
+            cell_2016_3.font = font_bold
+            cell_2016_3.alignment  = Alignment(horizontal="center", vertical="center")
+            
+            
+            cell_2015_1.border = thin_border
+            cell_2015_1.font = font_bold
+            cell_2015_1.alignment  = Alignment(horizontal="center", vertical="center")
+            cell_2015_2.border = thin_border
+            cell_2015_2.font = font_bold
+            cell_2015_2.alignment  = Alignment(horizontal="center", vertical="center")
+            cell_2015_3.border = thin_border
+            cell_2015_3.font = font_bold
+            cell_2015_3.alignment  = Alignment(horizontal="center", vertical="center")
+
+                        
+            cell_2014_1.border = thin_border
+            cell_2014_1.font = font_bold
+            cell_2014_1.alignment  = Alignment(horizontal="center", vertical="center")
+            cell_2014_2.border = thin_border
+            cell_2014_2.font = font_bold
+            cell_2014_2.alignment  = Alignment(horizontal="center", vertical="center")
+            cell_2014_3.border = thin_border
+            cell_2014_3.font = font_bold
+            cell_2014_3.alignment  = Alignment(horizontal="center", vertical="center")
+
+
+
+
+
+
+
+
+            header_2024.border = thin_border
+            header_2023.border = thin_border
+            header_2022.border = thin_border
+            header_2021.border = thin_border
+            header_2020.border = thin_border
+            header_2019.border = thin_border
+            header_2018.border = thin_border
+            header_2017.border = thin_border
+            header_2016.border = thin_border
+            header_2015.border = thin_border
+            header_2014.border = thin_border
+
+
+            header_2024.font = font_bold
+            header_2023.font = font_bold
+            header_2022.font = font_bold
+            header_2021.font = font_bold
+            header_2020.font = font_bold
+            header_2019.font = font_bold
+            header_2018.font = font_bold
+            header_2017.font = font_bold
+            header_2016.font = font_bold
+            header_2015.font = font_bold
+            header_2014.font = font_bold
+
+            header_2024.alignment  = Alignment(horizontal="center", vertical="center")
+            header_2023.alignment  = Alignment(horizontal="center", vertical="center")
+            header_2022.alignment  = Alignment(horizontal="center", vertical="center")
+            header_2021.alignment  = Alignment(horizontal="center", vertical="center")
+            header_2020.alignment  = Alignment(horizontal="center", vertical="center")
+            header_2019.alignment  = Alignment(horizontal="center", vertical="center")
+            header_2018.alignment  = Alignment(horizontal="center", vertical="center")
+            header_2017.alignment  = Alignment(horizontal="center", vertical="center")
+            header_2016.alignment  = Alignment(horizontal="center", vertical="center")
+            header_2015.alignment  = Alignment(horizontal="center", vertical="center")
+            header_2014.alignment  = Alignment(horizontal="center", vertical="center")
+
+            header_2024.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+            header_2023.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+            header_2022.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+            header_2021.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+            header_2020.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+            header_2019.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+            header_2018.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+            header_2017.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+            header_2016.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+            header_2015.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+            header_2014.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+
+            merge_2024 = 'A' + str(1) + ':' + 'C' + str(1)
+            merge_2023 = 'E' + str(1) + ':' + 'G' + str(1)
+            merge_2022 = 'I' + str(1) + ':' + 'K' + str(1)
+            merge_2021 = 'M' + str(1) + ':' + 'O' + str(1)
+            merge_2020 = 'Q' + str(1) + ':' + 'S' + str(1)
+            merge_2019 = 'U' + str(1) + ':' + 'W' + str(1)
+            merge_2018 = 'Y' + str(1) + ':' + 'AA' + str(1)
+            merge_2017 = 'AC' + str(1) + ':' + 'AE' + str(1)
+            merge_2016 = 'AG' + str(1) + ':' + 'AI' + str(1)
+            merge_2015 = 'AK' + str(1) + ':' + 'AM' + str(1)
+            merge_2014 = 'AO' + str(1) + ':' + 'AQ' + str(1)
+            
+            sayfa.merge_cells(merge_2024)
+            sayfa.merge_cells(merge_2023)
+            sayfa.merge_cells(merge_2022)
+            sayfa.merge_cells(merge_2021)
+            sayfa.merge_cells(merge_2020)
+            sayfa.merge_cells(merge_2019)
+            sayfa.merge_cells(merge_2018)
+            sayfa.merge_cells(merge_2017)
+            sayfa.merge_cells(merge_2016)
+            sayfa.merge_cells(merge_2015)
+            sayfa.merge_cells(merge_2014)
+
+
+
+
+            
+
+
+
+            column = 1
+            
+            for item in data:
+                satir = 3
+                fob_total_1 = 0
+                ddp_total_1 = 0
+                for i in item['data']:
+                    sayfa.cell(satir,column=column,value=i['Ay']).border = thin_border
+                    sayfa.cell(satir,column=column+1,value=i['Fob']).border = thin_border
+                    sayfa.cell(satir,column=column+2,value=i['Ddp']).border = thin_border
+
+                    fob_total_1 += self.__noneControl(i['Fob'])
+                    ddp_total_1 += self.__noneControl(i['Ddp'])
+                    satir += 1
+
+                total_cell_1 = sayfa.cell(satir,column=column,value='Total')
+                total_cell_1.alignment  = Alignment(horizontal="center", vertical="center")
+                total_cell_1.border = thin_border
+                total_cell_1.font = font_bold
+                total_cell_1.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+
+
+
+                col_1 = sayfa.cell(satir,column=column+1,value=fob_total_1)
+                col_2 = sayfa.cell(satir,column=column+2,value=ddp_total_1)
+
+                col_1.border = thin_border
+                col_1.font = font_bold
+                col_1.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+                col_2.border = thin_border
+                col_2.font = font_bold
+                col_2.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+
+                column += 4
+
+
+
+   
+
+
+        
+
+
+
+
+
+
+            kitap.save(target_path)
+            kitap.close()
+            return True
+        except Exception as e:
+            print('production_excel hata',e)
+            return False
+
+
+    def gu_supplier_cost(self,data):
+        try:
+            thin_border = Border(left=Side(style='thin'), 
+                     right=Side(style='thin'), 
+                     top=Side(style='thin'), 
+                     bottom=Side(style='thin'))
+            
+            font_bold = Font(name='Calibri',
+                size=13,
+                bold=True,
+                italic=False,
+                vertAlign=None,
+                underline='none',
+                strike=False,
+                color='FF000000')
+            source_path = 'excel/sablonlar/supplier_cost.xlsx'
+            target_path = 'excel/dosyalar/supplier_cost.xlsx'
+            shutil.copy2(source_path, target_path)
+
+            kitap = load_workbook(target_path)
+            sayfa = kitap['Sayfa1']
+            column = 1
+            for item in data:
+                satir = 1
+                header = sayfa.cell(satir,column=column,value=item['year'])
+                satir += 1
+                cell_2024_1 = sayfa.cell(satir,column=column,value='Supplier')
+                cell_2024_2 = sayfa.cell(satir,column=column+1,value='Total')
+                satir += 1
+                cell_2024_1.border = thin_border
+                cell_2024_1.font = font_bold
+                cell_2024_1.alignment  = Alignment(horizontal="center", vertical="center")
+                cell_2024_2.border = thin_border
+                cell_2024_2.font = font_bold
+                cell_2024_2.alignment  = Alignment(horizontal="center", vertical="center")
+
+                header.border = thin_border
+                header.font = font_bold
+                header.alignment  = Alignment(horizontal="center", vertical="center")
+                header.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+                # merge = 'A' + str(1) + ':' + 'C' + str(1)
+                # sayfa.merge_cells(merge)
+                
+
+
+                total = 0
+                for i in item['data']:
+                    sayfa.cell(satir,column=column,value=i['FirmaAdi']).border = thin_border
+                    sayfa.cell(satir,column=column+1,value=i['Total']).border = thin_border
+
+                    total += self.__noneControl(i['Total'])
+                    satir += 1
+
+                total_cell_1 = sayfa.cell(satir,column=column,value='Total')
+                total_cell_1.alignment  = Alignment(horizontal="center", vertical="center")
+                total_cell_1.border = thin_border
+                total_cell_1.font = font_bold
+                total_cell_1.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+
+
+
+                col_1 = sayfa.cell(satir,column=column+1,value=total)
+
+                col_1.border = thin_border
+                col_1.font = font_bold
+                col_1.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+
+                column += 3
+
+            kitap.save(target_path)
+            kitap.close()
+            return True
+        except Exception as e:
+            print('production_excel hata',e)
+            return False
 
 
 class SiparisCekiListesiApi(Resource):
@@ -1609,6 +2032,27 @@ class ReportsOrdersByCountryApi(Resource):
         excel_path = 'excel/dosyalar/orders_by_country.xlsx'
         return send_file(excel_path,as_attachment=True)
 
+class ReportsGuForwardingApi(Resource):
+    def post(self):
+        data = request.get_json()
+        excel = ExcellCiktiIslem()
+        status = excel.gu_forwarding(data)
+        return jsonify({'status':status})
+    def get(self):
+        excel_path = 'excel/dosyalar/gu_excel.xlsx'
+        return send_file(excel_path,as_attachment=True)
+    
+class ReportsGuSupplierCostApi(Resource):
+    
+    def post(self):
+        data = request.get_json()
+        excel = ExcellCiktiIslem()
+        status = excel.gu_supplier_cost(data)
+        return jsonify({'status':status})
+    def get(self):
+        excel_path = 'excel/dosyalar/supplier_cost.xlsx'
+        return send_file(excel_path,as_attachment=True)
+
 
 
 api.add_resource(SiparisCekiListesiApi, '/excel/check/list', methods=['GET','POST'])
@@ -1675,8 +2119,8 @@ api.add_resource(ReportsProductMineApi,'/reports/excel/mine',methods=['GET','POS
 api.add_resource(ReportsProductLoadingApi,'/reports/excel/loading',methods=['GET','POST'])
 api.add_resource(ReportsProductForwardingApi,'/reports/excel/forwarding',methods=['GET','POST'])
 api.add_resource(ReportsOrdersByCountryApi,'/maliyet/dosyalar/countries',methods=['GET','POST'])
-
-
+api.add_resource(ReportsGuForwardingApi,'/reports/gu/forwarding',methods=['GET','POST'])
+api.add_resource(ReportsGuSupplierCostApi,'/reports/excel/supplier/cost',methods=['GET','POST'])
 
 
 
