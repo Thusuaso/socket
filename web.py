@@ -1898,7 +1898,98 @@ class ExcellCiktiIslem:
         except Exception as e:
             print('production_excel hata',e)
             return False
+    
+    def gu_continents(self,data):
+        try:
+            thin_border = Border(left=Side(style='thin'), 
+                     right=Side(style='thin'), 
+                     top=Side(style='thin'), 
+                     bottom=Side(style='thin'))
+            
+            font_bold = Font(name='Calibri',
+                size=13,
+                bold=True,
+                italic=False,
+                vertAlign=None,
+                underline='none',
+                strike=False,
+                color='FF000000')
+            source_path = 'excel/sablonlar/continents.xlsx'
+            target_path = 'excel/dosyalar/continents.xlsx'
+            shutil.copy2(source_path, target_path)
 
+            kitap = load_workbook(target_path)
+            sayfa = kitap['Sayfa1']
+            column = 1
+            for item in data:
+                satir = 1
+                header = sayfa.cell(satir,column=column,value=item['year'])
+                satir += 1
+                cell_2024_1 = sayfa.cell(satir,column=column,value='Continents')
+                cell_2024_2 = sayfa.cell(satir,column=column+1,value='Fob')
+                cell_2024_3 = sayfa.cell(satir,column=column+2,value='Ddp')
+
+                satir += 1
+                cell_2024_1.border = thin_border
+                cell_2024_1.font = font_bold
+                cell_2024_1.alignment  = Alignment(horizontal="center", vertical="center")
+                cell_2024_2.border = thin_border
+                cell_2024_2.font = font_bold
+                cell_2024_2.alignment  = Alignment(horizontal="center", vertical="center")
+                cell_2024_3.border = thin_border
+                cell_2024_3.font = font_bold
+                cell_2024_3.alignment  = Alignment(horizontal="center", vertical="center")
+
+                header.border = thin_border
+                header.font = font_bold
+                header.alignment  = Alignment(horizontal="center", vertical="center")
+                header.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+                # merge = 'A' + str(1) + ':' + 'C' + str(1)
+                # sayfa.merge_cells(merge)
+                
+
+
+                fob = 0
+                ddp = 0
+
+                for i in item['data']:
+                    sayfa.cell(satir,column=column,value=i['Continent']).border = thin_border
+                    sayfa.cell(satir,column=column+1,value=i['Fob']).border = thin_border
+                    sayfa.cell(satir,column=column+2,value=i['Ddp']).border = thin_border
+
+
+                    fob += self.__noneControl(i['Fob'])
+                    ddp += self.__noneControl(i['Ddp'])
+
+                    satir += 1
+
+                total_cell_1 = sayfa.cell(satir,column=column,value='Total')
+                total_cell_1.alignment  = Alignment(horizontal="center", vertical="center")
+                total_cell_1.border = thin_border
+                total_cell_1.font = font_bold
+                total_cell_1.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+
+
+
+                col_1 = sayfa.cell(satir,column=column+1,value=fob)
+                col_2 = sayfa.cell(satir,column=column+2,value=ddp)
+
+
+                col_1.border = thin_border
+                col_1.font = font_bold
+                col_1.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+                col_2.border = thin_border
+                col_2.font = font_bold
+                col_2.fill = PatternFill(start_color="defb00", end_color="defb00", fill_type = "solid")
+
+                column += 4
+
+            kitap.save(target_path)
+            kitap.close()
+            return True
+        except Exception as e:
+            print('production_excel hata',e)
+            return False
 
 class SiparisCekiListesiApi(Resource):
 
@@ -2053,6 +2144,17 @@ class ReportsGuSupplierCostApi(Resource):
         excel_path = 'excel/dosyalar/supplier_cost.xlsx'
         return send_file(excel_path,as_attachment=True)
 
+class ReportsGuContinentsApi(Resource):
+    
+    def post(self):
+        data = request.get_json()
+        excel = ExcellCiktiIslem()
+        status = excel.gu_continents(data)
+        return jsonify({'status':status})
+    def get(self):
+        excel_path = 'excel/dosyalar/continents.xlsx'
+        return send_file(excel_path,as_attachment=True)
+    
 
 
 api.add_resource(SiparisCekiListesiApi, '/excel/check/list', methods=['GET','POST'])
@@ -2121,7 +2223,7 @@ api.add_resource(ReportsProductForwardingApi,'/reports/excel/forwarding',methods
 api.add_resource(ReportsOrdersByCountryApi,'/maliyet/dosyalar/countries',methods=['GET','POST'])
 api.add_resource(ReportsGuForwardingApi,'/reports/gu/forwarding',methods=['GET','POST'])
 api.add_resource(ReportsGuSupplierCostApi,'/reports/excel/supplier/cost',methods=['GET','POST'])
-
+api.add_resource(ReportsGuContinentsApi,'/maliyet/dosyalar/continent',methods=['GET','POST'])
 
 
 
