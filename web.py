@@ -572,7 +572,7 @@ class ExcellCiktiIslem:
         else:
             if(date):
                 _year,_month,_date = str(date).split('-')
-                newDate = datetime.datetime(int(_year),int(_month),int(date[0:2]))
+                newDate = datetime.datetime(int(_year),int(_month),int(_date[0:2]))
                 year = newDate.strftime('%Y')
                 month = newDate.strftime('%m')
                 day = newDate.strftime('%d')
