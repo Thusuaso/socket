@@ -2372,7 +2372,6 @@ class ReportsProductionMailSendApi(Resource):
             lastDay -= 1
         if(day == 'Sunday'):
             lastDay -= 2
-        lastDay-= 4
         if(lastDay == nowDay):
             results = sqlIslem.getList(sql)
             status = sqlIslem.getList("select Status from SeleksiyonSendMailTB")
