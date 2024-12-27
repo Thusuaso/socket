@@ -18,6 +18,19 @@ from component.orders.excel import *
 from component.mk.mk import *
 from component.stock.stock import *
 from component.currency import *
+
+from api.sql import *
+import calendar
+
+from email.mime.multipart import MIMEMultipart
+from email.mime.base import MIMEBase
+from email.mime.text import MIMEText
+from email.utils import formatdate
+from email import encoders
+import smtplib
+from email.mime.application import MIMEApplication
+
+
 class ExcellCiktiIslem:
 
     def ceki_listesi_excel(self,data_list):
@@ -797,6 +810,7 @@ class ExcellCiktiIslem:
             kitap = load_workbook(target_path)
             sayfa = kitap['Sayfa1']
             satir = 2
+            
             for item in data:
                 sayfa.cell(satir,column=1,value=item['KasaNo']).border = thin_border
                 sayfa.cell(satir,column=2,value=item['OcakAdi']).border = thin_border
@@ -814,6 +828,8 @@ class ExcellCiktiIslem:
                 sayfa.cell(satir,column=14,value=item['UrunBirimAdi']).border = thin_border   
                 sayfa.cell(satir,column=15,value=item['SiparisAciklama']).border = thin_border   
                 sayfa.cell(satir,column=16,value=item['Aciklama']).border = thin_border   
+                sayfa.cell(satir,column=17,value=item['Fason']).border = thin_border   
+
 
                 satir += 1
 
@@ -824,8 +840,57 @@ class ExcellCiktiIslem:
 
 
         except Exception as e:
-            print('customer_mekmer_excel hata',e)
+            print('selection product hata',e)
             return False
+
+
+    def selection_excel_mail_output(self,data):
+        try:
+            thin_border = Border(left=Side(style='thin'), 
+                     right=Side(style='thin'), 
+                     top=Side(style='thin'), 
+                     bottom=Side(style='thin'))
+            source_path = 'excel/sablonlar/selection.xlsx'
+            target_path = 'excel/dosyalar/selection.xlsx'
+            shutil.copy2(source_path, target_path)
+
+            kitap = load_workbook(target_path)
+            sayfa = kitap['Sayfa1']
+            satir = 2
+            
+            for item in data:
+                
+                sayfa.cell(satir,column=1,value=item.KasaNo).border = thin_border
+                sayfa.cell(satir,column=2,value=item.OcakAdi).border = thin_border
+                sayfa.cell(satir,column=3,value=item.FirmaAdi).border = thin_border
+                sayfa.cell(satir,column=4,value=item.KategoriAdi).border = thin_border
+                sayfa.cell(satir,column=5,value=item.UrunAdi).border = thin_border
+                sayfa.cell(satir,column=6,value=item.YuzeyIslemAdi).border = thin_border
+                sayfa.cell(satir,column=7,value=item.En).border = thin_border
+                sayfa.cell(satir,column=8,value=item.Boy).border = thin_border
+                sayfa.cell(satir,column=9,value=item.Kenar).border = thin_border 
+                sayfa.cell(satir,column=10,value=item.KutuAdet).border = thin_border   
+                sayfa.cell(satir,column=11,value=item.KutuIciAdet).border = thin_border   
+                sayfa.cell(satir,column=12,value=item.Adet).border = thin_border   
+                sayfa.cell(satir,column=13,value=item.Miktar).border = thin_border   
+                sayfa.cell(satir,column=14,value=item.UrunBirimAdi).border = thin_border   
+                sayfa.cell(satir,column=15,value=item.SiparisAciklama).border = thin_border   
+                sayfa.cell(satir,column=16,value=item.Aciklama).border = thin_border   
+                sayfa.cell(satir,column=17,value=item.Fason).border = thin_border   
+
+
+                satir += 1
+
+            kitap.save(target_path)
+            kitap.close()
+            return True
+
+
+
+        except Exception as e:
+            print('selection product hata',e)
+            return False
+
 
     def production_excel_list(self,data):
         try:
@@ -1991,6 +2056,90 @@ class ExcellCiktiIslem:
             print('production_excel hata',e)
             return False
 
+    def mailGonder(self,data):
+        mail = smtplib.SMTP("mail.mekmar.com",587)
+        mail.ehlo()
+        mail.starttls()
+        mail.login("goz@mekmar.com", "_bwt64h-3SR_-G2O")
+        mesaj = MIMEMultipart()
+        mesaj["From"] = "goz@mekmar.com"           # Gönderen
+        mesaj["Subject"] = f"{str(datetime.datetime.now().year)}   -   {str(datetime.datetime.now().month)}  ' ayı Seleksiyon Listesi'"
+        mesaj["To"] = 'bilgiislem@mekmar.com'
+        body = """
+                <table>
+                    <tr>
+                        <th>Kasa No</th>
+                        <th>Ocak</th>
+                        <th>Firma Adı</th>
+                        <th>Kategori</th>
+                        <th>Ürün</th>
+                        <th>Yüzey</th>
+                        <th>En</th>
+                        <th>Boy</th>
+                        <th>Kenar</th>
+                        <th>Kutu</th>
+                        <th>Kutu içi Adet</th>
+                        <th>Adet</th>
+                        <th>Miktar</th>
+                        <th>Birim</th>
+                        <th>Po</th>
+                        <th>Açıklama</th>
+                        <th>Fason</th>
+                    </tr>
+                    
+        """
+
+        for item in data:
+            body+=f"""
+            <tr style="border-bottom:1px solid gray;">
+                <td style="border-bottom:1px solid gray;">{item.KasaNo}</td>
+                <td style="border-bottom:1px solid gray;">{item.OcakAdi}</td>
+                <td style="border-bottom:1px solid gray;">{item.FirmaAdi}</td>
+                <td style="border-bottom:1px solid gray;">{item.KategoriAdi}</td>
+                <td style="border-bottom:1px solid gray;">{item.UrunAdi}</td>
+                <td style="border-bottom:1px solid gray;">{item.YuzeyIslemAdi}</td>
+                <td style="border-bottom:1px solid gray;">{item.En}</td>
+                <td style="border-bottom:1px solid gray;">{item.Boy}</td>
+                <td style="border-bottom:1px solid gray;">{item.Kenar}</td>
+                <td style="border-bottom:1px solid gray;">{item.KutuAdet}</td>
+                <td style="border-bottom:1px solid gray;">{item.KutuIciAdet}</td>
+                <td style="border-bottom:1px solid gray;">{item.Adet}</td>
+                <td style="border-bottom:1px solid gray;">{item.Miktar}</td>
+                <td style="border-bottom:1px solid gray;">{item.UrunBirimAdi}</td>
+                <td style="border-bottom:1px solid gray;">{item.SiparisAciklama}</td>
+                <td style="border-bottom:1px solid gray;">{item.Aciklama}</td>
+                <td style="border-bottom:1px solid gray;">{item.Fason}</td>
+            </tr>
+
+
+
+            
+            """
+        
+        body += "</table>"
+            
+            
+
+        part2 = MIMEText(body, 'html')
+        mesaj.attach(part2)
+
+ 
+ 
+
+        
+        mail.sendmail(mesaj["From"], mesaj["To"], mesaj.as_string())
+        print("Mail başarılı bir şekilde gönderildi.")
+        mail.close()
+        return True
+
+
+
+
+        
+
+            
+
+
 class SiparisCekiListesiApi(Resource):
 
     def post(self):
@@ -2154,7 +2303,94 @@ class ReportsGuContinentsApi(Resource):
     def get(self):
         excel_path = 'excel/dosyalar/continents.xlsx'
         return send_file(excel_path,as_attachment=True)
-    
+
+
+class ReportsProductionMailSendApi(Resource):
+    def get(self):
+        sql = """
+                select u.OzelMiktar,
+    u.Fason,
+    u.Duzenleyen,
+	u.Kasalayan,
+	u.UrunKartId,
+	urb.ID as UrunBirimId,
+	urb.BirimAdi as UrunBirimAdi,
+	u.UretimTurID,
+	u.ID,
+	u.Tarih,
+	u.KasaNo,
+	k.KategoriAdi,
+	k.ID as KategoriID,
+	uo.OcakAdi,
+	uo.ID as OcakId,
+	ur.UrunAdi,
+	ur.ID as UrunId,
+	yk.YuzeyIslemAdi,
+	yk.ID as YuzeyId,
+	ol.ID as OlcuId,
+	ol.En,
+	ol.Boy,
+	ol.Kenar,
+	u.KutuAdet,
+	u.KutuIciAdet,
+	u.Miktar,
+	u.Kutu,
+	u.Bagli,
+	u.SiparisAciklama,
+	u.Aciklama,
+	u.TedarikciID,
+	t.FirmaAdi,
+	u.Bulunamadi,
+	u.Disarda,
+	u.Adet from UretimTB u 
+	inner join TedarikciTB t on t.ID = u.TedarikciID 
+	inner join UrunBirimTB ub on ub.ID = u.UrunBirimID 
+	inner join UrunOcakTB uo on uo.ID = u.UrunOcakID 
+	inner join UretimTurTB ut on ut.ID = u.UretimTurID 
+	inner join UrunKartTB uk on uk.ID = u.UrunKartID 
+	inner join KategoriTB k on k.ID = uk.KategoriID 
+	inner join UrunlerTB ur on ur.ID = uk.UrunID 
+	inner join YuzeyKenarTB yk on yk.ID = uk.YuzeyID 
+	inner join OlculerTB ol on ol.ID = uk.OlcuID 
+	inner join UrunBirimTB urb on urb.ID = u.UrunBirimID 
+	where u.UrunDurumID=1 and u.TedarikciID in (1,123) and u.Bulunamadi != 1
+							
+	order by KasaNo desc
+        """
+        sqlIslem = SqlConnect().data
+        excel = ExcellCiktiIslem()
+
+        date = datetime.datetime.now()
+        year = date.year
+        month = date.month
+        lastMonthDay = calendar.monthrange(year,month)
+        nowDay = date.day
+        lastDay = lastMonthDay[1]
+
+        day = datetime.datetime(int(year),int(month),int(lastDay)).strftime('%A')
+        if(day == 'Saturday'):
+            lastDay -= 1
+        if(day == 'Sunday'):
+            lastDay -= 2
+        lastDay-= 4
+        if(lastDay == nowDay):
+            results = sqlIslem.getList(sql)
+            status = sqlIslem.getList("select Status from SeleksiyonSendMailTB")
+            if(status[0].Status == False):
+                # islem = excel.selection_excel_mail_output(results)
+                if(len(results)) > 0:
+                    mailStatus = excel.mailGonder(results)
+                    if(mailStatus):
+                        sqlIslem.update_insert("update SeleksiyonSendMailTB SET Status=?",(1))
+            else:
+                if(lastDay >= 1 and lastDay <= 5):
+                    sqlIslem.update_insert("update SeleksiyonSendMailTB SET Status=?",(0))
+
+
+
+
+
+        
 
 
 api.add_resource(SiparisCekiListesiApi, '/excel/check/list', methods=['GET','POST'])
@@ -2224,6 +2460,10 @@ api.add_resource(ReportsOrdersByCountryApi,'/maliyet/dosyalar/countries',methods
 api.add_resource(ReportsGuForwardingApi,'/reports/gu/forwarding',methods=['GET','POST'])
 api.add_resource(ReportsGuSupplierCostApi,'/reports/excel/supplier/cost',methods=['GET','POST'])
 api.add_resource(ReportsGuContinentsApi,'/maliyet/dosyalar/continent',methods=['GET','POST'])
+
+
+
+api.add_resource(ReportsProductionMailSendApi,'/reports/production/send/mail',methods=['GET'])
 
 
 

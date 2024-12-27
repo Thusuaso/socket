@@ -365,7 +365,6 @@ s.MusteriID
             # if total == 0 or total < 8:
             #     continue
             # else:
-                
             liste.append({
                 'marketing':item.Marketing,
                 'customer_id':item.ID,
@@ -377,7 +376,7 @@ s.MusteriID
                 'forwarding': self.__noneControl(self.__getOrderForwarding(item.ID)) + self.__noneControl(self.__getProductForwarding(item.ID)),
                 'production':self.__noneControl(self.__getProductProduction(item.ID)) + self.__noneControl(self.__getOrderProduction(item.ID)),
                 'advanced_payment':self.__getAdvancePayment(item.ID),
-                'total': (self.__getOrder(item.ID) + self.__getProduct(item.ID)) - self.__noneControl(self.__getPaid(item.ID))
+                'total': (self.__noneControl(self.__getOrder(item.ID)) + self.__noneControl(self.__getProduct(item.ID))) - self.__noneControl(self.__getPaid(item.ID))
             })
         return liste
     
