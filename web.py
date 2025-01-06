@@ -2307,6 +2307,13 @@ class ReportsGuContinentsApi(Resource):
 
 class ReportsProductionMailSendApi(Resource):
     def get(self):
+        productionSql = """
+                select top 1 YEAR(Tarih) as Year,MONTH(Tarih) as Month,DAY(Tarih) as Day from UretimTB
+                where TedarikciID in (1,123)
+                order by ID desc
+        """
+    
+
         sql = """
                 select u.OzelMiktar,
     u.Fason,
@@ -2359,6 +2366,10 @@ class ReportsProductionMailSendApi(Resource):
         """
         sqlIslem = SqlConnect().data
         excel = ExcellCiktiIslem()
+        production = sqlIslem.getList(productionSql)
+        productionYear = production[0].Year
+        productionMonth = production[0].Month
+        productionDay = production[0].Day
 
         date = datetime.datetime.now()
         year = date.year
@@ -2372,7 +2383,7 @@ class ReportsProductionMailSendApi(Resource):
             lastDay -= 1
         if(day == 'Sunday'):
             lastDay -= 2
-        if(lastDay == nowDay):
+        if(lastDay == productionDay):
             results = sqlIslem.getList(sql)
             status = sqlIslem.getList("select Status from SeleksiyonSendMailTB")
             if(status[0].Status == False):
