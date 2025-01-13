@@ -768,8 +768,8 @@ class ExcellCiktiIslem:
                      right=Side(style='thin'), 
                      top=Side(style='thin'), 
                      bottom=Side(style='thin'))
-            source_path = 'excel/sablonlar/customer_mekmer.xlsx'
-            target_path = 'excel/dosyalar/customer_mekmer.xlsx'
+            source_path = 'excel/sablonlar/mekmar_customer.xlsx'
+            target_path = 'excel/dosyalar/mekmar_customer.xlsx'
             shutil.copy2(source_path, target_path)
 
             kitap = load_workbook(target_path)
@@ -2209,7 +2209,7 @@ class CustomerMekmerExcelApi(Resource):
         status = excel.customer_mekmer_excel(data)
         return jsonify({'status':status})
     def get(self):
-        excel_path = 'excel/dosyalar/customer_mekmer.xlsx'
+        excel_path = 'excel/dosyalar/mekmar_customer.xlsx'
         return send_file(excel_path,as_attachment=True)
 
 class SelectionExcelApi(Resource):
