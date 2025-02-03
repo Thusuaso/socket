@@ -2371,6 +2371,8 @@ class ReportsProductionMailSendApi(Resource):
         productionMonth = production[0].Month
         productionDay = production[0].Day
 
+        
+
         date = datetime.datetime.now()
         year = date.year
         month = date.month
@@ -2383,7 +2385,7 @@ class ReportsProductionMailSendApi(Resource):
             lastDay -= 1
         if(day == 'Sunday'):
             lastDay -= 2
-        if(lastDay == productionDay):
+        if(lastDay == nowDay):
             results = sqlIslem.getList(sql)
             status = sqlIslem.getList("select Status from SeleksiyonSendMailTB")
             if(status[0].Status == False):
