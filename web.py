@@ -2060,79 +2060,79 @@ class ExcellCiktiIslem:
             return False
 
     def mailGonder(self,data):
-        mail = smtplib.SMTP("mail.mekmar.com",587)
-        mail.ehlo()
-        mail.starttls()
-        mail.login("goz@mekmar.com", "_bwt64h-3SR_-G2O")
-        mesaj = MIMEMultipart()
-        mesaj["From"] = "goz@mekmar.com"           # Gönderen
-        mesaj["Subject"] = f"{str(datetime.datetime.now().year)}   -   {str(datetime.datetime.now().month)}  ' ayı Seleksiyon Listesi'"
-        mesaj["To"] = 'bilgiislem@mekmar.com'
-        body = """
-                <table>
-                    <tr>
-                        <th>Kasa No</th>
-                        <th>Ocak</th>
-                        <th>Firma Adı</th>
-                        <th>Kategori</th>
-                        <th>Ürün</th>
-                        <th>Yüzey</th>
-                        <th>En</th>
-                        <th>Boy</th>
-                        <th>Kenar</th>
-                        <th>Kutu</th>
-                        <th>Kutu içi Adet</th>
-                        <th>Adet</th>
-                        <th>Miktar</th>
-                        <th>Birim</th>
-                        <th>Po</th>
-                        <th>Açıklama</th>
-                        <th>Fason</th>
-                    </tr>
+        # mail = smtplib.SMTP("mail.mekmar.com",587)
+        # mail.ehlo()
+        # mail.starttls()
+        # mail.login("goz@mekmar.com", "_bwt64h-3SR_-G2O")
+        # mesaj = MIMEMultipart()
+        # mesaj["From"] = "goz@mekmar.com"           # Gönderen
+        # mesaj["Subject"] = f"{str(datetime.datetime.now().year)}   -   {str(datetime.datetime.now().month)}  ' ayı Seleksiyon Listesi'"
+        # mesaj["To"] = 'bilgiislem@mekmar.com'
+        # body = """
+        #         <table>
+        #             <tr>
+        #                 <th>Kasa No</th>
+        #                 <th>Ocak</th>
+        #                 <th>Firma Adı</th>
+        #                 <th>Kategori</th>
+        #                 <th>Ürün</th>
+        #                 <th>Yüzey</th>
+        #                 <th>En</th>
+        #                 <th>Boy</th>
+        #                 <th>Kenar</th>
+        #                 <th>Kutu</th>
+        #                 <th>Kutu içi Adet</th>
+        #                 <th>Adet</th>
+        #                 <th>Miktar</th>
+        #                 <th>Birim</th>
+        #                 <th>Po</th>
+        #                 <th>Açıklama</th>
+        #                 <th>Fason</th>
+        #             </tr>
                     
-        """
+        # """
 
-        for item in data:
-            body+=f"""
-            <tr style="border-bottom:1px solid gray;">
-                <td style="border-bottom:1px solid gray;">{item.KasaNo}</td>
-                <td style="border-bottom:1px solid gray;">{item.OcakAdi}</td>
-                <td style="border-bottom:1px solid gray;">{item.FirmaAdi}</td>
-                <td style="border-bottom:1px solid gray;">{item.KategoriAdi}</td>
-                <td style="border-bottom:1px solid gray;">{item.UrunAdi}</td>
-                <td style="border-bottom:1px solid gray;">{item.YuzeyIslemAdi}</td>
-                <td style="border-bottom:1px solid gray;">{item.En}</td>
-                <td style="border-bottom:1px solid gray;">{item.Boy}</td>
-                <td style="border-bottom:1px solid gray;">{item.Kenar}</td>
-                <td style="border-bottom:1px solid gray;">{item.KutuAdet}</td>
-                <td style="border-bottom:1px solid gray;">{item.KutuIciAdet}</td>
-                <td style="border-bottom:1px solid gray;">{item.Adet}</td>
-                <td style="border-bottom:1px solid gray;">{item.Miktar}</td>
-                <td style="border-bottom:1px solid gray;">{item.UrunBirimAdi}</td>
-                <td style="border-bottom:1px solid gray;">{item.SiparisAciklama}</td>
-                <td style="border-bottom:1px solid gray;">{item.Aciklama}</td>
-                <td style="border-bottom:1px solid gray;">{item.Fason}</td>
-            </tr>
+        # for item in data:
+        #     body+=f"""
+        #     <tr style="border-bottom:1px solid gray;">
+        #         <td style="border-bottom:1px solid gray;">{item.KasaNo}</td>
+        #         <td style="border-bottom:1px solid gray;">{item.OcakAdi}</td>
+        #         <td style="border-bottom:1px solid gray;">{item.FirmaAdi}</td>
+        #         <td style="border-bottom:1px solid gray;">{item.KategoriAdi}</td>
+        #         <td style="border-bottom:1px solid gray;">{item.UrunAdi}</td>
+        #         <td style="border-bottom:1px solid gray;">{item.YuzeyIslemAdi}</td>
+        #         <td style="border-bottom:1px solid gray;">{item.En}</td>
+        #         <td style="border-bottom:1px solid gray;">{item.Boy}</td>
+        #         <td style="border-bottom:1px solid gray;">{item.Kenar}</td>
+        #         <td style="border-bottom:1px solid gray;">{item.KutuAdet}</td>
+        #         <td style="border-bottom:1px solid gray;">{item.KutuIciAdet}</td>
+        #         <td style="border-bottom:1px solid gray;">{item.Adet}</td>
+        #         <td style="border-bottom:1px solid gray;">{item.Miktar}</td>
+        #         <td style="border-bottom:1px solid gray;">{item.UrunBirimAdi}</td>
+        #         <td style="border-bottom:1px solid gray;">{item.SiparisAciklama}</td>
+        #         <td style="border-bottom:1px solid gray;">{item.Aciklama}</td>
+        #         <td style="border-bottom:1px solid gray;">{item.Fason}</td>
+        #     </tr>
 
 
 
             
-            """
+        #     """
         
-        body += "</table>"
+        # body += "</table>"
             
             
 
-        part2 = MIMEText(body, 'html')
-        mesaj.attach(part2)
+        # part2 = MIMEText(body, 'html')
+        # mesaj.attach(part2)
 
  
  
 
         
-        mail.sendmail(mesaj["From"], mesaj["To"], mesaj.as_string())
-        print("Mail başarılı bir şekilde gönderildi.")
-        mail.close()
+        # mail.sendmail(mesaj["From"], mesaj["To"], mesaj.as_string())
+        # print("Mail başarılı bir şekilde gönderildi.")
+        # mail.close()
         return True
 
 
