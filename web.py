@@ -1,4 +1,3 @@
-import numpy as np
 from flask import Flask,jsonify,send_file,request
 from flask_restful import Api,Resource
 from flask_cors import CORS,cross_origin 
@@ -2371,9 +2370,7 @@ class ReportsProductionMailSendApi(Resource):
         sqlIslem = SqlConnect().data
         excel = ExcellCiktiIslem()
         production = sqlIslem.getList(productionSql)
-        productionYear = production[0].Year
-        productionMonth = production[0].Month
-        productionDay = production[0].Day
+
 
         
 
