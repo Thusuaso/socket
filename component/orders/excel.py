@@ -11,7 +11,7 @@ import datetime
 
 import shutil
 from flask_restful import Resource
-    
+from operator import itemgetter, attrgetter
 class ExcelCiktiIslem:
     def __init__(self):
         self.sql = SqlConnect().data
@@ -31,8 +31,7 @@ class ExcelCiktiIslem:
             m = 0
             a = 0
             k = 0
-            #rgb=[241,195,170]
-            ##color_string="".join([str(hex(i))[2:].upper().rjust(2, "0") for i in rgb])
+
             thin_border = Border(left=Side(style='thin'), 
                      right=Side(style='thin'), 
                      top=Side(style='thin'), 
@@ -168,7 +167,6 @@ class ExcelCiktiIslem:
             
 
 
-            ##sayfa.merge_cells(start_row=2, start_column=1, end_row=4, end_column=4)
             kitap.save(target_path)
             kitap.close()
             

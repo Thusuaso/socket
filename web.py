@@ -1,3 +1,4 @@
+import numpy as np
 from flask import Flask,jsonify,send_file,request
 from flask_restful import Api,Resource
 from flask_cors import CORS,cross_origin 
@@ -916,6 +917,9 @@ class ExcellCiktiIslem:
             satir = 2
             amount_total = 0
             piece_total = 0
+
+
+
             for item in data:
                 sayfa.cell(satir,column=1,value=self._dateConvert(item['Tarih'])).border = thin_border
                 sayfa.cell(satir,column=2,value=item['FirmaAdi']).border = thin_border
