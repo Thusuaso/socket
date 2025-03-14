@@ -485,7 +485,7 @@ s.MusteriID
             kitap = load_workbook(target_path)
             sayfa = kitap.get_sheet_by_name('Sayfa1')
             satir = 2
-            new_list = sorted(data_list, key=lambda x: x['balanced'], reverse=True)
+            # new_list = sorted(data_list, key=lambda x: x['balanced'], reverse=True)
             order_amount_total = 0
             production_total = 0
             forwarding = 0
@@ -493,7 +493,7 @@ s.MusteriID
             advanced_payment_total = 0
             not_balanced_total = 0
             balanced = 0
-            for item in new_list:
+            for item in data_list:
 
                 sayfa.cell(satir,column=1,value=item['customer_name'])               
                 sayfa.cell(satir,column=2,value=self.__noneControl(item['total_order_amount']))
