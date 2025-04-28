@@ -2135,6 +2135,101 @@ class ExcellCiktiIslem:
         mail.close()
         return True
 
+    def offer_proforma(self,data):
+        try:
+            thin_border = Border(left=Side(style='thin'), 
+                     right=Side(style='thin'), 
+                     top=Side(style='thin'), 
+                     bottom=Side(style='thin'))
+            
+            font_bold_white = Font(name='Calibri',
+                size=13,
+                bold=True,
+                italic=False,
+                vertAlign=None,
+                underline='none',
+                strike=False,
+                color='FFFFFF')
+            
+            font_bold_black = Font(name='Calibri',
+                size=13,
+                bold=True,
+                italic=False,
+                vertAlign=None,
+                underline='none',
+                strike=False,
+                color='FFFFFF')
+            
+            
+            
+            source_path = 'excel/sablonlar/proforma_invoice.xlsx'
+            target_path = 'excel/dosyalar/proforma_invoice.xlsx'
+            shutil.copy2(source_path, target_path)
+
+            kitap = load_workbook(target_path)
+            
+            
+
+            sayfa = kitap['Sayfa1']
+            customer = 'Company: ' + str(data['customer']['Company']) + ' \n' + 'Vat No: ' + '\nContact Person: '+ str(data['customer']['MusteriAdi']) + '\nCountry: ' + str(data['model']['UlkeAdi']) + '\nPhone: ' + str(data['customer']['Phone']) + '\nMail: ' + str(data['customer']['Mail'])
+
+
+
+
+            sayfa.cell(row=2,column=1,value=customer)
+
+
+            satir = 18
+            index = 1
+            for item in data['data']:
+                sayfa.cell(satir,column=1,value=str(index) + '-' + item['KategoriAdi'] + ' ' + item['UrunAdi']  + ' ' + item['IslemAdi'] + ' ' +item['EnBoy'] + 'x' + item['Kalinlik'])
+                if(data['shipped']['id'] == 1):
+                    sayfa.cell(satir,column=13,value=item['FobFiyat'])
+                    sayfa.cell(46,column=6,value='TOTAL FOB Factory')
+                    sayfa.cell(73,column=6,value='GRAND TOTAL FOB Factory')
+
+
+                elif(data['shipped']['id'] == 2):
+                    sayfa.cell(satir,column=13,value=item['FcaFiyat'])
+                    sayfa.cell(46,column=6,value='TOTAL FCA Factory')
+                    sayfa.cell(73,column=6,value='GRAND TOTAL FCA Factory')
+
+
+                elif(data['shipped']['id'] == 3):
+                    sayfa.cell(satir,column=13,value=item['CFiyat'])
+                    sayfa.cell(46,column=6,value='TOTAL C Factory')
+                    sayfa.cell(73,column=6,value='GRAND TOTAL C Factory')
+
+
+                elif(data['shipped']['id'] == 4):
+                    sayfa.cell(satir,column=13,value=item['DFiyat'])
+                    sayfa.cell(46,column=6,value='TOTAL D Factory')
+                    sayfa.cell(73,column=6,value='GRAND TOTAL D Factory')
+
+
+                sayfa.cell(satir,column=10,value=item['Birim'])
+                if(item['Birim']=='Sqm'):
+                    sayfa.cell(satir,column=14,value='=' +'I'+ str(satir) +'*' + 'M'+ str(satir))
+                elif(item['Birim']=='Pcs'):
+                    sayfa.cell(satir,column=14,value='=' +'G'+ str(satir) +'*' + 'M'+ str(satir))
+                elif(item['Birim']=='Lmt'):
+                    sayfa.cell(satir,column=14,value='=' +'H'+ str(satir) +'*' + 'M'+ str(satir))
+                index+=1
+                satir+=1
+            if(data['model']['KullaniciAdi'] == 'Ozlem'):
+
+                sayfa.cell(85,column=2,value=data['model']['KullaniciAdi'] + ' ' + 'OKUT')
+            elif(data['model']['KullaniciAdi'] == 'Hakan'):
+
+                sayfa.cell(85,column=2,value=data['model']['KullaniciAdi'] + ' ' + 'KAN')
+            
+
+            kitap.save(target_path)
+            kitap.close()
+            return True
+        except Exception as e:
+            print('order_proforma hata',e)
+            return False
 
 
 
@@ -2401,6 +2496,20 @@ class ReportsProductionMailSendApi(Resource):
                 if(lastDay >= 1 and lastDay <= 5):
                     sqlIslem.update_insert("update SeleksiyonSendMailTB SET Status=?",(0))
 
+class OfferProformaApi(Resource):
+    def post(self):
+
+        data = request.get_json()
+        excel = ExcellCiktiIslem()
+        status = excel.offer_proforma(data)
+        return {'status':status}
+    
+    def get(self):
+        pass
+        excel_path = 'excel/dosyalar/proforma_invoice.xlsx'
+
+        return send_file(excel_path,as_attachment=True)
+
 
 
 
@@ -2480,7 +2589,7 @@ api.add_resource(ReportsGuContinentsApi,'/maliyet/dosyalar/continent',methods=['
 
 api.add_resource(ReportsProductionMailSendApi,'/reports/production/send/mail',methods=['GET'])
 
-
+api.add_resource(OfferProformaApi,'/offer/proforma/output',methods=['GET','POST'])
 
 
 if __name__ == '__main__':

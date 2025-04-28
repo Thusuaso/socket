@@ -2,6 +2,8 @@ from flask import jsonify,request,send_file
 from flask_restful import Resource
 from component.excel import *
 from component.mk.reports import *
+
+
 class MkRaporlariExcelApi(Resource):
     def post(self):
         data = request.get_json()
@@ -14,7 +16,6 @@ class MkRaporlariExcelApi(Resource):
         excel_path = 'excel/dosyalar/mkRaporlari.xlsx'
 
         return send_file(excel_path,as_attachment=True)
-    
 
 class AyoCostExcelApi(Resource):
 
