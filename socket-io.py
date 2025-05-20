@@ -8,7 +8,7 @@ socketio = SocketIO(app,logger=True, engineio_logger=True,cors_allowed_origins="
 
 @socketio.on('connect')
 def connect():
-    emit('başarıyla bağlandı',broadcast=True)
+    emit('başarıyla bağlandı')
     
 #Socket IO Customer#
 @socketio.on('production_update_emit')
