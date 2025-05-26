@@ -35,6 +35,7 @@ class ExcellCiktiIslem:
 
     def ceki_listesi_excel(self,data_list):
          try:
+            print(data_list)
             source_path = 'excel/sablonlar/ceki_listesi.xlsx'
             target_path = 'excel/dosyalar/ceki_listesi.xlsx'
 
@@ -75,6 +76,8 @@ class ExcellCiktiIslem:
                 sayfa.cell(satir,column=8,value=item['Boy']).border = thin_border
                 sayfa.cell(satir,column=9,value=item['KutuAdet']).border = thin_border
                 sayfa.cell(satir,column=10,value=item['Adet']).border = thin_border
+                sayfa.cell(satir,column=16,value=item['KasaOlcusu']).border = thin_border
+
 
                 miktar = 0
                 kutu = int(item['KutuAdet'])
