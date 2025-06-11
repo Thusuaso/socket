@@ -22,3 +22,9 @@ class CurrencyEuroToTlApi(Resource):
         currency = DovizListem()
         currencyData = currency.getCurrencyEuroToTl(yil,ay,gun)
         return (jsonify(currencyData))
+
+class CurrencyAverageApi(Resource):
+    def get(self,yil,ay,gun):
+        currency = DovizListem()
+        currencyData = currency.getCurrencyAverage(yil,ay,gun)
+        return jsonify(currencyData)

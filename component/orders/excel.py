@@ -50,7 +50,7 @@ class ExcelCiktiIslem:
                
                  m = 0
                  a=0
-                 
+                 print(data_list)
                  for item1 in data_list:
                    
                     if data_list[i]['SiparisNo'] == data_list[item]['SiparisNo']:
@@ -74,7 +74,11 @@ class ExcelCiktiIslem:
                             sayfa.cell(satir-1,column=15,value='MT')
                             
                          remainder = sayfa.cell(satir-1,column=16,value=float(item1['Miktar'] - float(item1['Uretim'])))
+
                          remainder.border = Border(left=Side(style='thin'),right=Side(style='thin'),bottom=Side(style='thin'),top=Side(style='thin'))
+                         pieces=sayfa.cell(satir-1,column=17,value=float(item1['Adet']))
+                         pieces.border = Border(left=Side(style='thin'),right=Side(style='thin'),bottom=Side(style='thin'),top=Side(style='thin'))
+
                          satir += 1
                          a += 1
                       
@@ -125,6 +129,7 @@ class ExcelCiktiIslem:
 
 
                  for item1 in iscilik:
+                    
                    
                     if iscilik[i2][1] == iscilik[item2][1]:
                          

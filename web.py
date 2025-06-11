@@ -2535,7 +2535,7 @@ api.add_resource(MaliyetRaporExcelApi, '/maliyet/dosyalar/maliyetRaporExcelListe
 api.add_resource(CurrencyApi,'/finance/doviz/liste/<string:yil>/<string:ay>/<string:gun>',methods=['GET'])
 api.add_resource(CurrencyUsdToEuroApi,'/finance/doviz/liste/usd/to/euro/<string:yil>/<string:ay>/<string:gun>',methods=['GET'])
 api.add_resource(CurrencyEuroToTlApi,'/finance/doviz/liste/euro/to/tl/<string:yil>/<string:ay>/<string:gun>',methods=['GET'])
-
+api.add_resource(CurrencyAverageApi,'/finance/doviz/liste/average/<string:yil>/<string:ay>/<string:gun>',methods=['GET'])
 
 
 
