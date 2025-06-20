@@ -9,6 +9,7 @@ import json
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
+from api.sql import *
 
 class DovizListem:
 
@@ -292,6 +293,24 @@ class DovizListem:
         if(total == 0):
             return 0
         else:
+            sql = SqlConnect().data
+            control_sql = sql.getStoreList("""
+                select * from AyoCurrency where YEAR = ? and MONTH = ?
+            """,(yil,ay))
+
+            if(len(control_sql) > 0):
+                            update_sql = sql.update_insert("""
+                update AyoCurrency SET CURRENCY=? where YEAR=? and MONTH=?
+            """,((total/index),yil,ay))
+            else:
+                insert_sql = sql.update_insert("""
+                    insert into AyoCurrency(YEAR,MONTH,CURRENCY)
+                    VALUES(?,?,?)
+                """,(yil,ay,(total/index)))
+
+
+
+
             return (total/index)
         
 
