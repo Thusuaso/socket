@@ -938,6 +938,13 @@ class ExcellCiktiIslem:
                 sayfa.cell(satir,column=13,value=item['BirimAdi']).border = thin_border
                 sayfa.cell(satir,column=14,value=item['SiparisAciklama']).border = thin_border
                 sayfa.cell(satir,column=15,value=item['Aciklama']).border = thin_border
+                if(item['Fason'] == True):
+
+                    sayfa.cell(satir,column=16,value='Fason').border = thin_border
+                else:
+                    sayfa.cell(satir,column=16,value='Fason Değil').border = thin_border
+
+
 
 
                 amount_total += self.__noneControl(item['Miktar'])
@@ -963,6 +970,7 @@ class ExcellCiktiIslem:
             sayfa.cell(satir,column=8,value='').border = thin_border
             sayfa.cell(satir,column=9,value='').border = thin_border
             sayfa.cell(satir,column=10,value='').border = thin_border
+
 
 
             amount_cell = sayfa.cell(satir,column=11,value=amount_total)
