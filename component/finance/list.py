@@ -81,7 +81,7 @@ select
 											where
 												s.MusteriID in (
 																	select m.ID from MusterilerTB m where m.ID = s.MusteriID and m.Mt_No=2
-															   ) and su.TedarikciID in (1,123)
+															   ) and su.TedarikciID in (1,123,1407)
                                             group by
                                                 s.MusteriID
                                                """)
@@ -225,7 +225,7 @@ select
                                                             s.MusteriID in (
                                                                                 select m.ID from MusterilerTB m where m.ID = s.MusteriID and m.Mt_No=2
                                                                         )
-                                                            and s.SiparisDurumID=3 and su.TedarikciID in (1,123)
+                                                            and s.SiparisDurumID=3 and su.TedarikciID in (1,123,1407)
                                                         group by
                                                             s.MusteriID
                                                    
@@ -259,7 +259,7 @@ select
                                                             s.MusteriID in (
                                                                                 select m.ID from MusterilerTB m where m.ID = s.MusteriID and m.Mt_No=2
                                                                         )
-                                                            and s.SiparisDurumID in (1,2) and su.TedarikciID in (1,123)
+                                                            and s.SiparisDurumID in (1,2) and su.TedarikciID in (1,123,1407)
                                                         group by
                                                             s.MusteriID
                                                    
@@ -353,7 +353,7 @@ where
 s.MusteriID in (
                     select m.ID from MusterilerTB m where m.ID = s.MusteriID and m.Mt_No=2
             )
-and s.SiparisDurumID=3 and su.TedarikciID in (1,123) and YEAR(s.YuklemeTarihi) >= 2024
+and s.SiparisDurumID=3 and su.TedarikciID in (1,123,1407) and YEAR(s.YuklemeTarihi) >= 2024
 group by
 s.MusteriID
 """)
@@ -841,7 +841,7 @@ select
 											where
 												s.MusteriID in (
 																	select m.ID from MusterilerTB m where m.ID = s.MusteriID and m.Mt_No=2
-															   ) and su.TedarikciID in (1,123)
+															   ) and su.TedarikciID in (1,123,1407)
                                             group by
                                                 s.MusteriID
                                                """)
@@ -985,7 +985,7 @@ select
                                                             s.MusteriID in (
                                                                                 select m.ID from MusterilerTB m where m.ID = s.MusteriID and m.Mt_No=2
                                                                         )
-                                                            and s.SiparisDurumID=3 and su.TedarikciID in (1,123)
+                                                            and s.SiparisDurumID=3 and su.TedarikciID in (1,123,1407)
                                                         group by
                                                             s.MusteriID
                                                    
@@ -1019,7 +1019,7 @@ select
                                                             s.MusteriID in (
                                                                                 select m.ID from MusterilerTB m where m.ID = s.MusteriID and m.Mt_No=2
                                                                         )
-                                                            and s.SiparisDurumID in (1,2) and su.TedarikciID in (1,123)
+                                                            and s.SiparisDurumID in (1,2) and su.TedarikciID in (1,123,1407)
                                                         group by
                                                             s.MusteriID
                                                    

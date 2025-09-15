@@ -58,10 +58,10 @@ class MusteriAyrinti:
             and s.MusteriID=m.ID
             ) as Odeme,
             (
-              select Sum(u.AlisFiyati * u.Miktar) from SiparisUrunTB u where u.SiparisNo=s.SiparisNo and u.TedarikciID in (1,123)
+              select Sum(u.AlisFiyati * u.Miktar) from SiparisUrunTB u where u.SiparisNo=s.SiparisNo and u.TedarikciID in (1,123,1407)
             ) as UrunBedeli,
             			(
-				select SUM (seg.Tutar) from SiparisEkstraGiderlerTB seg where seg.SiparisNo=s.SiparisNo and seg.TedarikciID in (1,123) and YEAR(seg.Tarih) >= YEAR(GETDATE())
+				select SUM (seg.Tutar) from SiparisEkstraGiderlerTB seg where seg.SiparisNo=s.SiparisNo and seg.TedarikciID in (1,123,1407) and YEAR(seg.Tarih) >= YEAR(GETDATE())
 			) as Iscilik    
             from
             SiparislerTB s,MusterilerTB m
@@ -151,10 +151,10 @@ class MusteriAyrinti:
             and s.MusteriID=m.ID
             ) as Odeme,
             (
-            select Sum(u.AlisFiyati * u.Miktar) from SiparisUrunTB u where u.SiparisNo=s.SiparisNo and u.TedarikciID in (1,123)
+            select Sum(u.AlisFiyati * u.Miktar) from SiparisUrunTB u where u.SiparisNo=s.SiparisNo and u.TedarikciID in (1,123,1407)
             ) as UrunBedeli,
                    			(
-				select SUM (seg.Tutar) from SiparisEkstraGiderlerTB seg where seg.SiparisNo=s.SiparisNo and seg.TedarikciID in (1,123) and YEAR(seg.Tarih) >= YEAR(GETDATE())
+				select SUM (seg.Tutar) from SiparisEkstraGiderlerTB seg where seg.SiparisNo=s.SiparisNo and seg.TedarikciID in (1,123,1407) and YEAR(seg.Tarih) >= YEAR(GETDATE())
 			) as Iscilik 
             from
             SiparislerTB s,MusterilerTB m

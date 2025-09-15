@@ -35,7 +35,6 @@ class ExcellCiktiIslem:
 
     def ceki_listesi_excel(self,data_list):
          try:
-            print(data_list)
             source_path = 'excel/sablonlar/ceki_listesi.xlsx'
             target_path = 'excel/dosyalar/ceki_listesi.xlsx'
 
@@ -66,6 +65,7 @@ class ExcellCiktiIslem:
             po = data_list['po']
             sayfa.cell(6,column=1,value= po + ' Packing List')
             for item in data_list['list']:
+                print(item)
                 sayfa.cell(satir,column=1,value=index).border = thin_border
                 sayfa.cell(satir,column=2,value=item['KasaNo']).border = thin_border
                 sayfa.cell(satir,column=3,value=item['KategoriAdi']).border = thin_border
@@ -87,7 +87,7 @@ class ExcellCiktiIslem:
                         
                     elif(item['En']=='20,3' and item['Boy']=='SET'):
                         miktar=float(round((0.494914 * kutu),2))
-                    elif(item['En'] == 'VAR') or (item['En'] == 'Various') or (item['En'] == '1 LT'):
+                    elif(item['En'] == 'VAR') or (item['En'] == 'Various') or (item['En'] == '1 LT' or (item['Boy']) == 'Free' or (item['Boy']) == 'FREE'):
                         miktar = float(item['Miktar'])
                     else:
                         miktar = float(item['Miktar'])
