@@ -944,6 +944,12 @@ class ExcellCiktiIslem:
                 else:
                     sayfa.cell(satir,column=16,value='Fason Değil').border = thin_border
 
+                if(item['Kutulama'] == True):
+
+                    sayfa.cell(satir,column=17,value='Kutulama').border = thin_border
+                else:
+                    sayfa.cell(satir,column=17,value='Kutulama Değil').border = thin_border
+
 
 
 
@@ -1199,6 +1205,18 @@ class ExcellCiktiIslem:
                 sayfa.cell(satir,column=18,value=item['Aciklama']).border = thin_border
                 sayfa.cell(satir,column=19,value=item['BirimFiyat']).border = thin_border
                 sayfa.cell(satir,column=20,value=item['Toplam']).border = thin_border
+                if(item['Fason'] == True):
+
+                    sayfa.cell(satir,column=21,value='Fason').border = thin_border
+                else:
+                    sayfa.cell(satir,column=21,value='Fason Değil').border = thin_border
+
+                if(item['Kutulama'] == True):
+
+                    sayfa.cell(satir,column=22,value='Kutulama').border = thin_border
+                else:
+                    sayfa.cell(satir,column=22,value='Kutulama Değil').border = thin_border
+
 
                 amount += self.__noneControl(item['Miktar'])
                 peaceincrate += self.__noneControl(item['Adet'])

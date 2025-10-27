@@ -27,11 +27,21 @@ class DovizListem:
             x = datetime.datetime.now()
             nowDay = x.strftime('%d')
             nowMonth = x.strftime('%m')
+            nowYear = x.strftime('%Y')
             xy = datetime.datetime(int(yil),int(ay),int(gun))
             if(int(gun) == 29 and int(ay)==10):
                 gun = 30
             if(int(gun) == int(nowDay) and int(ay) == int(nowMonth)):
-                gun = int(gun) -1
+                day_string = int(gun) - 1
+                day_string = datetime.datetime(str(yil) +'-' +str(ay)+'-' + str(gun))
+                day_string = day_string.getDay() # Sunday - Saturday : 0 - 6
+
+                if(day_string == 0):
+                    gun = int(gun) -2
+                elif(day_string == 6):
+                    gun = int(gun) -1
+                else:
+                    gun = int(gun) -1
             
             if (xy.strftime("%A") == "Saturday"):
                 gun = str(int(gun) - 1)
