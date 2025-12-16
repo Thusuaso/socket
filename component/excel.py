@@ -55,7 +55,10 @@ class ExcelCiktiIslem:
                     sayfa.cell(satir,column=26,value=item['masraf_toplam'])
                     sayfa.cell(satir,column=27,value=item['kar_zarar'])
                     sayfa.cell(satir,column=28,value=item['kar_zarar_tl'])
-                    sayfa.cell(satir,column=29,value=item['kar_zarar_tl_yuzdesi'])
+                    if(item['kar_zarar_tl_yuzdesi'] == None or item['kar_zarar_tl_yuzdesi'] == 0 or item['kar_zarar_tl_yuzdesi'] == '' or item['kar_zarar_tl_yuzdesi'] == ' '):
+                        sayfa.cell(satir,column=29,value=0)
+                    else:
+                        sayfa.cell(satir,column=29,value=(int(item['kar_zarar_tl_yuzdesi'])/100))
 
                 
                     sayfa.cell(satir,column=30,value=item['dosya_kapanma_date'])
