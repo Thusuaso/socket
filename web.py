@@ -866,9 +866,9 @@ class ExcellCiktiIslem:
                 sayfa.cell(satir,column=2,value=cost['MaliyetTuru']).border = thin_border
                 sayfa.cell(satir,column=3,value=cost['MaliyetFirma']).border = thin_border
                 sayfa.cell(satir,column=4,value=cost['FaturaNo']).border = thin_border
-                sayfa.cell(satir,column=5,value=cost['Fiyat']).border = thin_border
-                sayfa.cell(satir,column=6,value=cost['Kur']).border = thin_border
-                sayfa.cell(satir,column=7,value=cost['Fiyat'] / cost['Kur']).border = thin_border
+                sayfa.cell(satir,column=5,value=round(float(cost['Fiyat']),2)).border = thin_border
+                sayfa.cell(satir,column=6,value=round(float(cost['Kur']),2)).border = thin_border
+                sayfa.cell(satir,column=7,value=round(float(cost['Fiyat'] / cost['Kur']),2)).border = thin_border
 
                 satir+=1
 
