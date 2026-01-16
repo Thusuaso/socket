@@ -623,55 +623,89 @@ class ExcellCiktiIslem:
             po = sayfa.cell(satir,column=1,value='Tarih')
             po.border = thin_border
             po.font = Font(bold=True)
-            order_date = sayfa.cell(satir,column=2,value='Tedarikçi Adı')
+            irsaliye_no = sayfa.cell(satir,column=2,value='İrsaliye No')
+            irsaliye_no.border = thin_border
+            irsaliye_no.font = Font(bold=True)
+
+
+
+            order_date = sayfa.cell(satir,column=3,value='Tedarikçi Adı')
             order_date.border = thin_border
             order_date.font = Font(bold=True)
 
-            shipped_date = sayfa.cell(satir,column=3,value='Ocak Adı')
+            shipped_date = sayfa.cell(satir,column=4,value='Ocak Adı')
             shipped_date.border = thin_border
             shipped_date.font = Font(bold=True)
 
-            status = sayfa.cell(satir,column=4,value='Strip Adı')
+            status = sayfa.cell(satir,column=5,value='Strip Adı')
             status.border = thin_border
             status.font = Font(bold=True)
+            
+            fatura_no = sayfa.cell(satir,column=6,value='Fatura No')
+            fatura_no.border = thin_border
+            fatura_no.font = Font(bold=True)
 
-            order_total = sayfa.cell(satir,column=5,value='Strip (M2)')
+            order_total = sayfa.cell(satir,column=7,value='Strip (M2)')
             order_total.border = thin_border
             order_total.font = Font(bold=True)
 
-            payment_received = sayfa.cell(satir,column=6,value='Strip ($)')
+            payment_received = sayfa.cell(satir,column=8,value='Strip (₺)')
             payment_received.border = thin_border
             payment_received.font = Font(bold=True)
 
 
-            balance = sayfa.cell(satir,column=7,value='Strip Toplam ($)')
+            balance = sayfa.cell(satir,column=9,value='Strip Toplam (₺)')
             balance.border = thin_border
             balance.font = Font(bold=True)
 
-            pre_payment = sayfa.cell(satir,column=8,value='En')
+            balance_usd = sayfa.cell(satir,column=10,value='Strip Toplam ($)')
+            balance_usd.border = thin_border
+            balance_usd.font = Font(bold=True)
+
+
+            currency = sayfa.cell(satir,column=11,value='Kur (₺)')
+            currency.border = thin_border
+            currency.font = Font(bold=True)
+
+            pre_payment = sayfa.cell(satir,column=12,value='En')
             pre_payment.border = thin_border
             pre_payment.font = Font(bold=True)
 
-            pre_payment = sayfa.cell(satir,column=9,value='Boy')
+            pre_payment = sayfa.cell(satir,column=13,value='Boy')
             pre_payment.border = thin_border
             pre_payment.font = Font(bold=True)
 
-            pre_payment = sayfa.cell(satir,column=10,value='Adet')
+            pre_payment = sayfa.cell(satir,column=14,value='Kalınlık')
+            pre_payment.border = thin_border
+            pre_payment.font = Font(bold=True)
+
+            pre_payment = sayfa.cell(satir,column=15,value='Adet')
             pre_payment.border = thin_border
             pre_payment.font = Font(bold=True)
             satir += 1
             for strip in strips:
                 sayfa.cell(satir,column=1,value=self._dateConvert(strip['Date'])).border = thin_border
-                sayfa.cell(satir,column=2,value=strip['SupplierName']).border = thin_border
-                sayfa.cell(satir,column=3,value=strip['QuarryName']).border = thin_border
-                sayfa.cell(satir,column=4,value=strip['StripName']).border = thin_border
-                sayfa.cell(satir,column=5,value=strip['StripM2']).border = thin_border
-                sayfa.cell(satir,column=6,value=strip['StripPrice']).border = thin_border
-                sayfa.cell(satir,column=7,value=strip['StripCost']).border = thin_border
-                sayfa.cell(satir,column=8,value=strip['StripWidth']).border = thin_border
-                sayfa.cell(satir,column=9,value=strip['StripHeight']).border = thin_border
-                sayfa.cell(satir,column=10,value=strip['StripPiece']).border = thin_border
+                sayfa.cell(satir,column=2,value=strip['DocumentNo']).border = thin_border
 
+                sayfa.cell(satir,column=3,value=strip['SupplierName']).border = thin_border
+                sayfa.cell(satir,column=4,value=strip['QuarryName']).border = thin_border
+                sayfa.cell(satir,column=5,value=strip['StripName']).border = thin_border
+                sayfa.cell(satir,column=6,value=strip['Invoice']).border = thin_border
+
+                sayfa.cell(satir,column=7,value=strip['StripM2']).border = thin_border
+                sayfa.cell(satir,column=8,value=strip['StripPrice']).border = thin_border
+                sayfa.cell(satir,column=9,value=strip['StripCost']).border = thin_border
+                sayfa.cell(satir,column=10,value=strip['StripCostUsd']).border = thin_border
+
+                sayfa.cell(satir,column=11,value=strip['Currency']).border = thin_border
+
+
+                sayfa.cell(satir,column=12,value=strip['StripWidth']).border = thin_border
+                sayfa.cell(satir,column=13,value=strip['StripHeight']).border = thin_border
+                sayfa.cell(satir,column=14,value=strip['StripThickness']).border = thin_border
+
+                sayfa.cell(satir,column=15,value=strip['StripPiece']).border = thin_border
+                satir += 1
 
 
             
@@ -704,53 +738,71 @@ class ExcellCiktiIslem:
             po = sayfa.cell(satir,column=1,value='Tarih')
             po.border = thin_border
             po.font = Font(bold=True)
-            order_date = sayfa.cell(satir,column=2,value='Tedarikçi Adı')
+            irsaliye_no = sayfa.cell(satir,column=2,value='İrsaliye No')
+            irsaliye_no.border = thin_border
+            irsaliye_no.font = Font(bold=True)
+
+            order_date = sayfa.cell(satir,column=3,value='Tedarikçi Adı')
             order_date.border = thin_border
             order_date.font = Font(bold=True)
 
-            shipped_date = sayfa.cell(satir,column=3,value='Ocak Adı')
+            fatura_no = sayfa.cell(satir,column=4,value='Fatura No')
+            fatura_no.border = thin_border
+            fatura_no.font = Font(bold=True)
+
+            shipped_date = sayfa.cell(satir,column=5,value='Ocak Adı')
             shipped_date.border = thin_border
             shipped_date.font = Font(bold=True)
 
-            status = sayfa.cell(satir,column=4,value='Strip Adı')
+            status = sayfa.cell(satir,column=6,value='Strip Adı')
             status.border = thin_border
             status.font = Font(bold=True)
 
-            order_total = sayfa.cell(satir,column=5,value='Tonaj')
+            order_total = sayfa.cell(satir,column=7,value='Tonaj')
             order_total.border = thin_border
             order_total.font = Font(bold=True)
 
-            payment_received = sayfa.cell(satir,column=6,value='Fiyat (Tl)')
+            payment_received = sayfa.cell(satir,column=8,value='Fiyat (Tl)')
             payment_received.border = thin_border
             payment_received.font = Font(bold=True)
 
 
-            balance = sayfa.cell(satir,column=7,value='Fiyat ($)')
+            balance = sayfa.cell(satir,column=9,value='Fiyat ($)')
             balance.border = thin_border
             balance.font = Font(bold=True)
 
-            currency = sayfa.cell(satir,column=8,value='Kur ($)')
+            currency = sayfa.cell(satir,column=10,value='Kur ($)')
             currency.border = thin_border
             currency.font = Font(bold=True)
 
-            pre_payment = sayfa.cell(satir,column=9,value='Toplam (Tl)')
+            pre_payment = sayfa.cell(satir,column=11,value='Toplam (₺)')
             pre_payment.border = thin_border
             pre_payment.font = Font(bold=True)
+
+            balance_usd = sayfa.cell(satir,column=12,value='Toplam ($)')
+            balance_usd.border = thin_border
+            balance_usd.font = Font(bold=True)
 
 
 
 
             satir += 1
             for strip in moloz:
+                print(strip)
                 sayfa.cell(satir,column=1,value=self._dateConvert(strip['Date'])).border = thin_border
-                sayfa.cell(satir,column=2,value=strip['SupplierName']).border = thin_border
-                sayfa.cell(satir,column=3,value=strip['QuarryName']).border = thin_border
-                sayfa.cell(satir,column=4,value=strip['StripName']).border = thin_border
-                sayfa.cell(satir,column=5,value=strip['Ton']).border = thin_border
-                sayfa.cell(satir,column=6,value=strip['PriceTl']).border = thin_border
-                sayfa.cell(satir,column=7,value=strip['PriceUsd']).border = thin_border
-                sayfa.cell(satir,column=8,value=strip['Currency']).border = thin_border
-                sayfa.cell(satir,column=9,value=strip['Total']).border = thin_border
+                sayfa.cell(satir,column=2,value=strip['İrsaliyeNo']).border = thin_border
+                sayfa.cell(satir,column=3,value=strip['SupplierName']).border = thin_border
+                sayfa.cell(satir,column=4,value=strip['FaturaNo']).border = thin_border
+                sayfa.cell(satir,column=5,value=strip['QuarryName']).border = thin_border
+                sayfa.cell(satir,column=6,value=strip['StripName']).border = thin_border
+                sayfa.cell(satir,column=7,value=strip['Ton']).border = thin_border
+                sayfa.cell(satir,column=8,value=strip['PriceTl']).border = thin_border
+                sayfa.cell(satir,column=9,value=strip['PriceUsd']).border = thin_border
+                sayfa.cell(satir,column=10,value=strip['Currency']).border = thin_border
+                sayfa.cell(satir,column=11,value=strip['Total']).border = thin_border
+                sayfa.cell(satir,column=12,value=strip['TotalUsd']).border = thin_border
+
+                satir+=1
 
 
 
@@ -765,6 +817,123 @@ class ExcellCiktiIslem:
             print('finance_excel_custom',str(e))
             return False
 
+    def reports_muhasebe_excel(self,data):
+        try:
+            source_path = 'excel/sablonlar/reports_muhasebe.xlsx'
+            target_path = 'excel/dosyalar/reports_muhasebe.xlsx'
+
+            shutil.copy2(source_path, target_path)
+
+            kitap = load_workbook(target_path)
+            sayfa = kitap['Sayfa1']
+            satir = 1
+            satir2= 1
+            thin_border = Border(left=Side(style='thin'), 
+                     right=Side(style='thin'), 
+                     top=Side(style='thin'), 
+                     bottom=Side(style='thin'))
+            po = sayfa.cell(satir,column=1,value='Tarih')
+            po.border = thin_border
+            po.font = Font(bold=True)
+            irsaliye_no = sayfa.cell(satir,column=2,value='Maliyet Türü')
+            irsaliye_no.border = thin_border
+            irsaliye_no.font = Font(bold=True)
+
+            order_date = sayfa.cell(satir,column=3,value='Fatura Şirketi')
+            order_date.border = thin_border
+            order_date.font = Font(bold=True)
+
+            fatura_no = sayfa.cell(satir,column=4,value='Fatura No')
+            fatura_no.border = thin_border
+            fatura_no.font = Font(bold=True)
+
+
+            status = sayfa.cell(satir,column=5,value='Fiyat (₺)')
+            status.border = thin_border
+            status.font = Font(bold=True)
+
+            order_total = sayfa.cell(satir,column=6,value='Kur')
+            order_total.border = thin_border
+            order_total.font = Font(bold=True)
+
+            payment_received = sayfa.cell(satir,column=7,value='Fiyat ($)')
+            payment_received.border = thin_border
+            payment_received.font = Font(bold=True)
+
+            satir += 1
+            for cost in data['costs']:
+                sayfa.cell(satir,column=1,value=self._dateConvert(cost['Tarih'])).border = thin_border
+                sayfa.cell(satir,column=2,value=cost['MaliyetTuru']).border = thin_border
+                sayfa.cell(satir,column=3,value=cost['MaliyetFirma']).border = thin_border
+                sayfa.cell(satir,column=4,value=cost['FaturaNo']).border = thin_border
+                sayfa.cell(satir,column=5,value=cost['Fiyat']).border = thin_border
+                sayfa.cell(satir,column=6,value=cost['Kur']).border = thin_border
+                sayfa.cell(satir,column=7,value=cost['Fiyat'] / cost['Kur']).border = thin_border
+
+                satir+=1
+
+
+            maliyet_turu = sayfa.cell(satir2,column=9,value='Maliyet Türü')
+            maliyet_turu.border = thin_border
+            maliyet_turu.font = Font(bold=True)
+            toplam = sayfa.cell(satir2,column=10,value='Toplam')
+            toplam.border = thin_border
+            toplam.font = Font(bold=True)
+
+            oran = sayfa.cell(satir2,column=11,value='Oran')
+            oran.border = thin_border
+            oran.font = Font(bold=True)
+            satir2+= 1
+            for ratio in data['ratios']:
+                sayfa.cell(satir2,column=9,value=ratio['MaliyetTuru']).border = thin_border
+                sayfa.cell(satir2,column=10,value=ratio['Total']).border = thin_border
+                sayfa.cell(satir2,column=11,value=ratio['Oran']).border = thin_border
+                satir2 += 1
+
+
+
+            satir3 = 1
+            maliyet = sayfa.cell(satir3,column=13,value='Maliyet ($)')
+            maliyet.border = thin_border
+            maliyet.font = Font(bold=True)
+
+            maliyet_isgucu = sayfa.cell(satir3,column=14,value='Maliyet İşgücü ($)')
+            maliyet_isgucu.border = thin_border
+            maliyet_isgucu.font = Font(bold=True)
+
+            uretim = sayfa.cell(satir3,column=15,value='Üretim')
+            uretim.border = thin_border
+            uretim.font = Font(bold=True)
+
+            kisi_basi_maliyet = sayfa.cell(satir3,column=16,value='Kişi Başı Maliyet ($)')
+            kisi_basi_maliyet.border = thin_border
+            kisi_basi_maliyet.font = Font(bold=True)
+
+
+            satir3 += 1
+
+            sayfa.cell(satir3,column=13,value=round(float(data['costCalculate']['cost']),2)).border = thin_border
+            sayfa.cell(satir3,column=14,value=round(float(data['costCalculate']['costWork']),2)).border = thin_border
+            sayfa.cell(satir3,column=15,value=round(float(data['costCalculate']['productionSqm']),2)).border = thin_border
+            sayfa.cell(satir3,column=16,value=round(float(data['costCalculate']['costMain']),2)).border = thin_border
+
+            satir3 += 1
+
+            
+
+
+            kitap.save(target_path)
+            kitap.close()
+            return True
+
+
+
+        except Exception as e:
+            print('finance_excel_custom',str(e))
+            return False
+
+    def totalSort(value):
+        return value['Total']
     def customer_mekmer_excel(self,data):
         try:
             thin_border = Border(left=Side(style='thin'), 
@@ -2328,6 +2497,17 @@ class ReportsMolozExcelApi(Resource):
     def get(self):
         excel_path = 'excel/dosyalar/reports_mekmer_moloz.xlsx'
         return send_file(excel_path,as_attachment=True)
+    
+
+class ReportsMuhasebeExcelApi(Resource):
+    def post(self):
+        data = request.get_json()
+        excel = ExcellCiktiIslem()
+        status = excel.reports_muhasebe_excel(data)
+        return jsonify({'stauts':status})
+    def get(self):
+        excel_path = 'excel/dosyalar/reports_muhasebe.xlsx'
+        return send_file(excel_path,as_attachment=True)
 
 class CustomerMekmerExcelApi(Resource):
     def post(self):
@@ -2587,6 +2767,9 @@ api.add_resource(GuReportsSellerAndOperationForwardingExcelApi,'/gu/reports/sell
 api.add_resource(SeleksiyonUrunEtiketApi,'/seleksiyon/etiket/excel',methods=['GET','POST'])
 api.add_resource(ReportsStripsExcelApi,'/reports/mekmer/strips/excel',methods=['GET','POST'])
 api.add_resource(ReportsMolozExcelApi,'/reports/mekmer/moloz/excel',methods=['GET','POST'])
+
+api.add_resource(ReportsMuhasebeExcelApi,'/reports/mekmer/muhasebe/excel',methods=['GET','POST'])
+
 
 
 api.add_resource(CreditCardCostYearApi,'/reports/mekmar/ayo/credit/card/<int:year>',methods=['GET'])
