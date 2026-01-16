@@ -886,8 +886,8 @@ class ExcellCiktiIslem:
             satir2+= 1
             for ratio in data['ratios']:
                 sayfa.cell(satir2,column=9,value=ratio['MaliyetTuru']).border = thin_border
-                sayfa.cell(satir2,column=10,value=ratio['Total']).border = thin_border
-                sayfa.cell(satir2,column=11,value=ratio['Oran']).border = thin_border
+                sayfa.cell(satir2,column=10,value=round(float(ratio['Total']),2)).border = thin_border
+                sayfa.cell(satir2,column=11,value=round(float(ratio['Oran']),2)).border = thin_border
                 satir2 += 1
 
 
