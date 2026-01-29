@@ -807,7 +807,9 @@ class ExcelCiktiIslem:
             travel = kitap.get_sheet_by_name('travel')
             wage = kitap.get_sheet_by_name('wage')
             sample = kitap.get_sheet_by_name('sample')
-            other = kitap.get_sheet_by_name('other')
+            other = kitap.get_sheet_by_name('fuil')
+            meal = kitap.get_sheet_by_name('meal')
+
 
 
             credit_satir = 2
@@ -885,6 +887,22 @@ class ExcelCiktiIslem:
                 other_satir += 1
             other.cell(other_satir,column=2,value = other_tl)
             other.cell(other_satir,column=3,value = other_usd)
+
+
+
+            meal_satir = 2
+            meal_tl = 0
+            meal_usd = 0
+            for item in data['meal']:
+                meal.cell(meal_satir,column=1,value=item['month'])
+                meal.cell(meal_satir,column=2,value=item['value'])
+                meal.cell(meal_satir,column=3,value=item['usd'])
+                meal.cell(meal_satir,column=4,value=item['currency'])
+                meal_tl += item['value']
+                meal_usd += item['usd']
+                meal_satir += 1
+            meal.cell(meal_satir,column=2,value = meal_tl)
+            meal.cell(meal_satir,column=3,value = meal_usd)
             
             
 
