@@ -817,6 +817,107 @@ class ExcellCiktiIslem:
             print('finance_excel_custom',str(e))
             return False
 
+
+    def reports_nakliye_excel(self,nakliye):
+        try:
+            source_path = 'excel/sablonlar/reports_mekmer_nakliye.xlsx'
+            target_path = 'excel/dosyalar/reports_mekmer_nakliye.xlsx'
+
+            shutil.copy2(source_path, target_path)
+
+            kitap = load_workbook(target_path)
+            sayfa = kitap['Sayfa1']
+            satir = 1
+            thin_border = Border(left=Side(style='thin'), 
+                     right=Side(style='thin'), 
+                     top=Side(style='thin'), 
+                     bottom=Side(style='thin'))
+            po = sayfa.cell(satir,column=1,value='Tarih')
+            po.border = thin_border
+            po.font = Font(bold=True)
+            irsaliye_no = sayfa.cell(satir,column=2,value='Plaka No')
+            irsaliye_no.border = thin_border
+            irsaliye_no.font = Font(bold=True)
+
+            order_date = sayfa.cell(satir,column=3,value='İrsaliye No')
+            order_date.border = thin_border
+            order_date.font = Font(bold=True)
+
+            fatura_no = sayfa.cell(satir,column=4,value='Fatura No')
+            fatura_no.border = thin_border
+            fatura_no.font = Font(bold=True)
+
+            shipped_date_2 = sayfa.cell(satir,column=5,value='Firma Adı')
+            shipped_date_2.border = thin_border
+            shipped_date_2.font = Font(bold=True)
+
+
+            shipped_date = sayfa.cell(satir,column=6,value='Kimden')
+            shipped_date.border = thin_border
+            shipped_date.font = Font(bold=True)
+
+            status = sayfa.cell(satir,column=7,value='Tonaj')
+            status.border = thin_border
+            status.font = Font(bold=True)
+
+            order_total = sayfa.cell(satir,column=8,value='Fiyat (₺)')
+            order_total.border = thin_border
+            order_total.font = Font(bold=True)
+
+            payment_received = sayfa.cell(satir,column=9,value='Fiyat ($)')
+            payment_received.border = thin_border
+            payment_received.font = Font(bold=True)
+
+
+            balance = sayfa.cell(satir,column=10,value='Kur(₺)')
+            balance.border = thin_border
+            balance.font = Font(bold=True)
+
+            currency = sayfa.cell(satir,column=11,value='Toplam (₺)')
+            currency.border = thin_border
+            currency.font = Font(bold=True)
+
+            pre_payment = sayfa.cell(satir,column=12,value='Toplam ($)')
+            pre_payment.border = thin_border
+            pre_payment.font = Font(bold=True)
+
+
+
+
+
+            satir += 1
+            for strip in nakliye:
+                print(strip)
+                sayfa.cell(satir,column=1,value=self._dateConvert(strip['Tarih'])).border = thin_border
+                sayfa.cell(satir,column=2,value=strip['PlakaNo']).border = thin_border
+                sayfa.cell(satir,column=3,value=strip['İrsaliyeNo']).border = thin_border
+                sayfa.cell(satir,column=4,value=strip['FaturaNo']).border = thin_border
+                sayfa.cell(satir,column=5,value=strip['FirmaAdi']).border = thin_border
+                sayfa.cell(satir,column=6,value=strip['KimdenAdi']).border = thin_border
+                sayfa.cell(satir,column=7,value=strip['Ton']).border = thin_border
+                sayfa.cell(satir,column=8,value=strip['BirimFiyatTL']).border = thin_border
+                sayfa.cell(satir,column=9,value=strip['BirimFiyatDolar']).border = thin_border
+                sayfa.cell(satir,column=10,value=strip['Kur']).border = thin_border
+                sayfa.cell(satir,column=11,value=strip['ToplamTl']).border = thin_border
+                sayfa.cell(satir,column=12,value=strip['ToplamDolar']).border = thin_border
+
+                satir+=1
+
+
+
+
+            kitap.save(target_path)
+            kitap.close()
+            return True
+
+
+
+        except Exception as e:
+            print('finance_excel_custom',str(e))
+            return False
+
+
+
     def reports_muhasebe_excel(self,data):
         try:
             source_path = 'excel/sablonlar/reports_muhasebe.xlsx'
@@ -2498,6 +2599,17 @@ class ReportsMolozExcelApi(Resource):
         excel_path = 'excel/dosyalar/reports_mekmer_moloz.xlsx'
         return send_file(excel_path,as_attachment=True)
     
+class ReportsNakliyeExcelApi(Resource):
+    def post(self):
+        data = request.get_json()
+        excel = ExcellCiktiIslem()
+        status = excel.reports_nakliye_excel(data)
+        return jsonify({'status':status})
+    def get(self):
+        excel_path = 'excel/dosyalar/reports_mekmer_nakliye.xlsx'
+        return send_file(excel_path,as_attachment=True)
+
+
 
 class ReportsMuhasebeExcelApi(Resource):
     def post(self):
@@ -2767,6 +2879,8 @@ api.add_resource(GuReportsSellerAndOperationForwardingExcelApi,'/gu/reports/sell
 api.add_resource(SeleksiyonUrunEtiketApi,'/seleksiyon/etiket/excel',methods=['GET','POST'])
 api.add_resource(ReportsStripsExcelApi,'/reports/mekmer/strips/excel',methods=['GET','POST'])
 api.add_resource(ReportsMolozExcelApi,'/reports/mekmer/moloz/excel',methods=['GET','POST'])
+api.add_resource(ReportsNakliyeExcelApi,'/reports/mekmer/nakliye/excel',methods=['GET','POST'])
+
 
 api.add_resource(ReportsMuhasebeExcelApi,'/reports/mekmer/muhasebe/excel',methods=['GET','POST'])
 
