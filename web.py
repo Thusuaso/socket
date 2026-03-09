@@ -29,9 +29,153 @@ from email.utils import formatdate
 from email import encoders
 import smtplib
 from email.mime.application import MIMEApplication
-
+from openpyxl.utils import get_column_letter # Hatanın çözümü için eklendi
 
 class ExcellCiktiIslem:
+
+
+    def export_final_labels_excel(self, data):
+        try:
+            source_path = 'excel/sablonlar/etiket_sablon.xlsx'
+            target_path = 'excel/dosyalar/kasa_etiketleri.xlsx'
+            shutil.copy2(source_path, target_path)
+
+            kitap = load_workbook(target_path)
+            sayfa = kitap.active
+            
+            # --- Kenarlık, Font ve Hizalama Tanımlamaları ---
+            thin = Side(style='thin')
+            border = Border(left=thin, right=thin, top=thin, bottom=thin)
+            
+            f_header = Font(bold=True, size=10)
+            f_title = Font(bold=True, size=18)
+            f_sira = Font(bold=True, size=40)
+            f_warn_title = Font(bold=True, size=8)
+            f_small = Font(size=7.5)
+            
+            align_center = Alignment(horizontal='center', vertical='center', wrap_text=True)
+            align_left = Alignment(horizontal='left', vertical='center')
+            align_left_top = Alignment(horizontal='left', vertical='top', wrap_text=True)
+
+            # Her etiket tam 11 satır kaplayacak (0 çakışma garantili ızgara)
+            rows_per_label = 12 
+            cols_per_label = 10 
+
+            for index, item in enumerate(data['list']):
+                page = index // 4
+                pos = index % 4
+                
+                # Etiketin başlayacağı satır ve sütun (r, c)
+                r = (page * (rows_per_label * 2)) + ((pos // 2) * rows_per_label) + 1
+                c = (pos % 2) * cols_per_label + 1
+
+                # --- 1. SATIR: CSTMR ---
+                sayfa.cell(row=r, column=c, value="CSTMR:").font = f_header
+                sayfa.cell(row=r, column=c).alignment = align_left
+                
+                sayfa.merge_cells(start_row=r, start_column=c+1, end_row=r, end_column=c+7)
+                c_cust = sayfa.cell(row=r, column=c+1, value=data['customer'].upper())
+                c_cust.font = f_title
+                c_cust.alignment = align_center
+                
+                sayfa.merge_cells(start_row=r, start_column=c+8, end_row=r, end_column=c+9)
+                c_dest = sayfa.cell(row=r, column=c+8, value="DESTINATION")
+                c_dest.font = f_header
+                c_dest.alignment = align_center
+
+                # --- 2. SATIR: ORDER ---
+                sayfa.cell(row=r+1, column=c, value="ORDER:").font = f_header
+                sayfa.cell(row=r+1, column=c).alignment = align_left
+                
+                sayfa.merge_cells(start_row=r+1, start_column=c+1, end_row=r+1, end_column=c+7)
+                c_po = sayfa.cell(row=r+1, column=c+1, value=data['po'])
+                c_po.font = f_title
+                c_po.alignment = align_center
+                
+                # Sağ paneldeki boşluk / GN alanı
+                sayfa.merge_cells(start_row=r+1, start_column=c+8, end_row=r+1, end_column=c+9)
+
+                # --- 3, 4, 5, 6, 7. SATIRLAR: SIRA NO / ÜRÜN DETAYI / PRODUCT OF TURKEY ---
+                # Sıra Numarası (Büyük)
+                sayfa.merge_cells(start_row=r+2, start_column=c, end_row=r+5, end_column=c+1)
+                c_sira = sayfa.cell(row=r+2, column=c, value=item['Sira'])
+                c_sira.font = f_sira
+                c_sira.alignment = align_center
+                
+                # PRODUCTS Başlığı (Sıra Numarasının Altında)
+                sayfa.merge_cells(start_row=r+6, start_column=c, end_row=r+6, end_column=c+1)
+                c_prod = sayfa.cell(row=r+6, column=c, value="PRODUCTS:")
+                c_prod.font = f_header
+                c_prod.alignment = align_center
+
+                # Ürün Bilgisi
+                p_info = (f"{item['KategoriAdi']} / {item['UrunAdi']} / \n"
+                        f"{item['YuzeyIslem']} / {item['En']} x {item['Boy']} x {item['Kenar']} cm / \n"
+                        f"{item['Adet']} pcs / {item['Miktar']} {item['BirimAdi']}")
+                sayfa.merge_cells(start_row=r+2, start_column=c+2, end_row=r+6, end_column=c+7)
+                c_p_info = sayfa.cell(row=r+2, column=c+2, value=p_info)
+                c_p_info.font = Font(bold=True, size=15)
+                c_p_info.alignment = align_center
+
+                # Product of Turkey Paneli
+                sayfa.merge_cells(start_row=r+2, start_column=c+8, end_row=r+6, end_column=c+9)
+                c_pot = sayfa.cell(row=r+2, column=c+8, value="PRODUCT\nOF\nTURKEY")
+                c_pot.font = f_header
+                c_pot.alignment = align_center
+
+                # --- 8. SATIR: FRAGILE VE KGS ---
+                sayfa.merge_cells(start_row=r+7, start_column=c, end_row=r+7, end_column=c+7)
+                c_frag = sayfa.cell(row=r+7, column=c, value='"FRAGILE"')
+                c_frag.font = f_title
+                c_frag.alignment = align_center
+                
+                sayfa.merge_cells(start_row=r+7, start_column=c+8, end_row=r+7, end_column=c+9)
+                c_ton = sayfa.cell(row=r+7, column=c+8, value=f"{int(item['Ton'])} KGS")
+                c_ton.font = f_header
+                c_ton.alignment = align_center
+
+                # --- 9. SATIR: WARNING BAŞLIĞI ---
+                sayfa.merge_cells(start_row=r+8, start_column=c, end_row=r+8, end_column=c+9)
+                c_w_head = sayfa.cell(row=r+8, column=c, value="WARNING - READ PRIOR TO INSTALLATION")
+                c_w_head.font = f_warn_title
+                c_w_head.alignment = align_left
+
+                # --- 10. SATIR: WARNING AÇIKLAMASI (Yüksekliği sabitlenmiş satır) ---
+                warn_msg = ("Natural stones are products of nature and are prone to variations in color, texture, shading and veining that may differ from displays. "
+                            "Variations are not considered flaws as no two pieces of stone are alike. Prior to installation, ensure enough material including waste is "
+                            "purchased for the entire project. Mix product from various cartons and lay out all tiles and coordinating pieces to ensure optimal "
+                            "blending prior to installation. Natural stone products should be sealed prior to grouting.")
+                
+                sayfa.merge_cells(start_row=r+9, start_column=c, end_row=r+9, end_column=c+9)
+                c_w_body = sayfa.cell(row=r+9, column=c, value=warn_msg)
+                c_w_body.font = f_small
+                c_w_body.alignment = align_left_top
+                
+                # Excel'in yazıyı kesmesini önlemek için hücre yüksekliğini manuel artırıyoruz
+                sayfa.row_dimensions[r+9].height = 45 
+
+                # --- 11. SATIR: NO CLAIMS ---
+                sayfa.merge_cells(start_row=r+10, start_column=c, end_row=r+10, end_column=c+9)
+                c_claim = sayfa.cell(row=r+10, column=c, value="NO CLAIMS WILL BE ACCEPTED AFTER THE MATERIAL HAS BEEN INSTALLED")
+                c_claim.font = f_header
+                c_claim.alignment = align_center
+
+                # Tüm tabloyu sınırlandır (Çerçeveleri çiz)
+                for rr in range(r, r + 11):
+                    for cc in range(c, c + 10):
+                        sayfa.cell(row=rr, column=cc).border = border
+
+            # --- SÜTUN GENİŞLİKLERİ (Hata Düzeltildi) ---
+            for col_idx in range(1, (cols_per_label * 2) + 1):
+                col_letter = get_column_letter(col_idx) # Doğru sütun harfini getiren fonksiyon
+                sayfa.column_dimensions[col_letter].width = 11
+
+            kitap.save(target_path)
+            kitap.close()
+            return True
+        except Exception as e:
+            print('Etiket Oluşturma Hatası:', str(e))
+            return False
 
     def ceki_listesi_excel(self,data_list):
          try:
@@ -2530,13 +2674,6 @@ class ExcellCiktiIslem:
             print('order_proforma hata',e)
             return False
 
-
-
-        
-
-            
-
-
 class SiparisCekiListesiApi(Resource):
 
     def post(self):
@@ -2832,12 +2969,21 @@ class OfferProformaApi(Resource):
         return send_file(excel_path,as_attachment=True)
 
 
+class SiparislerLabelsExcelApi(Resource):
+    def post(self):
+        data = request.get_json()
+        excel = ExcellCiktiIslem()
+        status = excel.export_final_labels_excel(data)
+        return jsonify({'status':status})
+    def get(self):
+        excel_path = 'excel/dosyalar/kasa_etiketleri.xlsx'
 
+        return send_file(excel_path,as_attachment=True)
 
 
         
 
-
+api.add_resource(SiparislerLabelsExcelApi,'/excel/labels/list',methods=['GET','POST'])
 api.add_resource(SiparisCekiListesiApi, '/excel/check/list', methods=['GET','POST'])
 api.add_resource(MaliyetRaporIslemApi,'/maliyet/listeler/maliyetListesi/<int:yil>/<int:ay>',methods=['GET'])
 api.add_resource(MaliyetRaporIslemYilApi,'/maliyet/listeler/maliyetListesi/<int:yil>',methods=['GET'])
