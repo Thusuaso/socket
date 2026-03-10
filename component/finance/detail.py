@@ -114,7 +114,7 @@ class MusteriAyrinti:
                 odeme = item.Odeme
             if item.sigorta_tutar_satis != None:
                 sigorta = item.sigorta_tutar_satis
-            model.toplam = urun_bedel + self.__noneControl(item.Iscilik) + self.__noneControl(item.NavlunSatis)
+            model.toplam = urun_bedel + self.__noneControl(item.Iscilik) + self.__noneControl(item.NavlunSatis) + self.__noneControl(item.DetayTutar_1) + self.__noneControl(item.DetayTutar_2) + self.__noneControl(item.DetayTutar_3)
             model.siparis_total = model.toplam 
             
             model.kalan = self.__floatControlDecimal(model.toplam - odeme)
